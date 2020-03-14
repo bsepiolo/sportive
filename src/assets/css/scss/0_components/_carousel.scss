@@ -1,0 +1,42 @@
+.carousel {
+  display: flex;
+  margin-top: 7vh;
+  position: relative;
+  overflow: hidden;
+  &__img {
+    height: 70vh;
+    * {
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+    }
+    img {
+      z-index: 1;
+      top: 80px;
+      left: 20px;
+    }
+  }
+  &__el {
+  }
+  &-nav {
+      display: flex;
+      justify-content: center;
+    &__el {
+        margin: 0 $space-size + 4;
+        &.is-active{
+            .carousel-nav__ball{
+                background-color: $black;
+                border: none;
+            }
+        }
+    }
+    &__ball {
+        display: block;
+        width: $space-size + 2;
+        height: $space-size + 2;
+        border: 2px solid $gray200;
+        border-radius: 100%;
+    }
+  }
+}
