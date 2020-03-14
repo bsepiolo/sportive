@@ -67,8 +67,8 @@
             </g>
           </svg>
         </div>
-        <h2 class="title">Keep good shape</h2>
-        <p class="subtitle">
+        <h2 class="section-title text-center">Keep good shape</h2>
+        <p class="section-subtitle text-center">
           Sportive helps you get a good shape with smile on your face!
         </p>
       </li>
@@ -80,6 +80,10 @@
       <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
       <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
     </ul>
+    <div class="actions">
+      <a href="#" class="btn btn--primary btn--outlined">Sign in</a>
+      <a href="#" class="btn btn--primary">Sign up</a>
+    </div>
   </div>
 </template>
 

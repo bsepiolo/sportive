@@ -1,0 +1,23 @@
+.btn{
+    height: $space-size-6;
+    padding: 0 $space-size-5;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    &--primary{
+        background: $blue;
+        color: $white;
+    }
+    &--outlined{
+        background: none;
+        border: 2px solid $blue;
+        color: $blue;
+    }
+}
+.actions{
+    margin-top: $space-size-5;
+    display: flex;
+    justify-content: space-around;
+}
