@@ -1,11 +1,16 @@
-.section-title{
-    font-size: 24px;
+.header{
     font-weight: 600;
     color: $black;
-    padding: $space-size $space-size-2;
+    padding: $space-size 0;
+    &--medium{
+      font-size: 20px;
+    }
+    &--large{
+      font-size: 24px;
+    }
   }
-  .section-subtitle{
+  
+  .header-sub{
     padding: $space-size $space-size-2;
     line-height: $space-size-3;
   }
-  

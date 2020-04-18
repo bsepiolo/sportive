@@ -1,0 +1,19 @@
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-size-3 0;
+  &__user {
+  }
+  &__avatar {
+    width: $space-size-6;
+    height: $space-size-6;
+    border-radius: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    img {
+      height: 100%;
+    }
+  }
+}

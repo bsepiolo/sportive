@@ -1,19 +1,20 @@
 .carousel {
   display: flex;
-  margin-top: 7vh;
   position: relative;
-  overflow: hidden;
+  justify-content: center;
   &__img {
     height: 52vh;
     position: relative;
-    @media (max-width: 370px) {
+
+   // @media (max-width: 375px) {
       height: 250px;
       text-align: center;
+      margin-bottom: 32px + $space-size-3 / 2;
       svg {
         width: 100%;
         height: 100%;
       }
-    }
+  //  }
 
     * {
       position: absolute;
@@ -23,8 +24,10 @@
     }
     img {
       z-index: 1;
-      margin-top: 80px;
+     // margin-top: 80px;
       left: 20px;
+      margin-top: -$space-size-3 / 2; 
+      height: calc(100% + 24px);
       @media (max-width: 370px) {
         height: 100%;
         margin: auto;

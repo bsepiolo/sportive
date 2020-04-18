@@ -6,7 +6,12 @@ body{
 }
 a{
     text-decoration: none;
+    color: $blue;
 }
 *{
+    font-family: 'Poppins';
     box-sizing: border-box;
+}
+html, body, #app{
+    height: 100%;
 }

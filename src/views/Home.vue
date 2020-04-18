@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container container--vertical-center">
     <ul class="carousel">
       <li class="carousel__el">
         <div class="carousel__img">
@@ -80,9 +80,9 @@
       <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
       <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
     </ul>
-    <div class="actions">
-      <a href="#" class="btn btn--primary btn--outlined">Sign in</a>
-      <a href="#" class="btn btn--primary">Sign up</a>
+    <div class="actions mt-6">
+            <a href="#" class="btn btn--primary btn--outlined mr-1">Sign up</a>
+      <a href="#" class="btn btn--primary ml-1">Sign in</a>
     </div>
   </div>
 </template>

@@ -1,0 +1,80 @@
+.events-list{
+    &__el{
+        border-radius: $border-radius;
+        background: $white;
+        box-shadow: $box-shadow;
+        display: flex;
+        padding: $space-size-2;
+    }
+    &__icon{
+        width: $space-size-4;
+        height: $space-size-4;
+        background: red;
+        border-radius: 100%;
+    }
+    &__data{
+        margin-left: $space-size-2;
+        flex-grow: 1;
+    }
+    &__main{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    &__alerts{
+        background: lighten($green, 30%);
+        padding: $space-size / 1.5;
+        border-radius: 5px;
+        color: darken($green, 10%);
+        font-size: 11px;
+        font-weight: 600;
+    }
+    &__title{
+        font-weight: 600;
+        font-size: 15px;
+        color: $black;
+    }
+    &__author{
+        font-size: 13px;
+        color: $secondary-text-color;
+        margin-top: $space-size;
+    }
+    &__secondary{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    &__meta{
+        margin-top: $space-size-3;
+        li{
+            color: $black;
+            font-size: 13px;
+            &:first-child{
+                margin-bottom: $space-size / 2;
+            }
+        }
+    }
+    &__users{
+        display: flex;
+        li{
+            box-sizing: content-box;
+            margin-left: -$space-size;
+            border: 2px solid white;
+            width: $space-size-3;
+            height: $space-size-3;
+            border-radius: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            img{
+                height: 100%;
+            }
+            &:nth-child(4){
+                background-color: $gray100;
+                font-weight: 600;
+                font-size: 13px;
+                line-height: 24px;
+            }
+        }
+    }
+}

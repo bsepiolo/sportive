@@ -15,9 +15,14 @@
         border: 2px solid $blue;
         color: $blue;
     }
+    &--full-width{
+        width: 100%;
+    }
 }
 .actions{
-    margin-top: $space-size-5;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
+    &-vertical{
+        flex-direction: column;
+    }
 }

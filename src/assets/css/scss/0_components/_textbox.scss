@@ -1,0 +1,23 @@
+.textbox{
+    .textbox__input{
+        height: $space-size-6;
+        border-radius: $border-radius;
+        background: $white;
+        box-shadow: $box-shadow;
+        margin-bottom: $space-size;
+        width: 100%;
+        padding: 0 $space-size-2;
+        &::-webkit-input-placeholder { /* Edge */
+            color: $gray200;
+          }
+          
+          &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: $gray200;
+          }
+          
+          &::placeholder {
+            color: $gray200;
+          }
+    }
+
+}
