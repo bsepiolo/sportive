@@ -67,10 +67,10 @@
             </g>
           </svg>
         </div>
-        <h2 class="section-title text-center">Keep good shape</h2>
-        <p class="section-subtitle text-center">
+        <sp-header :text-center="true">Keep good shape</sp-header>
+        <sp-subheader :text-center="true">
           Sportive helps you get a good shape with smile on your face!
-        </p>
+        </sp-subheader>
       </li>
       <li class="carousel__el"></li>
       <li class="carousel__el"></li>
@@ -89,21 +89,9 @@
 
 <script>
 // @ is an alias to /src
-import firebase from "firebase";
-var firebaseConfig = {
-  apiKey: "AIzaSyD8N9r2ATD4-5c-uKrgg_L_m4m0KKguY_0",
-  authDomain: "sportive-fbbd4.firebaseapp.com",
-  databaseURL: "https://sportive-fbbd4.firebaseio.com",
-  projectId: "sportive-fbbd4",
-  storageBucket: "sportive-fbbd4.appspot.com",
-  messagingSenderId: "460864406383",
-  appId: "1:460864406383:web:b604005880e7ed68515e9a",
-  measurementId: "G-DVCGZD4DF0"
-};
+
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-firebase.analytics();
+
 
 export default {
   name: "Home",
@@ -113,14 +101,6 @@ export default {
     };
   },
   components: {},
-  mounted: function() {
-    const userRef = db.collection("Users").where("email", "==", "test");
-    // console.log(userRef);
-    userRef.get().then(data => {
-      data.docs.forEach(doc => {
-        console.log(doc.data());
-      });
-    });
-  }
+  
 };
 </script>

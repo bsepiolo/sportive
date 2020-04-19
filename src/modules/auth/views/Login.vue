@@ -7,8 +7,8 @@
       Sportive helps you get a good shape with smile on your face!
     </sp-subheader>
     <form>
-      <sp-textbox placeholder="E-maill address" />
-      <sp-textbox placeholder="Password" />
+      <sp-textbox type="email" icon="eva eva-email-outline" placeholder="E-maill address" />
+      <sp-textbox type="password" icon="eva eva-lock-outline" placeholder="Password" />
       <div class="actions actions-vertical mt-8">
         <sp-button text="Login" type="primary" :full-width="true" />
         <p class="text text--medium text--center mt-4">Don't have an account? <a href="#">Sing up</a></p>

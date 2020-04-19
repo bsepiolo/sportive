@@ -3,20 +3,38 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  height: $space-size-8;
+  height: $space-size-7;
   width: 100%;
   box-shadow: $box-shadow-top;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-size-2;
   &__list{
     display: flex;
     li{
       &:first-child{
-        margin-left: $space-size-4;
+        margin-left: $space-size-2;
       }
       padding: $space-size;
       font-size: $space-size-3;
       margin-right: $space-size-6;
     }
+  }
+  &__btn{
+    margin-top: -$space-size-7;
+    box-sizing: content-box;
+    width: $space-size-7;
+    height: $space-size-7;
+    border-radius: 100%;
+    background: $blue;
+    border: $space-size solid $gray100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: white;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 }

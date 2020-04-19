@@ -1,23 +1,36 @@
-.textbox{
-    .textbox__input{
-        height: $space-size-6;
-        border-radius: $border-radius;
-        background: $white;
-        box-shadow: $box-shadow;
-        margin-bottom: $space-size;
-        width: 100%;
-        padding: 0 $space-size-2;
-        &::-webkit-input-placeholder { /* Edge */
-            color: $gray200;
-          }
-          
-          &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: $gray200;
-          }
-          
-          &::placeholder {
-            color: $gray200;
-          }
+.textbox {
+  position: relative;
+  margin-bottom: $space-size;
+  display: flex;
+  align-items: center;
+  i {
+    position: absolute;
+    left: $space-size-2;
+    font-size: $space-size-2 + 2;
+  }
+  .textbox__input {
+    height: $space-size-6;
+    border-radius: $border-radius;
+    background: $white;
+    box-shadow: $box-shadow;
+    width: 100%;
+    padding: 0 $space-size-2;
+    &::-webkit-input-placeholder {
+      /* Edge */
+      color: $gray200;
     }
 
+    &:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: $gray200;
+    }
+
+    &::placeholder {
+      color: $gray200;
+    }
+
+    &--icon {
+      padding-left: $space-size-6;
+    }
+  }
 }

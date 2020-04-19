@@ -5,6 +5,9 @@
       <li><i class="eva eva-people"></i></li>
       <li><i class="eva eva-search"></i></li>
     </ul>
+    <div class="navbar__btn">
+      <i class="eva eva-plus"></i>
+    </div>
   </div>
 </template>
 <script>

@@ -2,6 +2,7 @@
     margin: $space-size 0 $space-size-3 0;
     &__list{
         display: flex;
+        justify-content: center;
     }
     &__el{
         display: flex;
