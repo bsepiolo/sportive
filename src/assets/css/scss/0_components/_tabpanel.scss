@@ -1,0 +1,24 @@
+.tabpanel{
+    &__nav{
+        display: flex;
+        justify-content: center;
+        margin-bottom: $space-size-3;
+    }
+    &__name{
+        padding: $space-size $space-size-3;
+        &.is-active{
+            color: $black;
+            font-weight: 600;
+            &:after{
+                content: "";
+                background: $blue;
+                height: $space-size / 4;
+                display: block;
+                width: 130%;
+                margin-left: -15%;
+                border-radius: 5px;
+                margin-top: $space-size;
+            }
+        }
+    }
+}

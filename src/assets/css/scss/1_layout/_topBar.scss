@@ -4,16 +4,73 @@
   align-items: center;
   padding: $space-size-3 0;
   &__user {
+    display: flex;
+    align-items: center;
+  }
+  &__burger {
+    margin-left: $space-size;
+    width: $space-size-3;
+    span {
+      background: $black;
+      display: block;
+      height: 3px;
+      border-radius: 5px;
+      margin-bottom: $space-size - 3;
+      &:first-child {
+        width: 100%;
+      }
+      &:nth-child(2) {
+        width: 80%;
+        margin-left: 20%;
+      }
+      &:last-child {
+        width: 80%;
+        margin-bottom: 0;
+      }
+    }
+  }
+  &__alerts {
+    padding: $space-size-2;
+    margin-right: $space-size / 2;
+    position: relative;
+    &--is-new{
+      &:before{
+        content: "";
+        display: block;
+        width: $space-size;
+        height: $space-size;
+        background: $red;
+        border-radius: 100%;
+        position: absolute;
+        top: $space-size + 2;
+      }
+    }
+    > i {
+      font-size: 22px;
+      color: $black;
+    }
   }
   &__avatar {
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+  &__avatar,
+  &__thumbnail {
     width: $space-size-6;
     height: $space-size-6;
     border-radius: 100%;
-    overflow: hidden;
     display: flex;
     justify-content: center;
     img {
       height: 100%;
+    }
+    &--blur {
+      position: absolute;
+      z-index: 0;
+      filter: blur(6px);
+      margin-top: $space-size;
+      transform: scale(0.8);
     }
   }
 }

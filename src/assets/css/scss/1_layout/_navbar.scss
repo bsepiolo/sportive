@@ -1,0 +1,22 @@
+.navbar{
+  background: white;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: $space-size-8;
+  width: 100%;
+  box-shadow: $box-shadow-top;
+  display: flex;
+  align-items: center;
+  &__list{
+    display: flex;
+    li{
+      &:first-child{
+        margin-left: $space-size-4;
+      }
+      padding: $space-size;
+      font-size: $space-size-3;
+      margin-right: $space-size-6;
+    }
+  }
+}

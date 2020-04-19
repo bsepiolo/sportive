@@ -1,0 +1,31 @@
+.date-picker{
+    margin: $space-size 0 $space-size-3 0;
+    &__list{
+        display: flex;
+    }
+    &__el{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: $space-size $space-size / 1.5;
+        margin: 0 $space-size;
+        &.is-active{
+            border-radius: $space-size;
+            background: $blue;
+            .date-picker__day{
+                color: lighten($blue, 20%);                
+            }
+            .date-picker__date{
+                color: $white;      
+                font-weight: 600;          
+            }
+        }
+    }
+    &__day{
+        font-size: 12px;
+        margin-bottom: $space-size / 2;
+    }
+    &__date{
+        color: $black;
+    }
+}

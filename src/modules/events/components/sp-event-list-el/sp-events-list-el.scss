@@ -9,8 +9,19 @@
     &__icon{
         width: $space-size-4;
         height: $space-size-4;
-        background: red;
+        background: #9F78EF;
         border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        i{
+            opacity: .8;
+            font-size: $space-size-2 + 2;
+            display: block;
+            height: $space-size-2 + 2;
+            width: $space-size-2 + 2;
+        }
     }
     &__data{
         margin-left: $space-size-2;
@@ -25,7 +36,7 @@
         background: lighten($green, 30%);
         padding: $space-size / 1.5;
         border-radius: 5px;
-        color: darken($green, 10%);
+        color: darken($green, 20%);
         font-size: 11px;
         font-weight: 600;
     }
