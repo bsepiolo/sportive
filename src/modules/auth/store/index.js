@@ -5,19 +5,14 @@ import { getField, updateField } from "vuex-map-fields";
 export const AuthStore = {
   namespaced: true,
   state: {
-    signInForm: {},
-    signUpForm: {},
+    authForm: {},
   },
   actions: {
     signIn({commit, state}) {
-        alert("asf")
-        debugger
         firebase
         .auth()
-        .signInWithEmailAndPassword(state.signInForm.email, state.signInForm.password)
+        .signInWithEmailAndPassword(state.authForm.email, state.authForm.password)
         .then((data) => {
-            debugger
-          console.log("ok!");
           commit("setAuthenticatedUser", data.data())
         })
         .catch(function(error) {
@@ -28,20 +23,21 @@ export const AuthStore = {
           console.log(`${errorCode}, ${errorMessage}`)
         });
     },
-    signUp({rootState,state}) {
+    signUp({rootState,state, dispatch}) {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(state.signUpForm.email, state.signUpForm.password)
+        .createUserWithEmailAndPassword(state.authForm.email, state.authForm.password)
         .then((data) => {
           return rootState.db
             .collection("users")
             .doc(data.user.uid)
-            .set({ username: state.signUpForm.username }).then(()=>{
+            .set({ username: state.authForm.username }).then(()=>{
                 rootState.db
             .collection("users")
             .doc(data.user.uid)
             .get().then(doc=>{
                 console.log("data", doc.data())
+                dispatch("signIn")
             })
             });
         })

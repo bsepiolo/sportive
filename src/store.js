@@ -1,7 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import * as firebase from "firebase/app";
 import "firebase/analytics";
+import router from '@/routes'
 
 // Add the Firebase products that you want to use
 import "firebase/auth";
@@ -20,25 +21,43 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-import {AuthStore} from "./modules/auth/store/index"
+import { AuthStore } from "./modules/auth/store/index";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     user: null,
-    db: db
+    db: db,
   },
   mutations: {
+    setUser(state) {
+      state.user = {
+        email: state.email
+      }
+    },
   },
   actions: {
+    setUser({ commit, state }, payload) {
+      debugger
+      
+      state.db.collection("users").doc(payload.uid).get().then(doc=>{
+        commit("setUser", {
+          username: doc.data().username,
+          email: payload.email,
+        });
+
+        router.push('/events');
+
+      })
+    },
   },
   getters: {
-    // isAuthenticated(state) {
-    //   return state.user !== null && state.user !== undefined;
-    // },
+    isAuthenticated(state) {
+      return state.user !== null && state.user !== undefined;
+    },
   },
   modules: {
-    AuthStore
-  }
-})
+    AuthStore,
+  },
+});

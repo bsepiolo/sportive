@@ -6,7 +6,7 @@
     <sp-subheader :text-center="true" class="mb-8">
       Sportive helps you get a good shape with smile on your face!
     </sp-subheader>
-    <form @submit="submitForm()">
+    <form @submit.prevent="submitForm()">
       <sp-textbox
         type="text"
         v-model="username"
@@ -49,9 +49,9 @@ export default {
   },
   computed: {
     ...mapFields(namespace, [
-      "signUpForm.username",
-      "signUpForm.email",
-      "signUpForm.password",
+      "authForm.username",
+      "authForm.email",
+      "authForm.password",
     ]),
   },
   methods: {

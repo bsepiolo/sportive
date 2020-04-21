@@ -4,6 +4,7 @@ export const EventsRoutes = [
   {
     path: "/events",
     component: EventsModule,
+    meta: { requiresAuth: true },
     children: [
       {
         path: "/",
