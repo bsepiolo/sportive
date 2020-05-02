@@ -5,7 +5,14 @@ import router from './routes.js'
 import store from './store.js'
 import "./globalComponents.js"
 import * as firebase from "firebase/app";
+import * as VueGoogleMaps from "vue2-google-maps";
 
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBGtMT9BPWP0WT3CASl6lLJCXzVBHrFY6E",
+    libraries: "places" // necessary for places input
+  }
+});
 
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 

@@ -32,7 +32,7 @@
           type="primary"
           :full-width="true"
         />
-        <p class="text text--medium text--center mt-4">
+        <p class="text text--medium text--center mt-5">
           Don't have an account? <a href="#">Sing up</a>
         </p>
         <!-- <a href="#" class="btn btn--primary btn--outlined">Sign in</a> -->

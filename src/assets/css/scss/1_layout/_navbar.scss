@@ -1,34 +1,53 @@
 .navbar{
-  background: white;
+ // background: white;
   position: fixed;
+  z-index: 5;
   bottom: 0;
   left: 0;
   height: $space-size-7;
   width: 100%;
-  box-shadow: $box-shadow-top;
+  box-shadow: $box-shadow-large-top;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 $space-size-2;
+  &:before{
+    position: absolute;
+    content: "";
+    display: block;
+    left: 0;
+    background: $white;
+    height: 100%;
+    width: 75%;
+  }
+  &__bg{
+    position: absolute;
+    bottom:0;
+    right:0;
+    z-index: -1;
+  }
   &__list{
     display: flex;
-    li{
-      &:first-child{
-        margin-left: $space-size-2;
-      }
-      padding: $space-size;
-      font-size: $space-size-3;
-      margin-right: $space-size-6;
+
+  }
+  &__el{
+    &.is-active{
+      color: $blue;
     }
+    &:first-child{
+      margin-left: $space-size-2;
+    }
+    padding: $space-size;
+    font-size: $space-size-3;
+    margin-right: $space-size-6;
   }
   &__btn{
-    margin-top: -$space-size-7;
+    margin-top: -$space-size-8 - $space-size;
     box-sizing: content-box;
-    width: $space-size-7;
-    height: $space-size-7;
+    width: $space-size-8;
+    height: $space-size-8;
     border-radius: 100%;
     background: $blue;
-    border: $space-size solid $gray100;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,5 +55,7 @@
     color: white;
     flex-grow: 0;
     flex-shrink: 0;
+    margin-right: $space-size + $space-size / 2;
+    box-shadow: 0px 4px 15px rgba(97, 128, 237, 0.8);
   }
 }

@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import * as firebase from "firebase/app";
 import "firebase/analytics";
-import router from '@/routes'
+// import router from '@/routes'
 
 // Add the Firebase products that you want to use
 import "firebase/auth";
@@ -47,7 +47,7 @@ export default new Vuex.Store({
           email: payload.email,
         });
 
-        router.push('/events');
+     //   router.push('/events');
 
       })
     },

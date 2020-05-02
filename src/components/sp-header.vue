@@ -3,6 +3,7 @@
     class="header"
     :class="{
       'text-center': textCenter,
+      'header--small': size == 'small',
       'header--medium': size == 'medium',
       'header--large': size == 'large',
     }"

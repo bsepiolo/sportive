@@ -6,27 +6,32 @@
   i {
     position: absolute;
     left: $space-size-2;
-    font-size: $space-size-2 + 2;
+    font-size: $space-size-2 + 4;
   }
   .textbox__input {
+    &--medium{
+      height: $space-size-5;
+    }
     height: $space-size-6;
     border-radius: $border-radius;
     background: $white;
     box-shadow: $box-shadow;
     width: 100%;
+    font-size: 1rem;
     padding: 0 $space-size-2;
+    color: $black;
     &::-webkit-input-placeholder {
       /* Edge */
-      color: $gray200;
+      color: #A5B0D4;
     }
 
     &:-ms-input-placeholder {
       /* Internet Explorer 10-11 */
-      color: $gray200;
+      color: #A5B0D4;
     }
 
     &::placeholder {
-      color: $gray200;
+      color: #A5B0D4;
     }
 
     &--icon {

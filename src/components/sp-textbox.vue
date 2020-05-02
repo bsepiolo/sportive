@@ -4,16 +4,19 @@
     <i :class="icon" v-if="icon"></i>
     <input
       class="textbox__input"
+      :class="{
+        'textbox__input--medium': size == 'medium',
+        'textbox__input--icon': icon,
+      }"
       @input="handleInput"
       :type="type"
-      :class="{ 'textbox__input--icon': icon }"
       :placeholder="placeholder"
     />
   </div>
 </template>
 <script>
 export default {
-  props: ["label", "placeholder", "icon", "type", "value"],
+  props: ["label", "placeholder", "icon", "type", "value", "size"],
   data() {
     return {
       content: this.value,

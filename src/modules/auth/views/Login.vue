@@ -1,7 +1,7 @@
 <template>
   <div>
     <sp-header :text-center="true">
-      Sign in to be in touch
+      Sign in
     </sp-header>
     <sp-subheader :text-center="true" class="mb-8">
       Sportive helps you get a good shape with smile on your face!
@@ -26,9 +26,17 @@
           :submit="true"
           :full-width="true"
         />
-        <p class="text text--medium text--center mt-4">
+
+        <p class="text text--medium text--center mt-5">
           Don't have an account? <a href="#">Sing up</a>
         </p>
+        <sp-button
+        class="mt-8"
+          text="Continue with Google"
+          type="secondary"
+          styling-mode="outlined"
+          :full-width="true"
+        />
         <!-- <a href="#" class="btn btn--primary btn--outlined">Sign in</a> -->
       </div>
     </form>

@@ -59,6 +59,9 @@
 .ml-2{
     margin-left: $space-size-2;
 }
+.ml-1-5{
+    margin-left: $space-size + $space-size / 2;
+}
 .ml-3{
     margin-left: $space-size-3;
 }
@@ -69,6 +72,16 @@
 .mr-2{
     margin-right: $space-size-2;
 }
+.mr-1-5{
+    margin-right: $space-size + $space-size / 2;
+}
 .mr-3{
     margin-right: $space-size-3;
+}
+
+.pb-0{
+    padding-bottom: 0 !important;
+}
+.pt-0{
+    padding-top: 0 !important;
 }

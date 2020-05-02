@@ -1,40 +1,27 @@
 .top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: $space-size-3 0;
   &__user {
     display: flex;
     align-items: center;
+    display: flex;
   }
   &__burger {
     margin-left: $space-size;
     width: $space-size-3;
     span {
-      background: $black;
-      display: block;
-      height: 3px;
-      border-radius: 5px;
-      margin-bottom: $space-size - 3;
-      &:first-child {
-        width: 100%;
-      }
-      &:nth-child(2) {
-        width: 80%;
-        margin-left: 20%;
-      }
-      &:last-child {
-        width: 80%;
-        margin-bottom: 0;
-      }
+      font-size: $space-size-3;
     }
+  }
+  &__data {
+    display: flex;
+    flex-direction: column;
   }
   &__alerts {
     padding: $space-size-2;
     margin-right: $space-size / 2;
     position: relative;
-    &--is-new{
-      &:before{
+    &--is-new {
+      &:before {
         content: "";
         display: block;
         width: $space-size;
@@ -54,23 +41,19 @@
     overflow: hidden;
     position: relative;
     z-index: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: $space-size-6;
+    height: $space-size-6;
   }
   &__avatar,
   &__thumbnail {
-    width: $space-size-6;
-    height: $space-size-6;
     border-radius: 100%;
     display: flex;
     justify-content: center;
+    align-items: center;
     img {
       height: 100%;
-    }
-    &--blur {
-      position: absolute;
-      z-index: 0;
-      filter: blur(6px);
-      margin-top: $space-size;
-      transform: scale(0.8);
     }
   }
 }

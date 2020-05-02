@@ -1,7 +1,7 @@
 body{
-    font-family: 'Poppins';
+    font-family: 'NunitoSans';
+    font-weight: 700;
     background: $background-color;
-    font-size: 16px;
     color: $secondary-text-color;
 }
 a{
@@ -9,9 +9,13 @@ a{
     color: $blue;
 }
 *{
-    font-family: 'Poppins';
+    font-family: 'NunitoSans';
     box-sizing: border-box;
 }
 html, body, #app{
     height: 100%;
+    font-size: 16px;
+}
+#app{
+    overflow-x: hidden;
 }

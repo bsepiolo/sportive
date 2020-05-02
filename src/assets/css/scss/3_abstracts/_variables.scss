@@ -1,6 +1,7 @@
 $gray100: #F2F5FF;
-$gray200: #7486B8;
-$gray300: #344375;
+$gray150: #E3E8FC;
+$gray200: #7682AA;
+$gray300: #394469;
 
 $background-color: $gray100;
 
@@ -15,12 +16,15 @@ $border-radius: 10px;
 //white
 $white: #FFF;
 
-$blue: #476FF3;
-$green: #5DCFA4;
-$red: #EC376F;
+$blue: #6180ED;
+$green: #57BD8C;
+$darkGreen: darken($green, 10%);
+$red: #E3456B;
 
-$box-shadow: 0px 2px 2px rgba(52, 67, 117, 0.12);
-$box-shadow-top: 0px -2px 2px rgba(52, 67, 117, 0.12);
+$box-shadow: 0px 1px 1px rgba(57, 68, 105, 0.15);
+$box-shadow-large: 0px 5px 15px rgba(57, 68, 105, 0.06);
+$box-shadow-large-top: 0px -5px 15px rgba(57, 68, 105, 0.06);
+$box-shadow-top: 0px -2px 2px rgba(57, 68, 105, 0.15);
 
 //sizing
 $space-size: 8px;

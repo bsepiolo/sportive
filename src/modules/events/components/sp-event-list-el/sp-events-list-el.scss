@@ -1,91 +1,125 @@
-.events-list{
+.time-counter{
+    display: flex;
+    align-items: center;
     &__el{
-        border-radius: $border-radius;
+        color: $darkGreen;
         background: $white;
-        box-shadow: $box-shadow;
+        font-size: 13px;
+        border-radius: $border-radius / 2;
         display: flex;
-        padding: $space-size-2;
-    }
-    &__icon{
-        width: $space-size-4;
         height: $space-size-4;
-        background: #9F78EF;
-        border-radius: 100%;
-        display: flex;
+        width: $space-size-5;
         align-items: center;
         justify-content: center;
+    }
+    &__separator{
         color: white;
-        i{
-            opacity: .8;
-            font-size: $space-size-2 + 2;
-            display: block;
-            height: $space-size-2 + 2;
-            width: $space-size-2 + 2;
-        }
+        padding: $space-size / 2;
     }
-    &__data{
-        margin-left: $space-size-2;
-        flex-grow: 1;
+}
+.events-list {
+  display: flex;
+  flex-direction: row;
+  &__upcoming {
+    border-radius: $border-radius;
+    background: $green;
+    padding: $space-size-2;
+    position: relative;
+    .header{
+        color: $white;
     }
-    &__main{
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+    .header-sub{
+        color: $white;
+        opacity: .8;
     }
-    &__alerts{
-        background: lighten($green, 30%);
-        padding: $space-size / 1.5;
-        border-radius: 5px;
-        color: darken($green, 20%);
-        font-size: 11px;
-        font-weight: 600;
+    &:after {
+      content: "";
+      display: block;
+      width: 125px;
+      height: 100px;
+      border-top-left-radius: 100%;
+      border-bottom-right-radius: 10px;
+      background: $darkGreen;
+      position: absolute;
+      right: 0px;
+      bottom: 0px;
     }
-    &__title{
-        font-weight: 600;
-        font-size: 15px;
-        color: $black;
+  }
+  &__image {
+    position: absolute;
+    right: -20px;
+    top: -$space-size-2;
+    z-index: 1;
+  }
+  &__el {
+    flex-shrink: 0;
+    border-radius: $border-radius;
+    background: $white;
+    box-shadow: $box-shadow-large;
+    display: flex;
+    flex-direction: column;
+    padding: $space-size-2;
+    width: 160px;
+    height: 160px;
+  }
+  &__icon {
+    width: $space-size-4;
+    height: $space-size-4;
+    background: #f1ebfc;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+
+    i {
+      color: #9e79e8;
+      font-size: $space-size-2 + 2;
+      display: block;
+      height: $space-size-2 + 2;
+      width: $space-size-2 + 2;
     }
-    &__author{
-        font-size: 13px;
-        color: $secondary-text-color;
-        margin-top: $space-size;
+    &--color-reverse {
+      background: $white;
+      i {
+        color: $green;
+      }
     }
-    &__secondary{
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
+  }
+  &__data {
+    margin-top: $space-size-2;
+    flex-grow: 1;
+  }
+  &__main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 15px;
+    color: $black;
+  }
+  &__author {
+    font-size: 12px;
+    color: $secondary-text-color;
+    margin-top: $space-size;
+  }
+  &__secondary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  &__meta {
+    margin-top: $space-size-2;
+    li {
+      color: $black;
+      font-size: 12px;
+      &:first-child {
+        margin-bottom: $space-size / 2;
+      }
     }
-    &__meta{
-        margin-top: $space-size-3;
-        li{
-            color: $black;
-            font-size: 13px;
-            &:first-child{
-                margin-bottom: $space-size / 2;
-            }
-        }
-    }
-    &__users{
-        display: flex;
-        li{
-            box-sizing: content-box;
-            margin-left: -$space-size;
-            border: 2px solid white;
-            width: $space-size-3;
-            height: $space-size-3;
-            border-radius: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            img{
-                height: 100%;
-            }
-            &:nth-child(4){
-                background-color: $gray100;
-                font-weight: 600;
-                font-size: 13px;
-                line-height: 24px;
-            }
-        }
-    }
+  }
 }
