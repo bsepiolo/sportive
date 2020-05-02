@@ -1,20 +1,36 @@
-.header{
+.header {
+  color: $black;
+  padding: $space-size 0;
+  font-family: "Hind";
+  font-weight: 700;
+  &--medium {
+    font-size: 20px;
+  }
+  &--large {
+    font-size: 24px;
+  }
+  &--small {
+    font-size: 1rem;
+  }
+}
+
+.header-sub {
+  padding: $space-size 0;
+  line-height: $space-size-3;
+  display: flex;
+  align-items: center;
+  &--dark {
     color: $black;
-    padding: $space-size 0;
-    font-family: 'Hind';
-    font-weight: 700;
-    &--medium{
-      font-size: 20px;
-    }
-    &--large{
-      font-size: 24px;
-    }
-    &--small{
-      font-size: 1rem;
+  }
+}
+.list {
+  &__el {
+    display: flex;
+    align-items: flex-start;
+    i {
+      font-size: 21px;
     }
   }
-  
-  .header-sub{
-    padding: $space-size 0;
-    line-height: $space-size-3;
+  &__data {
   }
+}

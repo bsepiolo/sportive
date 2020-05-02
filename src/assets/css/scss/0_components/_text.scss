@@ -1,4 +1,12 @@
 .text{
+  display: flex;
+  align-items: center;
+  &--light{
+    color: $secondary-text-color;
+  }
+  &--small{
+    font-size: 12px;
+  }
   &--medium{
     font-size: 1rem;
   }

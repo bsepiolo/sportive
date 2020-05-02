@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@tomtom-international/web-sdk-services": "^5.53.0",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "eva-icons": "^1.1.3",
