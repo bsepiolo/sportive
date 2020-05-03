@@ -1,73 +1,149 @@
 <template>
   <div>
-    <sp-card>
-      <div class="events-list__icon mb-1">
-        <i class="icon-049-dumbbell"></i>
-      </div>
-      <sp-header size="medium">
-        Football sparing 5x5
-      </sp-header>
-      <sp-subheader class="pt-0" color="dark">
-        <sp-avatar
-          class="mr-1"
-          image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
-        />
+    <div class="stick-to-bottom">
+      <sp-card :minimized="messagesVisible" @click="messagesVisible = false">
+        <div class="events-list__icon" :class="{'mb-1':!messagesVisible, 'mr-2': messagesVisible}">
+          <i class="icon-basketball"></i>
+        </div>
+        <sp-header :size="messagesVisible?'small':'medium'">
+          Football sparing 5x5
+        </sp-header>
+        <template v-if="!messagesVisible">
+          <sp-subheader class="pt-0" color="dark">
+            <sp-avatar
+              class="mr-1"
+              image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+            />
 
-        John Walker
-      </sp-subheader>
-      <sp-list class="mt-3">
-        <sp-list-el icon="eva eva-calendar-outline">
-          <sp-text>
-            Monday, 24th June
-          </sp-text>
-          <sp-text size="small" color="light" class="mt-1">
-            05:30 PM
-          </sp-text>
-        </sp-list-el>
-        <sp-list-el icon="eva eva-people-outline" class="mt-2">
-          <sp-text>
-            15 ongoing people
-          </sp-text>
-          <sp-avatar-list
-          class="mt-1"
-            :items="[
-              {
-                imageSrc:
-                  'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
-              },
-              {
-                imageSrc:
-                  'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
-              },
-              {
-                imageSrc:
-                  'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
-              },
-            ]"
-          />
-        </sp-list-el>
-        <sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
-          <sp-text>
-            Manchester City Stadium
-          </sp-text>
-          <sp-text size="small" color="light" class="mt-1">
-            Ashton New Rd, Manchester M11 3FF
-          </sp-text>
-        </sp-list-el>
-      </sp-list>
-    </sp-card>
-    <sp-card :minimized="true" class="mt-1">
-      <div class="events-list__icon mr-2">
-        <i class="eva eva-message-square-outline"></i>
-      </div>
-      <sp-header size="small">
-        Messages
-      </sp-header>
-    </sp-card>
+            John Walker
+          </sp-subheader>
+          <sp-list class="mt-3">
+            <sp-list-el icon="eva eva-calendar-outline">
+              <sp-text>
+                Monday, 24th June
+              </sp-text>
+              <sp-text size="small" color="light" class="mt-1">
+                05:30 PM
+              </sp-text>
+            </sp-list-el>
+            <sp-list-el icon="eva eva-people-outline" class="mt-2">
+              <sp-text>
+                15 ongoing people
+              </sp-text>
+              <sp-avatar-list
+                class="mt-1"
+                :items="[
+                  {
+                    imageSrc:
+                      'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
+                  },
+                  {
+                    imageSrc:
+                      'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
+                  },
+                  {
+                    imageSrc:
+                      'https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80',
+                  },
+                ]"
+              />
+            </sp-list-el>
+            <sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
+              <sp-text>
+                Manchester City Stadium
+              </sp-text>
+              <sp-text size="small" color="light" class="mt-1">
+                Ashton New Rd, Manchester M11 3FF
+              </sp-text>
+            </sp-list-el>
+          </sp-list>
+        </template>
+      </sp-card>
+      <sp-card
+        :minimized="!messagesVisible"
+        class="mt-1 mb-2"
+        @click="messagesVisible = true"
+      >
+        <div class="events-list__icon" :class="{'mb-1':messagesVisible, 'mr-2': !messagesVisible}">
+          <i class="eva eva-message-square-outline"></i>
+        </div>
+        <sp-header :size="!messagesVisible?'small':'medium'">
+          Messages
+        </sp-header>
+        <template v-if="messagesVisible">
+          <div class="message">
+            <sp-avatar
+              image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+              class="mr-1"
+            />
+            <div class="message__container">
+              <div class="message__header">
+                <a class="message__author mr-2" href="#">
+                  John Kowalsky
+                </a>
+                <span class="message__date">
+                  10 m. ago
+                </span>
+              </div>
+              <p class="message__text mt-1">
+                  Hello amigo
+              </p>
+            </div>
+          </div>
+           <div class="message message--owner">
+
+            <div class="message__container">
+
+              <p class="message__text">
+                  Hello amigo
+              </p>
+            </div>
+          </div>
+          <div class="message">
+            <sp-avatar
+              image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+              class="mr-1"
+            />
+            <div class="message__container">
+              <div class="message__header">
+                <a class="message__author mr-2" href="#">
+                  John Kowalsky
+                </a>
+                <span class="message__date">
+                  10 m. ago
+                </span>
+              </div>
+              <p class="message__text mt-1">
+                  Hello amigo
+              </p>
+            </div>
+          </div>
+          <div class="message">
+            <sp-avatar
+              image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+              class="mr-1"
+            />
+            <div class="message__container">
+              <div class="message__header">
+                <a class="message__author mr-2" href="#">
+                  John Kowalsky
+                </a>
+                <span class="message__date">
+                  10 m. ago
+                </span>
+              </div>
+              <p class="message__text mt-1">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus eget ipsum a pulvinar. Etiam pellentesque enim eu feugiat lacinia.
+              </p>
+            </div>
+          </div>
+        </template>
+      </sp-card>
+    </div>
     <div
       id="map"
-      class="event-map"
-      :class="{ 'event-map--first-plan': mapFirstPlan }"
+      class="map"
+      :class="{ 'map--first-plan': mapFirstPlan }"
       @click="changeIndex"
     ></div>
   </div>
@@ -77,6 +153,7 @@ export default {
   name: "GoogleMap",
   data() {
     return {
+      messagesVisible: false,
       // default to Montreal to keep it simple
       // change this to whatever makes sense
       map: "",

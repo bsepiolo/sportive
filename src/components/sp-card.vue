@@ -1,12 +1,17 @@
 <template>
-  <div class="card" :class="{'card--minimized': minimized}">
+  <div class="card" @click="handleClick()" :class="{'card--minimized': minimized}">
     <slot />
   </div>
 </template>
 
 <script>
 export default {
-    props:["minimized"]
+    props:["minimized"],
+    methods:{
+      handleClick(){
+      this.$emit('click')
+    }
+    }
 };
 </script>
 

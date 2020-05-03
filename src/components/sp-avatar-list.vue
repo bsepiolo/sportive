@@ -15,3 +15,25 @@ export default {
   props: ["items"],
 };
 </script>
+<style lang="scss" scoped>
+.avatar-list{
+  display: flex;
+  &__el{
+    margin-right: -$space-size;
+  }
+  &__counter{
+    border: 2px solid $gray150;
+    color: $blue;
+    width: $space-size-3;
+    height: $space-size-3;
+    border-radius: 100%;
+    font-weight: 800;
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $white;
+    box-sizing: content-box;
+  }
+}
+</style>

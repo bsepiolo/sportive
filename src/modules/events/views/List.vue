@@ -1,6 +1,6 @@
 <template>
   <div>
-     <div class="top-bar">
+    <div class="top-bar">
       <div class="top-bar__user">
         <div class="top-bar__thumbnail mr-2">
           <div class="top-bar__burger mr-1">
@@ -19,21 +19,20 @@
       </div>
       <div class="top-bar__search mt-3">
         <sp-textbox
-        type="password"
-        v-model="password"
-        icon="eva eva-search-outline"
-        placeholder="Search"
-        size="medium"
-      />
+          type="password"
+          v-model="password"
+          icon="eva eva-search-outline"
+          placeholder="Search"
+          size="medium"
+        />
       </div>
     </div>
-        <sp-header size="small" class="pt-0 mb-1">
-            Upcoming
-
+    <sp-header size="small" class="pt-0 mb-1">
+      Upcoming
     </sp-header>
     <div class="events-list__upcoming">
       <div class="events-list__icon events-list__icon--color-reverse">
-        <i class="icon-049-dumbbell"></i>
+        <i class="icon-soccer"></i>
       </div>
       <div class="events-list__data">
         <sp-header size="medium">
@@ -47,12 +46,11 @@
           <span class="time-counter__separator">:</span>
           <span class="time-counter__el">15m</span>
         </div>
-        <img class="events-list__image" src="../../../assets/img/player.png">
+        <img class="events-list__image" src="../../../assets/img/player.png" />
       </div>
     </div>
     <sp-header size="small" class="mt-3 mb-1">
-            Your participation
-
+      Your participation
     </sp-header>
 
     <div class="events-list">

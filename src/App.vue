@@ -5,7 +5,7 @@
 </template>
 <script>
 import "eva-icons/style/eva-icons.css";
-import "./assets/css/scss/5_vendors/glyphter/css/glyphter.css";
+import "./assets/css/scss/5_vendors/iconmoon/style.css";
 export default {
   
 }

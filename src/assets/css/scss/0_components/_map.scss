@@ -1,0 +1,60 @@
+.map {
+  height: 100%;
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  &:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: $gray100;
+    opacity: 0.5;
+  }
+  &--first-plan {
+    z-index: 999;
+    &:after {
+      display: none;
+    }
+  }
+}
+.message {
+  display: flex;
+  margin-bottom: $space-size;
+  &--owner{
+    justify-content: flex-end;
+    .message__container{
+      color: white;
+      background: $blue;
+    }
+  }
+  &__container {
+    border-radius: $border-radius;
+    background-color: $gray150;
+    padding: $space-size-2 $space-size;
+    display: flex;
+    flex-direction: column;
+  }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__author,
+  &__date {
+    font-size: 0.933rem;
+
+  }
+  &__author {
+    color: $black;
+    font-weight: 800;
+  }
+  &__date {
+    color: $gray200;
+  }
+  &__text {
+    font-size: 0.933rem;
+    line-height: $space-size-3;
+  }
+}

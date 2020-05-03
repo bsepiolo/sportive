@@ -1,6 +1,14 @@
 .text-center{
     text-align: center;
 }
+.stick-to-bottom{
+    position: absolute;
+    bottom:0;
+    z-index: 9;
+    width: 100%;
+    left: 0;
+    padding: 0 $space-size-2;
+}
 .mt-0-5{
     margin-top: $space-size / 2;
 }
