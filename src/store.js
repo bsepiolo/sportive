@@ -34,23 +34,22 @@ export default new Vuex.Store({
   mutations: {
     setUser(state) {
       state.user = {
-        email: state.email
-      }
+        email: state.email,
+      };
     },
   },
   actions: {
     setUser({ commit, state }, payload) {
-      debugger
-      
-      state.db.collection("users").doc(payload.uid).get().then(doc=>{
-        commit("setUser", {
-          username: doc.data().username,
-          email: payload.email,
+      state.db
+        .collection("users")
+        .doc(payload.uid)
+        .get()
+        .then((doc) => {
+          commit("setUser", {
+            username: doc.data().username,
+            email: payload.email,
+          });
         });
-
-     //   router.push('/events');
-
-      })
     },
   },
   getters: {
@@ -60,6 +59,6 @@ export default new Vuex.Store({
   },
   modules: {
     AuthStore,
-    EventsStore
+    EventsStore,
   },
 });

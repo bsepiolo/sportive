@@ -5,7 +5,9 @@ import router from './routes.js'
 import store from './store.js'
 import "./globalComponents.js"
 import * as firebase from "firebase/app";
+import Axios from 'axios'
 
+Vue.prototype.$http = Axios;
 
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 

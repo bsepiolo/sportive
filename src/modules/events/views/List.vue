@@ -62,7 +62,7 @@
     <sp-header size="small" class="mt-3 mb-1">
       Recommended
     </sp-header>
-
+{{events}}
     <div class="events-list">
       <sp-events-list-el />
       <sp-events-list-el />
@@ -73,9 +73,20 @@
 </template>
 <script>
 import SpEventsListEl from "../components/sp-event-list-el/sp-event-list-el";
+import {mapState} from "vuex"
+const namespace = "EventsStore";
 export default {
+  data(){
+    return{}
+  },
+  computed: {
+    ...mapState(namespace, ['events'])
+  },
   components: {
     SpEventsListEl,
   },
+  mounted() {
+      this.$store.dispatch(`${namespace}/getEvents`)
+  }
 };
 </script>
