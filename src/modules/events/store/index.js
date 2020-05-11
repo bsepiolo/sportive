@@ -24,7 +24,7 @@ export const EventsStore = {
         });
     },
     getLocationByCoords({commit}, payload) {
-      debugger
+      
       this._vm.$http
         .get(
           `https://api.tomtom.com/search/2/reverseGeocode/${payload.lat},${payload.lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
@@ -32,6 +32,7 @@ export const EventsStore = {
         .then((data) => {
           commit("setLocationCoordsSearchResults", data.data.addresses[0].address.freeformAddress)
         });
+        
     },
     getLocationsByName({commit}, payload){
       this.$http
@@ -61,8 +62,9 @@ export const EventsStore = {
       state.locationSearchResults = payload;
     },
     setLocationCoordsSearchResults(state, payload){
-      debugger
+      
       state.locationCoordsSearchResults = payload;
+      debugger
     }
   },
   getters: {

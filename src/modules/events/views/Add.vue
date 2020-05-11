@@ -72,10 +72,6 @@ export default {
     };
   },
   computed: {
-    locationData: function() {
-      debugger
-      return this.locationCoordsSearchResults;
-    },
     ...mapFields(namespace, [
       "eventForm.name",
       "eventForm.disicipline",
