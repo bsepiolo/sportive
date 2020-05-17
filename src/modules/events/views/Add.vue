@@ -1,5 +1,11 @@
 <template>
-  <form @submit.prevent="submitForm()">
+  <form @submit.prevent="submitForm()" style="position: relative;">
+      <sp-header :text-center="true" class="mt-5">
+      Sign in
+    </sp-header>
+    <sp-subheader :text-center="true" class="mb-5">
+      Sportive helps you get a good shape with smile on your face!
+    </sp-subheader>
     <sp-textbox
       type="text"
       v-model="name"

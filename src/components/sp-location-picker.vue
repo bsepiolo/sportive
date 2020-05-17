@@ -1,7 +1,7 @@
 <template>
-  <div class="textbox location-picker">
+  <div class="textbox location-picker" :class="{ 'is-focused': mapVisible }">
     <label class="textbox__label" v-if="label">{{ label }}</label>
-    <i :class="icon" v-if="icon"></i>
+    <i class="textbox__icon" :class="icon" v-if="icon"></i>
     <textarea
       @keydown="handleInput"
       @input="handleInput"
@@ -11,7 +11,6 @@
       :class="{
         'textbox__input--medium': size == 'medium',
         'textbox__input--icon': icon,
-        'is-focused': mapVisible,
       }"
       :type="type"
       :placeholder="placeholder"
@@ -22,7 +21,7 @@
       </li>
     </ul>
 
-  <sp-map v-if="mapVisible" />
+    <sp-map v-if="mapVisible" />
   </div>
 </template>
 <script>
@@ -37,30 +36,44 @@ export default {
       currentVal: null,
       distance: null,
       localization: "test",
-      mapVisible: false
+      mapVisible: false,
     };
   },
   methods: {
     handleBlur: function() {
-            this.mapVisible = true
+      this.mapVisible = true;
       this.$emit("focus");
     },
     handleInput: function(e) {
       this.$emit("input", e.target.value);
     },
-
   },
-  components:{
-    SpMap
-  }
+  components: {
+    SpMap,
+  },
 };
 </script>
 <style lang="scss">
 .location-picker {
-  &-input.is-focused {
+  &.is-focused {
     position: absolute;
     z-index: 9999;
-    top: 0;
+    top: $space-size-3;
+    width: 100%;
+    justify-content: flex-end;
+    .location-picker__input,
+    .textbox__icon {
+      position: relative;
+    }
+    .location-picker__input {
+      z-index: 9999;
+      flex-shrink: 0;
+    }
+
+    .textbox__icon {
+      left: 32px;
+      z-index: 99999;
+    }
   }
   &__map {
     position: fixed;
