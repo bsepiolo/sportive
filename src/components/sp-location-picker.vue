@@ -1,13 +1,12 @@
 <template>
-  <div class="textbox location-picker" :class="{ 'is-focused': mapVisible }">
+  <div class="location-picker" :class="{ 'is-focused': mapVisible }">
     <label class="textbox__label" v-if="label">{{ label }}</label>
     <i class="textbox__icon" :class="icon" v-if="icon"></i>
     <textarea
       @keydown="handleInput"
       @input="handleInput"
       @focus="handleBlur"
-      :value="value"
-      class="textbox__input location-picker__input"
+      class="location-picker__input"
       :class="{
         'textbox__input--medium': size == 'medium',
         'textbox__input--icon': icon,
@@ -15,10 +14,16 @@
       :type="type"
       :placeholder="placeholder"
     ></textarea>
-    <ul v-if="results">
-      <li v-for="(item, index) in results" :key="index">
+    <div class="location-picker__details">
+      {{distance}}km
+      {{time}}minutes
+    </div>
+    <ul style="background: white; position: relative; z-index: 9999;">
+      <li>asdasd</li>
+      {{dropdownSource}}
+      <!-- <li v-for="(item, index) in results" :key="index">
         {{ item.poi.name }} {{ item.dist }}
-      </li>
+      </li> -->
     </ul>
 
     <sp-map v-if="mapVisible" />
@@ -26,18 +31,22 @@
 </template>
 <script>
 import SpMap from "./sp-location-map";
+import { mapState } from 'vuex';
+const name = "EventsStore";
+
 export default {
-  props: ["label", "placeholder", "icon", "type", "value", "size", "is-active"],
+  props: ["label", "placeholder", "icon", "type", "value", "size", "dropdownSource", "is-active"],
   data() {
     return {
       content: this.value,
-      location: { lat: 0, lon: 0 },
       results: null,
       currentVal: null,
-      distance: null,
       localization: "test",
       mapVisible: false,
     };
+  },
+  computed: {
+    ...mapState(name, ["distance", "time"])
   },
   methods: {
     handleBlur: function() {
@@ -55,25 +64,31 @@ export default {
 </script>
 <style lang="scss">
 .location-picker {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  border: none;
+  .location-picker__input{
+    border: none;
+  }
   &.is-focused {
     position: absolute;
     z-index: 9999;
     top: $space-size-3;
     width: 100%;
     justify-content: flex-end;
-    .location-picker__input,
-    .textbox__icon {
-      position: relative;
-    }
     .location-picker__input {
       z-index: 9999;
       flex-shrink: 0;
     }
-
-    .textbox__icon {
-      left: 32px;
-      z-index: 99999;
-    }
+  }
+  &__details{
+    background: $gray150;
+    position: relative;
+    z-index: 9999;
+    width: 100%;
   }
   &__map {
     position: fixed;

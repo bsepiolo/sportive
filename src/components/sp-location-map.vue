@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import {mapActions, mapMutations} from "vuex"
+const name = "EventsStore";
 export default {
   data() {
     return {
@@ -12,8 +14,12 @@ export default {
       currentVal: null,
       distance: null,
       localization: "test",
-      mapVisible: false,
+      mapVisible: false
     };
+  },
+  methods:{
+    ...mapActions(name, ["getLocationByCoords"]),
+    ...mapMutations(name, ["setTime", "setDistance", "setLocation"])
   },
   mounted() {
     const tt = window.tt;
@@ -30,10 +36,9 @@ export default {
     }).catch((error) => error);
 
     geolocation.then((data) => {
-      vm.location.lat = data.latitude;
-      vm.location.lon = data.longitude;
-      map.setCenter({ lat: vm.location.lat, lng: vm.location.lon });
-      new tt.Marker().setLngLat([vm.location.lon, vm.location.lat]).addTo(map);
+      vm.setLocation({latitude: data.latitude, longitude: data.longitude})
+      map.setCenter({ lat: data.latitude, lng: data.longitude });
+      new tt.Marker().setLngLat([data.longitude, data.latitude]).addTo(map);
     });
 
     const map = tt.map({
@@ -45,7 +50,6 @@ export default {
     let marker;
 
     map.on("click", function(event) {
-      // var lngLat = new tt.LngLat(event.lngLat.lng, event.lngLat.lat);
 
       tt.services
         .calculateRoute({
@@ -57,7 +61,9 @@ export default {
         .then(function(response) {
           var geojson = response.toGeoJson();
           debugger;
-          vm.distance = response.routes[0].summary.lengthInMeters / 1000;
+          vm.setDistance(Math.round(response.routes[0].summary.lengthInMeters / 1000));
+          vm.setTime(Math.round(response.routes[0].summary.travelTimeInSeconds / 60));
+          
           if (map.getLayer("route")) {
             map.removeLayer("route");
           }
@@ -82,13 +88,12 @@ export default {
         marker.remove();
         marker = null;
       }
-      debugger;
 
       marker = new tt.Marker()
         .setLngLat([event.lngLat.lng, event.lngLat.lat])
         .addTo(map);
 
-      vm.$emit("getLocationByCoords", {
+      vm.getLocationByCoords({
         lng: event.lngLat.lng,
         lat: event.lngLat.lat,
       });
@@ -98,4 +103,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+  .location-picker__map{
+    background: $gray100;
+  }
+</style>

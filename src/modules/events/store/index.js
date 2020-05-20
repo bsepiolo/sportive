@@ -8,7 +8,10 @@ export const EventsStore = {
     eventForm: {},
     events: null,
     locationSearchResults: null,
-    locationCoordsSearchResults: null
+    locationCoordsSearchResults: null,
+    distance: 0,
+    time: 0,
+    location: { lat: 0, lon: 0 },
   },
   actions: {
     addEvent({state, rootState}) {
@@ -24,7 +27,6 @@ export const EventsStore = {
         });
     },
     getLocationByCoords({commit}, payload) {
-      
       this._vm.$http
         .get(
           `https://api.tomtom.com/search/2/reverseGeocode/${payload.lat},${payload.lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
@@ -34,14 +36,16 @@ export const EventsStore = {
         });
         
     },
-    getLocationsByName({commit}, payload){
-      this.$http
+    getLocationsByName({commit, state}, payload){
+      debugger
+      this._vm.$http
         .get(
-          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&lat=${this.location.lat}&lon=${this.location.lon}`
+          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&lat=${state.location.lat}&lon=${state.location.lon}`
         )
         .then((data) => {
           commit("setLocationSearchResults", data.data.results)
-        });
+        })
+        .catch(err=>{console.log(err)});
     },
     getEvents({commit, rootState}) {
       rootState.db.collection('events')
@@ -57,6 +61,16 @@ export const EventsStore = {
     updateField,
     setEvents(state, payload){
       state.events = payload
+    },
+    setLocation(state, payload){
+      state.location.lat = payload.latitude;
+      state.location.lon = payload.longitude;
+    },
+    setTime(state, payload){
+      state.time = payload;
+    },
+    setDistance(state, payload){
+      state.distance = payload;
     },
     setLocationSearchResults(state, payload){
       state.locationSearchResults = payload;
