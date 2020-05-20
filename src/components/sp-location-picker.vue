@@ -6,6 +6,7 @@
       @keydown="handleInput"
       @input="handleInput"
       @focus="handleBlur"
+      v-model="value"
       class="location-picker__input"
       :class="{
         'textbox__input--medium': size == 'medium',

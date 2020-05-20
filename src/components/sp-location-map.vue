@@ -3,13 +3,12 @@
 </template>
 
 <script>
-import {mapActions, mapMutations} from "vuex"
+import {mapActions, mapMutations, mapState} from "vuex"
 const name = "EventsStore";
 export default {
   data() {
     return {
       content: this.value,
-      location: { lat: 0, lon: 0 },
       results: null,
       currentVal: null,
       distance: null,
@@ -20,6 +19,9 @@ export default {
   methods:{
     ...mapActions(name, ["getLocationByCoords"]),
     ...mapMutations(name, ["setTime", "setDistance", "setLocation"])
+  },
+  computed:{
+    ...mapState(name, ["location"])
   },
   mounted() {
     const tt = window.tt;
@@ -50,7 +52,7 @@ export default {
     let marker;
 
     map.on("click", function(event) {
-
+debugger
       tt.services
         .calculateRoute({
           key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",

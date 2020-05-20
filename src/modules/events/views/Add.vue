@@ -18,6 +18,7 @@
       icon="eva eva-email-outline"
       placeholder="Localization"
     />-->
+    {{locationData}}s
     <sp-location-picker
       type="text"
       v-model="locationData"
@@ -57,7 +58,7 @@ const namespace = "EventsStore";
 export default {
   data() {
     return {
-      locationPickerActive: false
+      locationPickerActive: false,
     };
   },
   computed: {
@@ -75,15 +76,6 @@ export default {
     ])
   },
   methods: {
-    debounce(func, delay) {
-      let inDebounce;
-      return function() {
-        const context = this;
-        const args = arguments;
-        clearTimeout(inDebounce);
-        inDebounce = setTimeout(() => func.apply(context, args), delay);
-      };
-    },
     findLocation: _.debounce(function(e) {
       if (e.length > 2) {
         this.getLocationsByName(e);

@@ -5,7 +5,7 @@ import { getField, updateField } from "vuex-map-fields";
 export const EventsStore = {
   namespaced: true,
   state: {
-    eventForm: {},
+    eventForm: {locationData: ""},
     events: null,
     locationSearchResults: null,
     locationCoordsSearchResults: null,
@@ -69,6 +69,10 @@ export const EventsStore = {
     setTime(state, payload){
       state.time = payload;
     },
+    setLocationName(state, payload){
+      state.eventForm.locationData = payload;
+      debugger
+    },
     setDistance(state, payload){
       state.distance = payload;
     },
@@ -77,7 +81,7 @@ export const EventsStore = {
     },
     setLocationCoordsSearchResults(state, payload){
       
-      state.locationCoordsSearchResults = payload;
+      state.eventForm.locationData = payload;
       debugger
     }
   },
