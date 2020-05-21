@@ -1,49 +1,60 @@
 <template>
   <div class="location-picker" :class="{ 'is-focused': mapVisible }">
-    <label class="textbox__label" v-if="label">{{ label }}</label>
-    <i class="textbox__icon" :class="icon" v-if="icon"></i>
-    <textarea
-      @keydown="handleInput"
-      @input="handleInput"
-      @focus="handleBlur"
-      v-model="value"
-      class="location-picker__input"
-      :class="{
-        'textbox__input--medium': size == 'medium',
-        'textbox__input--icon': icon,
-      }"
-      :type="type"
-      :placeholder="placeholder"
-    ></textarea>
-    <div class="location-picker__details">
-      {{distance}}km
-      {{time}}minutes
-    </div>
-    <ul style="background: white; position: relative; z-index: 9999;">
-      <li>asdasd</li>
-      {{dropdownSource}}
-      <!-- <li v-for="(item, index) in results" :key="index">
-        {{ item.poi.name }} {{ item.dist }}
-      </li> -->
-    </ul>
+    <div class="texteditor texteditor--location-picker">
+      <label class="texteditor__label" v-if="label">{{ label }}</label>
+          <i class="texteditor__icon" :class="icon" v-if="icon"></i>
 
-    <sp-map v-if="mapVisible" />
+      <textarea
+        @keydown="handleInput"
+        @input="handleInput"
+        @focus="handleBlur"
+        v-model="value"
+        class="texteditor__input texteditor__input--location-picker"
+        :class="{
+        'texteditor__input--medium': size == 'medium',
+      }"
+        :type="type"
+        :placeholder="placeholder"
+      ></textarea>
+  
+    </div>
+        <div class="texteditor__details" v-if="distance || time">
+        {{distance}}km
+        {{time}}minutes
+      </div>
+      <ul style="background: white; position: relative; z-index: 9999;">
+        {{dropdownSource}}
+        <!-- <li v-for="(item, index) in results" :key="index">
+        {{ item.poi.name }} {{ item.dist }}
+        </li>-->
+      </ul>
+
+      <sp-map v-if="mapVisible" />
   </div>
 </template>
 <script>
 import SpMap from "./sp-location-map";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 const name = "EventsStore";
 
 export default {
-  props: ["label", "placeholder", "icon", "type", "value", "size", "dropdownSource", "is-active"],
+  props: [
+    "label",
+    "placeholder",
+    "icon",
+    "type",
+    "value",
+    "size",
+    "dropdownSource",
+    "is-active"
+  ],
   data() {
     return {
       content: this.value,
       results: null,
       currentVal: null,
       localization: "test",
-      mapVisible: false,
+      mapVisible: false
     };
   },
   computed: {
@@ -56,48 +67,48 @@ export default {
     },
     handleInput: function(e) {
       this.$emit("input", e.target.value);
-    },
+    }
   },
   components: {
-    SpMap,
-  },
+    SpMap
+  }
 };
 </script>
 <style lang="scss">
 .location-picker {
   display: flex;
   flex-direction: column;
-  background: white;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow;
-  border: none;
-  .location-picker__input{
-    border: none;
+  justify-content: center;
+  margin-bottom: $space-size;
+  
+  .texteditor--location-picker {
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  .texteditor__icon {
+    z-index: 99999;
+  }
+  .texteditor__input--location-picker {
+    resize: none;
+    border-radius: $border-radius;
   }
   &.is-focused {
     position: absolute;
     z-index: 9999;
     top: $space-size-3;
     width: 100%;
-    justify-content: flex-end;
-    .location-picker__input {
+    justify-content: center;
+    .texteditor__input--location-picker {
       z-index: 9999;
       flex-shrink: 0;
     }
   }
-  &__details{
+  .texteditor__details {
     background: $gray150;
     position: relative;
     z-index: 9999;
     width: 100%;
-  }
-  &__map {
-    position: fixed;
-    z-index: 999;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
   }
 }
 </style>

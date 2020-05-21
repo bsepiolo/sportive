@@ -1,5 +1,5 @@
 <template>
-  <div id="locationPickerMap" class="location-picker__map"></div>
+  <div id="locationPickerMap" class="texteditor__location-map"></div>
 </template>
 
 <script>
@@ -106,7 +106,13 @@ debugger
 </script>
 
 <style lang="scss" scoped>
-  .location-picker__map{
+  .texteditor__location-map{
     background: $gray100;
+        position: fixed;
+    z-index: 999;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
   }
 </style>

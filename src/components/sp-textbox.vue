@@ -1,12 +1,11 @@
 <template>
-  <div class="textbox">
-    <label class="textbox__label" v-if="label">{{ label }}</label>
-    <i :class="icon" v-if="icon"></i>
+  <div class="texteditor">
+    <label class="texteditor__label" v-if="label">{{ label }}</label>
+    <i class="texteditor__icon" :class="icon" v-if="icon"></i>
     <input
-      class="textbox__input"
+      class="texteditor__input"
       :class="{
-        'textbox__input--medium': size == 'medium',
-        'textbox__input--icon': icon,
+        'texteditor__input--medium': size == 'medium',
       }"
       @input="handleInput"
       :type="type"

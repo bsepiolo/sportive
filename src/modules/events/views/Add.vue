@@ -12,13 +12,6 @@
       icon="eva eva-award-outline"
       placeholder="Discipline"
     />
-    <!-- <sp-textbox
-      type="text"
-      v-model="localization"
-      icon="eva eva-email-outline"
-      placeholder="Localization"
-    />-->
-    {{locationData}}s
     <sp-location-picker
       type="text"
       v-model="locationData"
