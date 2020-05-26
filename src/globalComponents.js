@@ -1,16 +1,17 @@
 import Vue from 'vue';
 
-import SpTextbox from "./components/sp-textbox"
-import SpButton from "./components/sp-button"
-import SpSubheader from "./components/sp-subheader"
-import SpHeader from "./components/sp-header"
+import SpTextbox from "./components/atoms/sp-textbox"
+import SpTextInput from "./components/molecules/sp-textinput"
+import SpButton from "./components/atoms/sp-button"
+import SpSubheader from "./components/atoms/sp-subheader"
+import SpHeader from "./components/atoms/sp-header"
 import SpNavbar from "./components/sp-navbar"
-import SpText from "./components/sp-text"
+import SpText from "./components/atoms/sp-text"
 import SpAvatarList from "./components/sp-avatar-list"
-import SpAvatar from "./components/sp-avatar"
+import SpAvatar from "./components/atoms/sp-avatar"
 import SpList from "./components/sp-list/sp-list"
 import SpListEl from "./components/sp-list/sp-list-el"
-import SpCard from "./components/sp-card"
+import SpCard from "./components/atoms/sp-card"
 import SpLocationPicker from "./components/sp-location-picker"
 
 Vue.component("sp-textbox", SpTextbox);
@@ -25,3 +26,4 @@ Vue.component("sp-avatar", SpAvatar);
 Vue.component("sp-avatar-list", SpAvatarList);
 Vue.component("sp-card", SpCard);
 Vue.component("sp-location-picker", SpLocationPicker);
+Vue.component("sp-textinput", SpTextInput);

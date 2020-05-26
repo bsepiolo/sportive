@@ -1,5 +1,5 @@
 <template>
-    <div class="container container container--auth container--vertical-center">
+    <div class="l-container l-container--auth l-container--vertical-center">
         <router-view />
     </div>
 </template>

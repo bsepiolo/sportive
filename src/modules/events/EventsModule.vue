@@ -1,5 +1,5 @@
 <template>
-  <div class="container container--standard">
+  <div class="l-container l-container--standard">
    
     <router-view />
     <sp-navbar />

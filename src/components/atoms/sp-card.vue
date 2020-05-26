@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="handleClick()" :class="{'card--minimized': minimized}">
+  <div class="a-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <slot />
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped="true">
-.card {
+.a-card {
   background: $white;
   border-radius: $border-radius;
   box-shadow: $box-shadow-large;

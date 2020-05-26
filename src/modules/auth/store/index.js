@@ -1,11 +1,11 @@
 import * as firebase from "firebase/app";
 import 'firebase/firestore'
-import { getField, updateField } from "vuex-map-fields";
+import { getField } from "vuex-map-fields";
 
 export const AuthStore = {
   namespaced: true,
   state: {
-    authForm: {},
+    form: {email: "test"},
   },
   actions: {
     signIn({commit, state}) {
@@ -51,7 +51,9 @@ export const AuthStore = {
     },
   },
   mutations: {
-    updateField,
+    setFormField(state, payload){
+      state.form[payload.name] = payload.value
+    },
     setAuthenticatedUser(state, payload) {
       state.user = payload;
     },

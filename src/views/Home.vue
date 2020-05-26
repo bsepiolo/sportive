@@ -1,37 +1,16 @@
 <template>
-  <div class="container container--auth container--vertical-center">
-    <ul class="carousel">
-      <li class="carousel__el">
-        <div class="carousel__img">
-          <img src="@/assets/img/carousel-man.png" />
-      
-        </div>
-        <sp-header :text-center="true">Run like never before</sp-header>
-        <sp-subheader :text-center="true">
-          Sportive helps you get a good shape with smile on your face!
-        </sp-subheader>
-      </li>
-      <li class="carousel__el"></li>
-      <li class="carousel__el"></li>
-    </ul>
-    <ul class="carousel-nav">
-      <li class="carousel-nav__el is-active"><span class="carousel-nav__ball"></span></li>
-      <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
-      <li class="carousel-nav__el"><span class="carousel-nav__ball"></span></li>
-    </ul>
-    <div class="actions mt-6">
-            <a href="#" class="btn btn--primary btn--outlined mr-1-5">Sign up</a>
-      <a href="#" class="btn btn--primary ml-1-5">Sign in</a>
+   <div class="l-container l-container--auth l-container--vertical-center">
+    <sp-carousel />
+    <div class="p-actions">
+      <sp-button type="primary" text="Sign in"/>
+      <sp-button type="primary" class="ml-3" styling-mode="outlined" text="Sign up"/>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 
-// Initialize Firebase
-
-
+import SpCarousel from "@/components/molecules/sp-carousel.vue";
 export default {
   name: "Home",
   data() {
@@ -39,7 +18,17 @@ export default {
       test: ""
     };
   },
-  components: {},
-  
+  components: {
+    SpCarousel
+  }
 };
 </script>
+<style lang="scss" scoped>
+  .p-actions{
+    margin-top: $space-size-6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
