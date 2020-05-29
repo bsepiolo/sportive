@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name: "text",
+  name: "text-simple",
   props: ["text-center","color", "size"],
 };
 </script>
@@ -18,6 +18,10 @@ export default {
   }
   &--small{
     font-size: 12px;
+    margin: 4px 0;
+    &:last-child{
+      margin: 0;
+    }
   }
   &--medium{
     font-size: 1rem;

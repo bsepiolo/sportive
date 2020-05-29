@@ -13,8 +13,8 @@
           </div>
         </div>
         <div class="top-bar__data">
-          <sp-subheader>24th Thu July</sp-subheader>
-          <sp-header size="medium" class="pt-0">Hello, Katherine</sp-header>
+          <sp-subtitle>24th Thu July</sp-subtitle>
+          <sp-title size="medium" class="pt-0">Hello, Katherine</sp-title>
         </div>
       </div>
       <div class="top-bar__search mt-3">
@@ -27,20 +27,20 @@
         />
       </div>
     </div>
-    <sp-header size="small" class="pt-0 mb-1">
+    <sp-title size="small" class="pt-0 mb-1">
       Upcoming
-    </sp-header>
+    </sp-title>
     <div class="events-list__upcoming">
       <div class="events-list__icon events-list__icon--color-reverse">
         <i class="icon-soccer"></i>
       </div>
       <div class="events-list__data">
-        <sp-header size="medium">
+        <sp-title size="medium">
           Football sparing 5x5
-        </sp-header>
-        <sp-subheader class="pt-0">
+        </sp-title>
+        <sp-subtitle class="pt-0">
           Sienkiewicza 22
-        </sp-subheader>
+        </sp-subtitle>
         <div class="time-counter mt-1">
           <span class="time-counter__el">2h</span>
           <span class="time-counter__separator">:</span>
@@ -49,11 +49,12 @@
         <img class="events-list__image" src="../../../assets/img/player.png" />
       </div>
     </div>
-    <sp-header size="small" class="mt-3 mb-1">
+    <sp-title size="small" class="mt-3 mb-1">
       Your participation
-    </sp-header>
+    </sp-title>
 
     <div class="events-list">
+      <sp-event-card />
       <sp-events-list-el />
       <sp-events-list-el />
       <sp-events-list-el />

@@ -3,9 +3,11 @@
     class="a-header"
     :class="{
       'text-center': textCenter,
-      'a-header--small': size == 'small',
-      'a-header--medium': size == 'medium',
-      'a-header--large': size == 'large',
+      'a-title--small': size == 'small',
+      'a-title--medium': size == 'medium',
+      'a-title--large': size == 'large',
+      'a-title--light': type=='light',
+      'a-title--bold': type=='bold',
     }"
   >
     <slot />
@@ -17,21 +19,31 @@ export default {
   props: {
     textCenter: {
       type: Boolean,
-      default: false,
+      default: false
     },
     size: {
       type: String,
-      default: "large",
+      default: "large"
     },
-  },
+    type: {
+      type: String,
+      default: "bold"
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
-.a-header {
+.a-title {
   color: $black;
   padding: $space-size 0;
-  font-family: "Hind";
-  font-weight: 700;
+
+  &--light {
+    font-weight: 600;
+  }
+  &--bold {
+    font-family: "Hind";
+    font-weight: 700;
+  }
   &--medium {
     font-size: 20px;
   }
@@ -42,5 +54,4 @@ export default {
     font-size: 1rem;
   }
 }
-
 </style>

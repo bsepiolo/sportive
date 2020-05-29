@@ -5,7 +5,7 @@ import { getField } from "vuex-map-fields";
 export const AuthStore = {
   namespaced: true,
   state: {
-    form: {email: "test"},
+    form: {},
   },
   actions: {
     signIn({commit, state}) {

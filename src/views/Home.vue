@@ -10,7 +10,7 @@
 
 <script>
 
-import SpCarousel from "@/components/molecules/sp-carousel.vue";
+import SpCarousel from "@/components/molecules/m-sp-carousel.vue";
 export default {
   name: "Home",
   data() {
