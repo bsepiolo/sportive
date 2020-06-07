@@ -30,50 +30,18 @@
     <sp-title size="small" class="pt-0 mb-1">
       Upcoming
     </sp-title>
-    <div class="events-list__upcoming">
-      <div class="events-list__icon events-list__icon--color-reverse">
-        <i class="icon-soccer"></i>
-      </div>
-      <div class="events-list__data">
-        <sp-title size="medium">
-          Football sparing 5x5
-        </sp-title>
-        <sp-subtitle class="pt-0">
-          Sienkiewicza 22
-        </sp-subtitle>
-        <div class="time-counter mt-1">
-          <span class="time-counter__el">2h</span>
-          <span class="time-counter__separator">:</span>
-          <span class="time-counter__el">15m</span>
-        </div>
-        <img class="events-list__image" src="../../../assets/img/player.png" />
-      </div>
-    </div>
-    <sp-title size="small" class="mt-3 mb-1">
-      Your participation
-    </sp-title>
+    <SpIncomingEventCard />
 
-    <div class="events-list">
-      <sp-event-card />
-      <sp-events-list-el />
-      <sp-events-list-el />
-      <sp-events-list-el />
-      <sp-events-list-el />
-    </div>
-    <sp-header size="small" class="mt-3 mb-1">
-      Recommended
-    </sp-header>
-{{events}}
-    <div class="events-list">
-      <sp-events-list-el />
-      <sp-events-list-el />
-      <sp-events-list-el />
-      <sp-events-list-el />
-    </div>
+
+    <sp-event-card-list 
+    title="Recommended"
+    :events="events"/> 
+
   </div>
 </template>
 <script>
-import SpEventsListEl from "../components/sp-event-list-el/sp-event-list-el";
+import SpEventCardList from "@/components/organisms/o-sp-event-card-list"
+import SpIncomingEventCard from "@/components/molecules/m-sp-incoming-event-card"
 import {mapState} from "vuex"
 const namespace = "EventsStore";
 export default {
@@ -84,7 +52,8 @@ export default {
     ...mapState(namespace, ['events'])
   },
   components: {
-    SpEventsListEl,
+    SpEventCardList,
+    SpIncomingEventCard
   },
   mounted() {
       this.$store.dispatch(`${namespace}/getEvents`)

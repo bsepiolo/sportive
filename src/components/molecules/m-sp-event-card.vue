@@ -1,12 +1,12 @@
 <template>
   <div class="m-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <div class="m-card-header">
-      <sp-icon icon="icon-basketball"/> 
-      <sp-title size="small" type="light">Event name</sp-title>
+      <sp-icon icon="icon-basketball" class="mb-1"/> 
+      <sp-title size="small" type="light">{{event.name}}</sp-title>
       <sp-subtitle size="small" type="light">Angela Jenskins</sp-subtitle>
     </div>
     <div class="m-card-meta">
-      <sp-text size="small">ul. Sienkiewicza 5/6</sp-text>
+      <sp-text size="small">{{event.locationData}}</sp-text>
       <sp-text size="small">10:30 PM</sp-text>
     </div>
   </div>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["minimized"],
+  props: ["minimized", "event"],
   methods: {
     handleClick() {
       this.$emit("click");

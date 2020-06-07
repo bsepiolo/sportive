@@ -14,6 +14,7 @@ import SpAvatar from "./components/atoms/a-sp-avatar"
 import SpList from "./components/sp-list/sp-list"
 import SpListEl from "./components/sp-list/sp-list-el"
 import SpCard from "./components/atoms/a-sp-card"
+import SpEventCardList from "./components/organisms/o-sp-event-card-list"
 import SpLocationPicker from "./components/sp-location-picker"
 
 Vue.component("sp-textbox", SpTextbox);
@@ -31,3 +32,4 @@ Vue.component("sp-location-picker", SpLocationPicker);
 Vue.component("sp-textinput", SpTextInput);
 Vue.component("sp-event-card", SpEventCard);
 Vue.component("sp-icon", SpIcon);
+Vue.component("sp-event-card-list", SpEventCardList);

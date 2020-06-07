@@ -6,8 +6,9 @@
       'a-title--small': size == 'small',
       'a-title--medium': size == 'medium',
       'a-title--large': size == 'large',
-      'a-title--light': type=='light',
+      'a-title--thin': type=='thin',
       'a-title--bold': type=='bold',
+      'a-title--light': light
     }"
   >
     <slot />
@@ -28,6 +29,9 @@ export default {
     type: {
       type: String,
       default: "bold"
+    },
+    light:{
+      type: Boolean
     }
   }
 };
@@ -37,7 +41,7 @@ export default {
   color: $black;
   padding: $space-size 0;
 
-  &--light {
+  &--thin {
     font-weight: 600;
   }
   &--bold {
@@ -52,6 +56,9 @@ export default {
   }
   &--small {
     font-size: 1rem;
+  }
+  &--light{
+    color: white;
   }
 }
 </style>
