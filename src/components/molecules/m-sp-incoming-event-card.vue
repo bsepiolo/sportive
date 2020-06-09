@@ -1,6 +1,6 @@
 <template>
   <div class="event-upcoming">
-    <sp-icon icon="icon-basketball" class="mb-2" />
+    <sp-icon icon="icon-basketball" type="complex" class="mb-2" />
 
     <div class="event-upcoming__data">
       <sp-title :light="true" size="medium">Football sparing 5x5</sp-title>

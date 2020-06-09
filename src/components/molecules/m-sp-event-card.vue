@@ -1,7 +1,7 @@
 <template>
   <div class="m-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <div class="m-card-header">
-      <sp-icon icon="icon-basketball" class="mb-1"/> 
+      <sp-icon icon="icon-basketball" type="complex" class="mb-1"/> 
       <sp-title size="small" type="light">{{event.name}}</sp-title>
       <sp-subtitle size="small" type="light">Angela Jenskins</sp-subtitle>
     </div>

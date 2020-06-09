@@ -1,9 +1,8 @@
 <template>
   <div class="o-events">
-    <sp-title size="small"  class="mt-3 mb-1">{{title}}</sp-title>
+    <sp-title size="small"  class="mt-3 mb-2">{{title}}</sp-title>
     <div class="o-events__list">
       <sp-event-card v-for="(event, index) in events" :event="event" :key="index" class="mr-1" />
-  
     </div>
   </div>
 </template>

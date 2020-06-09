@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size"],
+  props: ["placeholder", "type", "value", "size", "icon"],
   data() {
     return {
       content: this.value
@@ -47,10 +47,5 @@ export default {
     color: #a5b0d4;
   }
 }
-// &__icon {
-//   color: $secondary-text-color;
-//   position: absolute;
-//   left: $space-size-2;
-//   font-size: $space-size-2 + 4;
-// }
+
 </style>

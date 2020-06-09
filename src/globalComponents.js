@@ -7,7 +7,6 @@ import SpButton from "./components/atoms/a-sp-button"
 import SpSubheader from "./components/atoms/a-sp-subtitle"
 import SpHeader from "./components/atoms/a-sp-title"
 import SpIcon from "./components/atoms/a-sp-icon"
-import SpNavbar from "./components/sp-navbar"
 import SpText from "./components/atoms/a-sp-text"
 import SpAvatarList from "./components/sp-avatar-list"
 import SpAvatar from "./components/atoms/a-sp-avatar"
@@ -21,7 +20,6 @@ Vue.component("sp-textbox", SpTextbox);
 Vue.component("sp-button", SpButton);
 Vue.component("sp-subtitle", SpSubheader);
 Vue.component("sp-title", SpHeader);
-Vue.component("sp-navbar", SpNavbar);
 Vue.component("sp-text", SpText);
 Vue.component("sp-list", SpList);
 Vue.component("sp-list-el", SpListEl);

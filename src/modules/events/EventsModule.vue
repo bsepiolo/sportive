@@ -6,7 +6,12 @@
   </div>
 </template>
 <script>
+import SpNavbar from "../../components/molecules/m-sp-bottom-nav"
+
 export default {
   name: "EventsModule",
+  components:{
+    SpNavbar
+  }
 };
 </script>
