@@ -1,7 +1,7 @@
 <template>
   <div class="m-input">
     <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <sp-icon :icon="icon" class="ml-2" :absolute="true" />
+    <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
 
     <sp-textbox
       :placeholder="placeholder"
@@ -9,6 +9,7 @@
       @input="handleInput"
       :type="type"
       :size="size"
+      @focus="handleBlur"
     />
   </div>
 </template>
@@ -18,6 +19,7 @@ export default {
   data() {
     return {
       content: this.value,
+      iconColor: "default",
     };
   },
   computed: {
@@ -26,6 +28,9 @@ export default {
   methods: {
     handleInput(e) {
       this.$emit("input", e);
+    },
+     handleBlur: function() {
+      this.iconColor = "primary"
     },
   },
 };

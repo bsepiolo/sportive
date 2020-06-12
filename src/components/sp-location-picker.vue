@@ -7,6 +7,7 @@
           class="ml-2"
           :class="{ 'm-location-editor__icon': mapVisible }"
           :absolute="true"
+          :color="iconColor"
         />
 
         <sp-textarea
@@ -40,7 +41,7 @@
 
     <ul class="m-location-editor__results-list" v-if="locationSearchResults">
       <li v-for="(item, index) in locationSearchResults" :key="index">
-        {{ item }}
+        {{ item.address.freeformAddress }}
       </li>
     </ul>
 
@@ -71,6 +72,7 @@ export default {
       currentVal: null,
       localization: "test",
       mapVisible: false,
+      iconColor: "default"
     };
   },
   computed: {
@@ -84,6 +86,7 @@ export default {
   methods: {
     handleBlur: function() {
       this.mapVisible = true;
+      this.iconColor = "primary"
       this.$emit("focus");
     },
     handleInput: function(e) {
@@ -157,41 +160,4 @@ export default {
     z-index: 9999;
   }
 }
-
-// .location-picker {
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   margin-bottom: $space-size;
-
-//   .texteditor--location-picker {
-//     display: flex;
-//     margin-bottom: 0;
-//   }
-
-//   .texteditor__icon {
-//     z-index: 99999;
-//   }
-//   .texteditor__input--location-picker {
-//     resize: none;
-//     border-radius: $border-radius;
-//   }
-//   &.is-focused {
-//     position: absolute;
-//     z-index: 9999;
-//     top: $space-size-3;
-//     width: 100%;
-//     justify-content: center;
-//     .texteditor__input--location-picker {
-//       z-index: 9999;
-//       flex-shrink: 0;
-//     }
-//   }
-//   .texteditor__details {
-//     background: $gray150;
-//     position: relative;
-//     z-index: 9999;
-//     width: 100%;
-//   }
-// }
 </style>

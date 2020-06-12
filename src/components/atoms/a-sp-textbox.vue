@@ -2,10 +2,11 @@
   <input
     class="a-texteditor"
     :class="{
-        'a-texteditor--medium': size == 'medium',
-      }"
-      :value="value"
+      'a-texteditor--medium': size == 'medium',
+    }"
+    :value="value"
     @input="handleInput"
+    @focus="handleBlur"
     :type="type"
     :placeholder="placeholder"
   />
@@ -15,14 +16,17 @@ export default {
   props: ["placeholder", "type", "value", "size", "icon"],
   data() {
     return {
-      content: this.value
+      content: this.value,
     };
   },
   methods: {
     handleInput(e) {
       this.$emit("input", e.target.value);
-    }
-  }
+    },
+    handleBlur() {
+      this.$emit("focus");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -46,5 +50,4 @@ export default {
     color: #a5b0d4;
   }
 }
-
 </style>

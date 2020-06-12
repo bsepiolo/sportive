@@ -63,7 +63,7 @@ debugger
         .then(function(response) {
           var geojson = response.toGeoJson();
           debugger;
-          vm.setDistance(Math.round(response.routes[0].summary.lengthInMeters / 1000));
+          vm.setDistance(Math.round(response.routes[0].summary.lengthInMeters / 100) / 10);
           vm.setTime(Math.round(response.routes[0].summary.travelTimeInSeconds / 60));
           
           if (map.getLayer("route")) {
