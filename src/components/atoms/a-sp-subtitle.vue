@@ -1,12 +1,12 @@
 <template>
-  <p class="a-subtitle" :class="{'a-subtitle--light': light,'text-center': textCenter, 'a-header-sub--dark': color=='dark' }">
+  <p class="a-subtitle" :class="{'a-subtitle--light': light,'a-subtitle--size-medium': size=='medium','text-center': textCenter, 'a-header-sub--dark': color=='dark' }">
     <slot />
   </p>
 </template>
 <script>
 export default {
   name: "subtitle",
-  props: ["text-center", "color", "light"]
+  props: ["text-center", "color", "light", "size"]
 };
 </script>
 <style lang="scss" scoped>
@@ -16,6 +16,10 @@ export default {
   margin-top: $space-size;
   &--dark {
     color: $black;
+  }
+  &--size-medium{
+    font-size: 15px;
+    line-height: $space-size-3;
   }
   &--light{
     color: white;

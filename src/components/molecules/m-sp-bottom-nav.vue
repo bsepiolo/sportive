@@ -1,9 +1,9 @@
 <template>
   <div class="navbar">
     <ul class="navbar__list">
-      <li class="navbar__el is-active"><sp-icon icon="eva eva-home-outline" /></li>
-      <li class="navbar__el"><sp-icon icon="eva eva-people-outline"  /></li>
-      <li class="navbar__el"><sp-icon icon="eva eva-bell-outline" /></li>
+      <li class="navbar__el is-active"><sp-icon icon="eva eva-home-outline" color="primary" size="medium" /></li>
+      <li class="navbar__el"><sp-icon icon="eva eva-people-outline" size="medium"  /></li>
+      <li class="navbar__el"><sp-icon icon="eva eva-bell-outline" size="medium" /></li>
     </ul>
     <div class="navbar__btn">
       <i class="eva eva-plus"></i>
@@ -61,7 +61,7 @@ export default {
     left: 0;
     background: $white;
     height: 100%;
-    width: 75%;
+    width: calc(100% - 150px);
   }
   &__bg{
     position: absolute;
@@ -79,9 +79,12 @@ export default {
     &:first-child{
       margin-left: $space-size-2;
     }
+    &:last-child{
+      margin-right: 0;
+    }
     padding: $space-size;
     font-size: $space-size-3;
-    margin-right: $space-size-6;
+    margin-right: $space-size-7;
   }
   &__btn{
     margin-top: -$space-size-8 - $space-size;
@@ -97,7 +100,7 @@ export default {
     color: white;
     flex-grow: 0;
     flex-shrink: 0;
-    margin-right: $space-size + $space-size / 2;
+    margin-right: $space-size + $space-size / 2 - 1;
     box-shadow: 0px 4px 15px rgba(97, 128, 237, 0.8);
   }
 }

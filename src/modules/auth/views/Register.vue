@@ -1,10 +1,11 @@
 <template>
   <div>
-    <sp-header :text-center="true">Sign up to be in touch</sp-header>
-    <sp-subheader
+    <sp-title :text-center="true">Sign up to be in touch</sp-title>
+    <sp-subtitle
       :text-center="true"
+      size="medium"
       class="mb-8"
-    >Sportive helps you get a good shape with smile on your face!</sp-subheader>
+    >Sportive helps you get a good shape with smile on your face!</sp-subtitle>
     <sp-form :namespace="namespace" submitTitle="Register" submitAction="signIn" :fields="fields" />
 
     <sp-text :text-center="true" class="mt-5">

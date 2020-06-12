@@ -2,7 +2,7 @@
   <div class="l-container l-container--standard">
    
     <router-view />
-    <sp-navbar />
+    <sp-navbar v-if="$route.name !== 'events.details' && $route.name !== 'events.add' " />
   </div>
 </template>
 <script>

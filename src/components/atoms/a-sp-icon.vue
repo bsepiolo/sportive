@@ -4,7 +4,9 @@
     :class="{
       'icon--complex': type == 'complex',
       'icon--standard': type == 'standard',
-      'icon--absolute': absolute
+      'icon--absolute': absolute,
+      'icon--size-medium': size == 'medium',
+      'icon--color-primary': color == 'primary'
     }"
   >
     <i :class="icon"></i>
@@ -22,7 +24,13 @@ export default {
     },
     absolute: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    size: {
+      type: String,
+    },
+    color: {
+      type: String
     }
   },
 };
@@ -53,13 +61,22 @@ export default {
       }
     }
   }
-  &--absolute{
+  &--color-primary{
+    i{
+    color: $blue;
+    }
+  }
+  &--size-medium {
+    i {
+      font-size: calc(1em + 3px);
+    }
+  }
+  &--absolute {
     position: absolute;
   }
   &--standard {
     color: $secondary-text-color;
     // position: absolute;
-    left: $space-size-2;
     font-size: $space-size-2 + 4;
   }
 }

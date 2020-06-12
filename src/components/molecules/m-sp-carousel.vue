@@ -6,10 +6,10 @@
           <img src="@/assets/img/carousel-man.png" />
       
         </div>
-        <sp-header :text-center="true">Run like never before</sp-header>
-        <sp-subheader :text-center="true">
+        <sp-title :text-center="true">Run like never before</sp-title>
+        <sp-subtitle :text-center="true" size="medium">
           Sportive helps you get a good shape with smile on your face!
-        </sp-subheader>
+        </sp-subtitle>
       </li>
       <li class="m-carousel__el"></li>
       <li class="m-carousel__el"></li>
@@ -100,7 +100,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 0 0;
+    margin: $space-size-2 0 0 0;
     padding: $space-size-2;
     &__el {
       margin: 0 $space-size + 4;

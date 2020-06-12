@@ -1,7 +1,7 @@
 <template>
   <div class="m-input">
     <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <sp-icon :icon="icon" class="ml-2" :absolute="true" />
+    <sp-icon :icon="icon" :absolute="true" />
 
     <sp-textbox
       :placeholder="placeholder"

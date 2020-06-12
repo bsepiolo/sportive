@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import SpTextbox from "./components/atoms/a-sp-textbox"
 import SpTextInput from "./components/molecules/m-sp-textinput"
+import SpTextArea from "./components/atoms/a-sp-textarea"
 import SpEventCard from "./components/molecules/m-sp-event-card"
 import SpButton from "./components/atoms/a-sp-button"
 import SpSubheader from "./components/atoms/a-sp-subtitle"
@@ -28,6 +29,7 @@ Vue.component("sp-avatar-list", SpAvatarList);
 Vue.component("sp-card", SpCard);
 Vue.component("sp-location-picker", SpLocationPicker);
 Vue.component("sp-textinput", SpTextInput);
+Vue.component("sp-textarea", SpTextArea);
 Vue.component("sp-event-card", SpEventCard);
 Vue.component("sp-icon", SpIcon);
 Vue.component("sp-event-card-list", SpEventCardList);

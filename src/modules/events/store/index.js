@@ -5,7 +5,7 @@ import { getField, updateField } from "vuex-map-fields";
 export const EventsStore = {
   namespaced: true,
   state: {
-    eventForm: {locationData: ""},
+    form: {},
     events: null,
     locationSearchResults: null,
     locationCoordsSearchResults: null,
