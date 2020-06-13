@@ -1,6 +1,7 @@
 <template>
   <div
     class="icon"
+    @click="clickHandler"
     :class="{
       'icon--complex': type == 'complex',
       'icon--standard': type == 'standard',
@@ -33,6 +34,11 @@ export default {
       type: String
     }
   },
+  methods:{
+    clickHandler: function(){
+      this.$emit('click')
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -79,15 +79,26 @@ export const EventsStore = {
     setLocationName(state, payload) {
       state.form.location = payload;
     },
+    clearLocationName(state) {
+      state.form.location = null;
+    },
     setDistance(state, payload) {
       state.distance = payload;
     },
     setLocationSearchResults(state, payload) {
       state.locationSearchResults = payload;
     },
+    clearLocationSearchResults(state) {
+      state.locationSearchResults = null;
+    },
     setLocationCoordsSearchResults(state, payload) {
-      debugger
       state.form.location = payload;
+    },
+    clearLocationCoordsSearchResults(state) {
+      state.form.location = null;
+    },
+    setFormField(state, payload){
+      state.form[payload.name] = payload.value
     },
   },
   getters: {

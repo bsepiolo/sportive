@@ -13,30 +13,25 @@
         <sp-textarea
           :placeholder="placeholder"
           :value="value"
-          @keydown="handleInput"
-          @input="findLocation($event)"
+          @input="findLocation($event), handleInput($event)"
           @focus="handleBlur"
           :type="type"
           :size="size"
           :shadowDisabled="mapVisible"
           :class="{ 'is-active': mapVisible }"
         />
+        <sp-icon
+          icon="eva eva-close-outline"
+          class="m-location-editor__clear-button"
+          :absolute="true"
+          color="default"
+          @click="clearInput"
+          v-if="showClearButton"
+        />
       </div>
       <div class="m-location-editor__details" v-if="distance || time">
         Distance: {{ distance }}km Time: {{ time }}minutes
       </div>
-      <!-- <textarea
-        @keydown="handleInput"
-        @input="handleInput"
-        @focus="handleBlur"
-        v-model="value"
-        class="texteditor__input texteditor__input--location-picker"
-        :class="{
-          'texteditor__input--medium': size == 'medium',
-        }"
-        :type="type"
-        :placeholder="placeholder"
-      ></textarea> -->
     </div>
 
     <ul class="m-location-editor__results-list" v-if="locationSearchResults">
@@ -72,7 +67,8 @@ export default {
       currentVal: null,
       localization: "test",
       mapVisible: false,
-      iconColor: "default"
+      iconColor: "default",
+      showClearButton: false,
     };
   },
   computed: {
@@ -86,11 +82,23 @@ export default {
   methods: {
     handleBlur: function() {
       this.mapVisible = true;
-      this.iconColor = "primary"
+      this.iconColor = "primary";
       this.$emit("focus");
     },
+    clearInput: function() {
+      this.$store.commit(`${name}/clearLocationName`);
+      this.$store.commit(`${name}/clearLocationSearchResults`);
+      this.$emit("input", "");
+       this.showClearButton = false;
+    },
     handleInput: function(e) {
-      this.$emit("input", e.target.value);
+      if (e.length) {
+        this.showClearButton = true;
+      } else {
+        this.showClearButton = false;
+      }
+
+      this.$emit("input", e);
     },
     ...mapActions(name, [
       // "addEvent",
@@ -112,6 +120,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .m-location-editor {
+  &__clear-button {
+    right: $space-size-2;
+  }
   &.is-focused {
     position: absolute;
     top: $space-size-4;
@@ -137,8 +148,7 @@ export default {
     z-index: 9999;
     border-radius: $border-radius;
     overflow: hidden;
-          box-shadow: $box-shadow;
-
+    box-shadow: $box-shadow;
   }
   &__input {
     display: flex;

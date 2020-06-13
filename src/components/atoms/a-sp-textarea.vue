@@ -7,6 +7,7 @@
     }"
     :value="value"
     @input="handleInput"
+    @keydown="handleInput"
     @focus="handleBlur"
     :type="type"
     :placeholder="placeholder"
