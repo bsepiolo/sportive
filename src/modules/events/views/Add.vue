@@ -105,8 +105,8 @@ export default {
         {
           type: "location",
           placeholder: "Location",
-          model: "location",
-          name: "location",
+          model: "location.name",
+          name: "location.name",
           icon: "eva eva-pin-outline",
         },
         {

@@ -26,7 +26,7 @@
           :absolute="true"
           color="default"
           @click="clearInput"
-          v-if="showClearButton"
+          v-if="form.location.name"
         />
       </div>
       <div class="m-location-editor__details" v-if="distance || time">
@@ -46,7 +46,7 @@
 <script>
 import SpMap from "./sp-location-map";
 import _ from "lodash";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 const name = "EventsStore";
 
 export default {
@@ -74,9 +74,11 @@ export default {
   computed: {
     ...mapState(name, [
       "distance",
+      "form",
       "time",
       "locationCoordsSearchResults",
       "locationSearchResults",
+      "marker",
     ]),
   },
   methods: {
@@ -89,17 +91,15 @@ export default {
       this.$store.commit(`${name}/clearLocationName`);
       this.$store.commit(`${name}/clearLocationSearchResults`);
       this.$emit("input", "");
-       this.showClearButton = false;
+      this.showClearButton = false;
+      if (this.marker) {
+        this.removeMarker();
+      }
     },
     handleInput: function(e) {
-      if (e.length) {
-        this.showClearButton = true;
-      } else {
-        this.showClearButton = false;
-      }
-
       this.$emit("input", e);
     },
+    ...mapMutations(name, ["removeMarker"]),
     ...mapActions(name, [
       // "addEvent",
       "getLocationByCoords",

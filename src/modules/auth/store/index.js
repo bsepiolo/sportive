@@ -6,6 +6,7 @@ export const AuthStore = {
   namespaced: true,
   state: {
     form: {},
+    map: null
   },
   actions: {
     signIn({commit, state}) {
@@ -57,6 +58,12 @@ export const AuthStore = {
     setAuthenticatedUser(state, payload) {
       state.user = payload;
     },
+    setMap(state, payload) {
+      state.map = payload;
+    },
+    clearMap(state) {
+      state.map = null;
+    }
   },
   getters: {
     getField,

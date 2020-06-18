@@ -5,13 +5,21 @@ import { getField, updateField } from "vuex-map-fields";
 export const EventsStore = {
   namespaced: true,
   state: {
-    form: {location: ""},
+    form: {
+      location: {
+        name: "",
+        coords: { lat: 0, lon: 0 },
+      },
+    },
     events: null,
-    locationSearchResults: null,
-    locationCoordsSearchResults: null,
-    distance: 0,
-    time: 0,
-    location: { lat: 0, lon: 0 },
+    location: {
+      locationSearchResults: null,
+      locationCoordsSearchResults: null,
+      distance: 0,
+      time: 0,
+      marker: null,
+      map: null,
+    },
   },
   actions: {
     addEvent({ state, rootState }) {
@@ -35,7 +43,11 @@ export const EventsStore = {
         .then((data) => {
           commit(
             "setLocationCoordsSearchResults",
-            `${data.data.addresses[0].address.streetName || 'Address unknown'} ${data.data.addresses[0].address.streetNumber || ''}, ${data.data.addresses[0].address.municipality}`
+            `${data.data.addresses[0].address.streetName ||
+              "Address unknown"} ${data.data.addresses[0].address
+              .streetNumber || ""}, ${
+              data.data.addresses[0].address.municipality
+            }`
           );
         });
     },
@@ -45,7 +57,7 @@ export const EventsStore = {
           `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${state.location.lat}&lon=${state.location.lon}&radius=30000&idxSet=PAD,Addr,Str`
         )
         .then((data) => {
-          debugger
+          debugger;
           commit("setLocationSearchResults", data.data.results);
         })
         .catch((err) => {
@@ -70,38 +82,67 @@ export const EventsStore = {
       state.events = payload;
     },
     setLocation(state, payload) {
-      state.location.lat = payload.latitude;
-      state.location.lon = payload.longitude;
+      state.form.location.coords.lat = payload.latitude;
+      state.form.location.coords.lon = payload.longitude;
     },
     setTime(state, payload) {
       state.time = payload;
     },
     setLocationName(state, payload) {
-      state.form.location = payload;
+      state.form.location.name = payload;
     },
     clearLocationName(state) {
-      state.form.location = null;
+      state.form.location = {
+        name: "",
+        coords: { lat: 0, lon: 0 },
+      };
+      state.location.distance = null;
+      state.location.time = null;
     },
     setDistance(state, payload) {
-      state.distance = payload;
+      state.location.distance = payload;
     },
     setLocationSearchResults(state, payload) {
-      state.locationSearchResults = payload;
+      state.location.locationSearchResults = payload;
     },
     clearLocationSearchResults(state) {
-      state.locationSearchResults = null;
+      state.location.locationSearchResults = null;
     },
     setLocationCoordsSearchResults(state, payload) {
-      state.form.location = payload;
+      state.form.location.name = payload;
     },
     clearLocationCoordsSearchResults(state) {
-      state.form.location = null;
+      state.form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    setFormField(state, payload){
-      state.form[payload.name] = payload.value
+    setFormField(state, payload) {
+      state.form[payload.name] = payload.value;
+    },
+    setMap(state) {
+      const tt = window.tt;
+
+      state.location.map = tt.map({
+        key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
+        container: "locationPickerMap",
+        style: "tomtom://vector/1/basic-main",
+        zoom: 15,
+      });
+    },
+    setMarker(state, payload) {
+      const tt = window.tt;
+      state.location.marker = new tt.Marker().setLngLat(payload).addTo(state.location.map);
+    },
+    removeMarker(state) {
+      state.location.marker.remove();
+      state.location.marker = null;
+      if (state.location.map.getLayer("route")) {
+        state.location.map.removeLayer("route");
+      }
+      if (state.location.map.getSource("route")) {
+        state.location.map.removeSource("route");
+      }
     },
   },
   getters: {
     getField,
-  },
+  }
 };

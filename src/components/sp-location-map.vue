@@ -3,28 +3,29 @@
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from "vuex"
+import { mapActions, mapMutations, mapState } from "vuex";
 const name = "EventsStore";
 export default {
-  data() {
-    return {
-      content: this.value,
-      results: null,
-      currentVal: null,
-      distance: null,
-      localization: "test",
-      mapVisible: false
-    };
-  },
-  methods:{
+  methods: {
     ...mapActions(name, ["getLocationByCoords"]),
-    ...mapMutations(name, ["setTime", "setDistance", "setLocation"])
+    ...mapMutations(name, [
+      "setMap",
+      "setLocation",
+      "setDistance",
+      "setTime",
+      "setMap",
+      "setMarker",
+      "removeMarker",
+    ]),
   },
-  computed:{
-    ...mapState(name, ["location"])
+  computed: {
+    ...mapState(name, ["location", "form"]),
   },
+  created() {},
   mounted() {
     const tt = window.tt;
+    this.setMap();
+
     let vm = this;
     let geolocation = new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -38,41 +39,35 @@ export default {
     }).catch((error) => error);
 
     geolocation.then((data) => {
-      vm.setLocation({latitude: data.latitude, longitude: data.longitude})
-      map.setCenter({ lat: data.latitude, lng: data.longitude });
-      new tt.Marker().setLngLat([data.longitude, data.latitude]).addTo(map);
+      vm.setLocation({ latitude: data.latitude, longitude: data.longitude });
+      vm.location.map.setCenter({ lat: data.latitude, lng: data.longitude });
+      new tt.Marker().setLngLat([data.longitude, data.latitude]).addTo(vm.location.map);
     });
 
-    const map = tt.map({
-      key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-      container: "locationPickerMap",
-      style: "tomtom://vector/1/basic-main",
-      zoom: 15,
-    });
-    let marker;
-
-    map.on("click", function(event) {
-debugger
+    this.location.map.on("click", function(event) {
       tt.services
         .calculateRoute({
           key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
           traffic: true,
-          locations: `${vm.location.lon},${vm.location.lat}:${event.lngLat.lng},${event.lngLat.lat}`,
+          locations: `${vm.form.location.coords.lon},${vm.form.location.coords.lat}:${event.lngLat.lng},${event.lngLat.lat}`,
         })
         .go()
         .then(function(response) {
           var geojson = response.toGeoJson();
-          debugger;
-          vm.setDistance(Math.round(response.routes[0].summary.lengthInMeters / 100) / 10);
-          vm.setTime(Math.round(response.routes[0].summary.travelTimeInSeconds / 60));
-          
-          if (map.getLayer("route")) {
-            map.removeLayer("route");
+          vm.setDistance(
+            Math.round(response.routes[0].summary.lengthInMeters / 100) / 10
+          );
+          vm.setTime(
+            Math.round(response.routes[0].summary.travelTimeInSeconds / 60)
+          );
+
+          if (vm.location.map.getLayer("route")) {
+            vm.location.map.removeLayer("route");
           }
-          if (map.getSource("route")) {
-            map.removeSource("route");
+          if (vm.location.map.getSource("route")) {
+            vm.location.map.removeSource("route");
           }
-          map.addLayer({
+          vm.location.map.addLayer({
             id: "route",
             type: "line",
             source: {
@@ -85,34 +80,28 @@ debugger
             },
           });
         });
-
-      if (marker) {
-        marker.remove();
-        marker = null;
+      if (vm.location.marker) {
+        vm.removeMarker();
       }
-
-      marker = new tt.Marker()
-        .setLngLat([event.lngLat.lng, event.lngLat.lat])
-        .addTo(map);
+      vm.setMarker([event.lngLat.lng, event.lngLat.lat]);
 
       vm.getLocationByCoords({
         lng: event.lngLat.lng,
         lat: event.lngLat.lat,
       });
     });
-    map.once("load", function() {});
   },
 };
 </script>
 
 <style lang="scss" scoped>
-  .texteditor__location-map{
-    background: $gray100;
-        position: fixed;
-    z-index: 999;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
-  }
+.texteditor__location-map {
+  background: $gray100;
+  position: fixed;
+  z-index: 999;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+}
 </style>
