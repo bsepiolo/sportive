@@ -19,6 +19,7 @@ export const EventsStore = {
       time: 0,
       marker: null,
       map: null,
+      current: { lat: 0, lon: 0 },
     },
   },
   actions: {
@@ -82,11 +83,11 @@ export const EventsStore = {
       state.events = payload;
     },
     setLocation(state, payload) {
-      state.form.location.coords.lat = payload.latitude;
-      state.form.location.coords.lon = payload.longitude;
+      state.location.current.lat = payload.latitude;
+      state.location.current.lon = payload.longitude;
     },
     setTime(state, payload) {
-      state.time = payload;
+      state.location.time = payload;
     },
     setLocationName(state, payload) {
       state.form.location.name = payload;
@@ -96,6 +97,7 @@ export const EventsStore = {
         name: "",
         coords: { lat: 0, lon: 0 },
       };
+      debugger
       state.location.distance = null;
       state.location.time = null;
     },
@@ -129,6 +131,7 @@ export const EventsStore = {
     },
     setMarker(state, payload) {
       const tt = window.tt;
+      debugger
       state.location.marker = new tt.Marker().setLngLat(payload).addTo(state.location.map);
     },
     removeMarker(state) {

@@ -49,7 +49,7 @@ export default {
         .calculateRoute({
           key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
           traffic: true,
-          locations: `${vm.form.location.coords.lon},${vm.form.location.coords.lat}:${event.lngLat.lng},${event.lngLat.lat}`,
+          locations: `${vm.location.current.lon},${vm.location.current.lat}:${event.lngLat.lng},${event.lngLat.lat}`,
         })
         .go()
         .then(function(response) {
@@ -80,6 +80,7 @@ export default {
             },
           });
         });
+        debugger
       if (vm.location.marker) {
         vm.removeMarker();
       }

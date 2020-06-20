@@ -8,11 +8,20 @@
           :class="{ 'm-location-editor__icon': mapVisible }"
           :absolute="true"
           :color="iconColor"
+          v-if="!mapVisible || (!form.location.name && mapVisible)"
         />
-
+        <sp-icon
+          icon="eva eva-close-outline"
+          class="ml-2"
+          :class="{ 'm-location-editor__icon': mapVisible }"
+          :absolute="true"
+          color="default"
+          @click="clearInput"
+          v-if="form.location.name && mapVisible"
+        />
         <sp-textarea
           :placeholder="placeholder"
-          :value="value"
+          :value="value.name"
           @input="findLocation($event), handleInput($event)"
           @focus="handleBlur"
           :type="type"
@@ -20,22 +29,20 @@
           :shadowDisabled="mapVisible"
           :class="{ 'is-active': mapVisible }"
         />
-        <sp-icon
-          icon="eva eva-close-outline"
-          class="m-location-editor__clear-button"
-          :absolute="true"
-          color="default"
-          @click="clearInput"
-          v-if="form.location.name"
-        />
       </div>
-      <div class="m-location-editor__details" v-if="distance || time">
-        Distance: {{ distance }}km Time: {{ time }}minutes
+      <div
+        class="m-location-editor__details"
+        v-if="location.distance || location.time"
+      >
+        Distance: {{ location.distance }}km Time: {{ location.time }}minutes
       </div>
     </div>
 
-    <ul class="m-location-editor__results-list" v-if="locationSearchResults">
-      <li v-for="(item, index) in locationSearchResults" :key="index">
+    <ul
+      class="m-location-editor__results-list"
+      v-if="location.locationSearchResults"
+    >
+      <li v-for="(item, index) in location.locationSearchResults" :key="index">
         {{ item.address.freeformAddress }}
       </li>
     </ul>
@@ -72,14 +79,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(name, [
-      "distance",
-      "form",
-      "time",
-      "locationCoordsSearchResults",
-      "locationSearchResults",
-      "marker",
-    ]),
+    ...mapState(name, ["form", "location"]),
   },
   methods: {
     handleBlur: function() {
@@ -90,9 +90,10 @@ export default {
     clearInput: function() {
       this.$store.commit(`${name}/clearLocationName`);
       this.$store.commit(`${name}/clearLocationSearchResults`);
-      this.$emit("input", "");
+      this.$emit("input", this.form.location);
       this.showClearButton = false;
-      if (this.marker) {
+      debugger;
+      if (this.location.marker) {
         this.removeMarker();
       }
     },
