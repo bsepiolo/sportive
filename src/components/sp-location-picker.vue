@@ -37,21 +37,16 @@
         Distance: {{ location.distance }}km Time: {{ location.time }}minutes
       </div>
     </div>
-
-    <ul
-      class="m-location-editor__results-list"
-      v-if="location.locationSearchResults"
-    >
-      <li v-for="(item, index) in location.locationSearchResults" :key="index">
-        {{ item.address.freeformAddress }}
-      </li>
-    </ul>
-
+    <sp-card ratio="wide" v-if="location.locationSearchResults.length" z-index="max">
+      <sp-list @click="selectItem" :items="location.locationSearchResults" />
+    </sp-card>
     <sp-map v-if="mapVisible" />
   </div>
 </template>
 <script>
 import SpMap from "./sp-location-map";
+import SpCard from "./atoms/a-sp-card";
+import SpList from "./molecules/m-sp-list";
 import _ from "lodash";
 import { mapActions, mapState, mapMutations } from "vuex";
 const name = "EventsStore";
@@ -100,7 +95,11 @@ export default {
     handleInput: function(e) {
       this.$emit("input", e);
     },
-    ...mapMutations(name, ["removeMarker"]),
+    selectItem(e){
+      debugger
+      this.setLocationCoordsSearchResults(e.address.streetName)
+    },
+    ...mapMutations(name, ["removeMarker", "setLocationCoordsSearchResults"]),
     ...mapActions(name, [
       // "addEvent",
       "getLocationByCoords",
@@ -116,6 +115,8 @@ export default {
 
   components: {
     SpMap,
+    SpCard,
+    SpList
   },
 };
 </script>

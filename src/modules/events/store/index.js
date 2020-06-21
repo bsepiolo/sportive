@@ -13,8 +13,8 @@ export const EventsStore = {
     },
     events: null,
     location: {
-      locationSearchResults: null,
-      locationCoordsSearchResults: null,
+      locationSearchResults: [],
+      locationCoordsSearchResults: [],
       distance: 0,
       time: 0,
       marker: null,
@@ -55,10 +55,11 @@ export const EventsStore = {
     getLocationsByName({ commit, state }, payload) {
       this._vm.$http
         .get(
-          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${state.location.lat}&lon=${state.location.lon}&radius=30000&idxSet=PAD,Addr,Str`
+          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${state.location.current.lat}&lon=${state.location.current.lon}&radius=30000&idxSet=PAD,Addr,Str`
         )
         .then((data) => {
           debugger;
+          
           commit("setLocationSearchResults", data.data.results);
         })
         .catch((err) => {
@@ -108,7 +109,7 @@ export const EventsStore = {
       state.location.locationSearchResults = payload;
     },
     clearLocationSearchResults(state) {
-      state.location.locationSearchResults = null;
+      state.location.locationSearchResults = [];
     },
     setLocationCoordsSearchResults(state, payload) {
       state.form.location.name = payload;
@@ -117,7 +118,11 @@ export const EventsStore = {
       state.form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField(state, payload) {
-      state.form[payload.name] = payload.value;
+      if(payload.name == 'location'){
+        state.form.location.name = payload.value
+      }else{
+        state.form[payload.name] = payload.value;
+      }
     },
     setMap(state) {
       const tt = window.tt;
