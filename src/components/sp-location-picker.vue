@@ -37,7 +37,11 @@
         Distance: {{ location.distance }}km Time: {{ location.time }}minutes
       </div>
     </div>
-    <sp-card ratio="wide" v-if="location.locationSearchResults.length" z-index="max">
+    <sp-card
+      ratio="wide"
+      v-if="location.locationSearchResults.length"
+      z-index="max"
+    >
       <sp-list @click="selectItem" :items="location.locationSearchResults" />
     </sp-card>
     <sp-map v-if="mapVisible" />
@@ -85,9 +89,10 @@ export default {
     clearInput: function() {
       this.$store.commit(`${name}/clearLocationName`);
       this.$store.commit(`${name}/clearLocationSearchResults`);
-      this.$emit("input", this.form.location);
-      this.showClearButton = false;
       debugger;
+      this.$emit("input", "");
+      this.showClearButton = false;
+
       if (this.location.marker) {
         this.removeMarker();
       }
@@ -95,15 +100,23 @@ export default {
     handleInput: function(e) {
       this.$emit("input", e);
     },
-    selectItem(e){
-      debugger
-      this.setLocationCoordsSearchResults(e.address.streetName)
+    selectItem(e) {
+      debugger;
+      let locationName = `${e.address.streetName || "Address unknown"} ${e
+        .address.streetNumber || ""}, ${e.address.municipality}`;
+      this.setLocationCoordsSearchResults(locationName);
+      this.calculateRoute({
+        lngLat: { lng: e.position.lon, lat: e.position.lat },
+      });
+      this.location.map.setCenter({ lat: e.position.lat, lng: e.position.lon });
+
+      this.$store.commit(`${name}/clearLocationSearchResults`);
     },
     ...mapMutations(name, ["removeMarker", "setLocationCoordsSearchResults"]),
     ...mapActions(name, [
-      // "addEvent",
       "getLocationByCoords",
       "getLocationsByName",
+      "calculateRoute",
     ]),
     findLocation: _.debounce(function(e) {
       if (e.length > 2) {
@@ -116,7 +129,7 @@ export default {
   components: {
     SpMap,
     SpCard,
-    SpList
+    SpList,
   },
 };
 </script>

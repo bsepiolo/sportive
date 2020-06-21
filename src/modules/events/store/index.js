@@ -59,7 +59,7 @@ export const EventsStore = {
         )
         .then((data) => {
           debugger;
-          
+
           commit("setLocationSearchResults", data.data.results);
         })
         .catch((err) => {
@@ -76,6 +76,58 @@ export const EventsStore = {
           });
           commit("setEvents", eventsArray);
         });
+    },
+    calculateRoute({ commit, dispatch, state }, payload) {
+      const tt = window.tt;
+
+      tt.services
+        .calculateRoute({
+          key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
+          traffic: true,
+          locations: `${state.location.current.lon},${state.location.current.lat}:${payload.lngLat.lng},${payload.lngLat.lat}`,
+        })
+        .go()
+        .then(function(response) {
+          var geojson = response.toGeoJson();
+          commit(
+            "setDistance",
+            Math.round(response.routes[0].summary.lengthInMeters / 100) / 10
+          );
+          commit(
+            "setTime",
+            Math.round(response.routes[0].summary.travelTimeInSeconds / 60)
+          );
+
+          if (state.location.map.getLayer("route")) {
+            state.location.map.removeLayer("route");
+          }
+          if (state.location.map.getSource("route")) {
+            state.location.map.removeSource("route");
+          }
+          state.location.map.addLayer({
+            id: "route",
+            type: "line",
+            source: {
+              type: "geojson",
+              data: geojson,
+            },
+            paint: {
+              "line-color": "#4a90e2",
+              "line-width": 8,
+            },
+          });
+        });
+
+      if (state.location.marker) {
+        commit("removeMarker");
+      }
+
+      commit("setMarker", [payload.lngLat.lng, payload.lngLat.lat]);
+
+      dispatch("getLocationByCoords", {
+        lng: payload.lngLat.lng,
+        lat: payload.lngLat.lat,
+      });
     },
   },
   mutations: {
@@ -98,7 +150,7 @@ export const EventsStore = {
         name: "",
         coords: { lat: 0, lon: 0 },
       };
-      debugger
+      debugger;
       state.location.distance = null;
       state.location.time = null;
     },
@@ -118,9 +170,9 @@ export const EventsStore = {
       state.form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField(state, payload) {
-      if(payload.name == 'location'){
-        state.form.location.name = payload.value
-      }else{
+      if (payload.name == "location") {
+        state.form.location.name = payload.value;
+      } else {
         state.form[payload.name] = payload.value;
       }
     },
@@ -136,8 +188,10 @@ export const EventsStore = {
     },
     setMarker(state, payload) {
       const tt = window.tt;
-      debugger
-      state.location.marker = new tt.Marker().setLngLat(payload).addTo(state.location.map);
+      debugger;
+      state.location.marker = new tt.Marker()
+        .setLngLat(payload)
+        .addTo(state.location.map);
     },
     removeMarker(state) {
       state.location.marker.remove();
@@ -152,5 +206,5 @@ export const EventsStore = {
   },
   getters: {
     getField,
-  }
+  },
 };

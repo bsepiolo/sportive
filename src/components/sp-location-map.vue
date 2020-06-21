@@ -7,7 +7,7 @@ import { mapActions, mapMutations, mapState } from "vuex";
 const name = "EventsStore";
 export default {
   methods: {
-    ...mapActions(name, ["getLocationByCoords"]),
+    ...mapActions(name, ["getLocationByCoords", "calculateRoute"]),
     ...mapMutations(name, [
       "setMap",
       "setLocation",
@@ -45,51 +45,7 @@ export default {
     });
 
     this.location.map.on("click", function(event) {
-      tt.services
-        .calculateRoute({
-          key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-          traffic: true,
-          locations: `${vm.location.current.lon},${vm.location.current.lat}:${event.lngLat.lng},${event.lngLat.lat}`,
-        })
-        .go()
-        .then(function(response) {
-          var geojson = response.toGeoJson();
-          vm.setDistance(
-            Math.round(response.routes[0].summary.lengthInMeters / 100) / 10
-          );
-          vm.setTime(
-            Math.round(response.routes[0].summary.travelTimeInSeconds / 60)
-          );
-
-          if (vm.location.map.getLayer("route")) {
-            vm.location.map.removeLayer("route");
-          }
-          if (vm.location.map.getSource("route")) {
-            vm.location.map.removeSource("route");
-          }
-          vm.location.map.addLayer({
-            id: "route",
-            type: "line",
-            source: {
-              type: "geojson",
-              data: geojson,
-            },
-            paint: {
-              "line-color": "#4a90e2",
-              "line-width": 8,
-            },
-          });
-        });
-        debugger
-      if (vm.location.marker) {
-        vm.removeMarker();
-      }
-      vm.setMarker([event.lngLat.lng, event.lngLat.lat]);
-
-      vm.getLocationByCoords({
-        lng: event.lngLat.lng,
-        lat: event.lngLat.lat,
-      });
+      vm.calculateRoute(event)
     });
   },
 };
