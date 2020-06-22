@@ -29,6 +29,14 @@
           :shadowDisabled="mapVisible"
           :class="{ 'is-active': mapVisible }"
         />
+        <sp-icon
+          icon="eva eva-compass-outline"
+          class="ml-2"
+          :class="{ 'm-location-editor__clear-button': mapVisible }"
+          :absolute="true"
+          :color="iconColor"
+          v-if="mapVisible"
+        />
       </div>
       <div
         class="m-location-editor__details"

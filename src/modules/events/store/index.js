@@ -23,6 +23,34 @@ export const EventsStore = {
     },
   },
   actions: {
+    setUserLocation({ state, commit, dispatch }) {
+      const tt = window.tt;
+      let geolocation = new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve(position.coords);
+          },
+          (error) => {
+            reject(error);
+          }
+        );
+      }).catch((error) => error);
+
+      geolocation.then((data) => {
+        commit("setLocation", {
+          latitude: data.latitude,
+          longitude: data.longitude,
+        });
+        state.location.map.setCenter({ lat: data.latitude, lng: data.longitude });
+        new tt.Marker()
+          .setLngLat([data.longitude, data.latitude])
+          .addTo(state.location.map);
+        dispatch("getLocationByCoords", {
+          lat: data.latitude,
+          lng: data.longitude,
+        });
+      });
+    },
     addEvent({ state, rootState }) {
       rootState.db
         .collection("events")
@@ -150,7 +178,6 @@ export const EventsStore = {
         name: "",
         coords: { lat: 0, lon: 0 },
       };
-      debugger;
       state.location.distance = null;
       state.location.time = null;
     },
@@ -178,7 +205,6 @@ export const EventsStore = {
     },
     setMap(state) {
       const tt = window.tt;
-
       state.location.map = tt.map({
         key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
         container: "locationPickerMap",
