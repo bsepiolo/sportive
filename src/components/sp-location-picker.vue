@@ -28,14 +28,15 @@
           :size="size"
           :shadowDisabled="mapVisible"
           :class="{ 'is-active': mapVisible }"
+          :height="mapVisible || form.location.name  ? 'auto' : ''"
         />
         <sp-icon
           icon="eva eva-compass-outline"
           class="ml-2"
           :class="{ 'm-location-editor__clear-button': mapVisible }"
           :absolute="true"
-          :color="iconColor"
           v-if="mapVisible"
+          @click="setUserLocation"
         />
       </div>
       <div
@@ -125,6 +126,7 @@ export default {
       "getLocationByCoords",
       "getLocationsByName",
       "calculateRoute",
+      "setUserLocation",
     ]),
     findLocation: _.debounce(function(e) {
       if (e.length > 2) {
@@ -157,6 +159,7 @@ export default {
     .m-location-editor__input {
       background: $white;
       margin: 0;
+      padding-right: $space-size-6;
     }
     .m-location-editor__container {
       background: $white;

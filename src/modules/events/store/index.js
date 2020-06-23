@@ -35,7 +35,6 @@ export const EventsStore = {
           }
         );
       }).catch((error) => error);
-
       geolocation.then((data) => {
         commit("setLocation", {
           latitude: data.latitude,
@@ -50,6 +49,11 @@ export const EventsStore = {
           lng: data.longitude,
         });
       });
+      if(state.location.marker){
+        commit("removeMarker")
+        commit("clearDistanceAndTime")
+
+      }
     },
     addEvent({ state, rootState }) {
       rootState.db
@@ -172,6 +176,10 @@ export const EventsStore = {
     },
     setLocationName(state, payload) {
       state.form.location.name = payload;
+    },
+    clearDistanceAndTime(state) {
+      state.location.distance = null;
+      state.location.time = null;
     },
     clearLocationName(state) {
       state.form.location = {

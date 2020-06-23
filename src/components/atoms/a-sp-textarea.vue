@@ -10,12 +10,13 @@
     @keydown="handleInput"
     @focus="handleBlur"
     :type="type"
+    :style="{height: height}"
     :placeholder="placeholder"
   ></textarea>
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size", "icon", "shadowDisabled"],
+  props: ["placeholder", "type", "value", "size", "icon", "shadowDisabled", "height"],
   data() {
     return {
       content: this.value,
