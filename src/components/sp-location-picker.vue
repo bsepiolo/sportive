@@ -1,5 +1,13 @@
 <template>
   <div class="m-location-editor" :class="{ 'is-focused': mapVisible }">
+    <sp-button
+      type="basic"
+      shape="circle"
+      icon="eva eva-arrow-back-outline"
+      class="m-location-editor__btn-return"
+      v-if="mapVisible"
+    />
+
     <div class="m-location-editor__container">
       <div class="m-location-editor__input">
         <sp-icon
@@ -28,7 +36,6 @@
           :size="size"
           :shadowDisabled="mapVisible"
           :class="{ 'is-active': mapVisible }"
-          :height="mapVisible || form.location.name  ? 'auto' : ''"
         />
         <sp-icon
           icon="eva eva-compass-outline"
@@ -53,6 +60,15 @@
     >
       <sp-list @click="selectItem" :items="location.locationSearchResults" />
     </sp-card>
+    <sp-button
+      text="Accept"
+      type="primary"
+      class="m-location-editor__submit"
+      :full-width="true"
+      v-if="mapVisible"
+      @click="mapVisible = false"
+    />
+
     <sp-map v-if="mapVisible" />
   </div>
 </template>
@@ -60,6 +76,7 @@
 import SpMap from "./sp-location-map";
 import SpCard from "./atoms/a-sp-card";
 import SpList from "./molecules/m-sp-list";
+import SpButton from "./atoms/a-sp-button";
 import _ from "lodash";
 import { mapActions, mapState, mapMutations } from "vuex";
 const name = "EventsStore";
@@ -98,7 +115,6 @@ export default {
     clearInput: function() {
       this.$store.commit(`${name}/clearLocationName`);
       this.$store.commit(`${name}/clearLocationSearchResults`);
-      debugger;
       this.$emit("input", "");
       this.showClearButton = false;
 
@@ -110,7 +126,6 @@ export default {
       this.$emit("input", e);
     },
     selectItem(e) {
-      debugger;
       let locationName = `${e.address.streetName || "Address unknown"} ${e
         .address.streetNumber || ""}, ${e.address.municipality}`;
       this.setLocationCoordsSearchResults(locationName);
@@ -130,7 +145,6 @@ export default {
     ]),
     findLocation: _.debounce(function(e) {
       if (e.length > 2) {
-        debugger;
         this.getLocationsByName(e);
       }
     }, 400),
@@ -140,6 +154,7 @@ export default {
     SpMap,
     SpCard,
     SpList,
+    SpButton,
   },
 };
 </script>
@@ -147,6 +162,12 @@ export default {
 .m-location-editor {
   &__clear-button {
     right: $space-size-2;
+  }
+  &__btn-return {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
   }
   &.is-focused {
     position: absolute;
@@ -163,7 +184,14 @@ export default {
     }
     .m-location-editor__container {
       background: $white;
+      top: $space-size-9;
     }
+  }
+  &__submit {
+    position: fixed;
+    z-index: 999999;
+    bottom: $space-size-3;
+    width: calc(100% - 48px);
   }
   &__container {
     margin-bottom: $space-size;
