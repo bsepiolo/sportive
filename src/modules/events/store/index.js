@@ -220,6 +220,10 @@ export const EventsStore = {
         zoom: 15,
       });
     },
+    destroyMap(state) {
+      state.location.map.remove();
+      state.location.map = null;
+    },
     setMarker(state, payload) {
       const tt = window.tt;
       debugger;
@@ -228,6 +232,7 @@ export const EventsStore = {
         .addTo(state.location.map);
     },
     removeMarker(state) {
+      if(state.location.marker){
       state.location.marker.remove();
       state.location.marker = null;
       if (state.location.map.getLayer("route")) {
@@ -236,6 +241,7 @@ export const EventsStore = {
       if (state.location.map.getSource("route")) {
         state.location.map.removeSource("route");
       }
+    }
     },
   },
   getters: {

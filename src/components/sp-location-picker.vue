@@ -1,12 +1,11 @@
 <template>
-  <div class="m-location-editor" :class="{ 'is-focused': mapVisible }">
-    <sp-button
-      type="basic"
-      shape="circle"
-      icon="eva eva-arrow-back-outline"
-      class="m-location-editor__btn-return"
-      v-if="mapVisible"
-    />
+  <div
+    class="m-location-editor"
+    :class="{
+      'is-focused': mapVisible,
+      'is-filled': location.distance && location.time,
+    }"
+  >
 
     <div class="m-location-editor__container">
       <div class="m-location-editor__input">
@@ -34,7 +33,7 @@
           @focus="handleBlur"
           :type="type"
           :size="size"
-          :shadowDisabled="mapVisible"
+          :shadowDisabled="mapVisible || (location.distance && location.time)"
           :class="{ 'is-active': mapVisible }"
         />
         <sp-icon
@@ -50,7 +49,10 @@
         class="m-location-editor__details"
         v-if="location.distance || location.time"
       >
-        Distance: {{ location.distance }}km Time: {{ location.time }}minutes
+        <sp-text
+          >Distance: {{ location.distance }}km Time:
+          {{ location.time }}minutes</sp-text
+        >
       </div>
     </div>
     <sp-card
@@ -66,10 +68,10 @@
       class="m-location-editor__submit"
       :full-width="true"
       v-if="mapVisible"
-      @click="mapVisible = false"
+      @click="closeMap"
     />
 
-    <sp-map v-if="mapVisible" />
+    <sp-map v-if="mapVisible || form.location.name" v-show="mapVisible" />
   </div>
 </template>
 <script>
@@ -113,8 +115,8 @@ export default {
       this.$emit("focus");
     },
     clearInput: function() {
-      this.$store.commit(`${name}/clearLocationName`);
-      this.$store.commit(`${name}/clearLocationSearchResults`);
+      this.clearLocationName();
+      this.clearLocationSearchResults();
       this.$emit("input", "");
       this.showClearButton = false;
 
@@ -136,7 +138,13 @@ export default {
 
       this.$store.commit(`${name}/clearLocationSearchResults`);
     },
-    ...mapMutations(name, ["removeMarker", "setLocationCoordsSearchResults"]),
+    ...mapMutations(name, [
+      "removeMarker",
+      "destroyMap",
+      "setLocationCoordsSearchResults",
+      "clearLocationName",
+      "clearLocationSearchResults",
+    ]),
     ...mapActions(name, [
       "getLocationByCoords",
       "getLocationsByName",
@@ -148,6 +156,9 @@ export default {
         this.getLocationsByName(e);
       }
     }, 400),
+    closeMap: function() {
+      this.mapVisible = false;
+    },
   },
 
   components: {
@@ -169,6 +180,14 @@ export default {
     left: 0;
     z-index: 9999;
   }
+  &.is-filled {
+    .m-location-editor__input {
+      background: $white;
+    }
+    .m-location-editor__input {
+      background: $white;
+    }
+  }
   &.is-focused {
     position: absolute;
     top: $space-size-4;
@@ -184,7 +203,7 @@ export default {
     }
     .m-location-editor__container {
       background: $white;
-      top: $space-size-9;
+      // top: $space-size-2;
     }
   }
   &__submit {

@@ -2,7 +2,7 @@
   <button
     @click = "clickHandler"
     class="a-btn"
-    :type="{ submit: submit }"
+    :type="{'submit': submit }"
     :class="{
       'a-btn--primary': type == 'primary',
       'a-btn--basic': type == 'basic',

@@ -7,7 +7,11 @@ import { mapActions, mapMutations, mapState } from "vuex";
 const name = "EventsStore";
 export default {
   methods: {
-    ...mapActions(name, ["getLocationByCoords", "calculateRoute", "setUserLocation"]),
+    ...mapActions(name, [
+      "getLocationByCoords",
+      "calculateRoute",
+      "setUserLocation",
+    ]),
     ...mapMutations(name, [
       "setMap",
       "setLocation",
@@ -25,29 +29,30 @@ export default {
   mounted() {
     let vm = this;
     // const tt = window.tt;
-    this.setMap();
-    this.setUserLocation();
-    // let geolocation = new Promise((resolve, reject) => {
-    //   navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       resolve(position.coords);
-    //     },
-    //     (error) => {
-    //       reject(error);
-    //     }
-    //   );
-    // }).catch((error) => error);
+      this.setMap();
+      this.setUserLocation();
+      // let geolocation = new Promise((resolve, reject) => {
+      //   navigator.geolocation.getCurrentPosition(
+      //     (position) => {
+      //       resolve(position.coords);
+      //     },
+      //     (error) => {
+      //       reject(error);
+      //     }
+      //   );
+      // }).catch((error) => error);
 
-    // geolocation.then((data) => {
-    //   vm.setLocation({ latitude: data.latitude, longitude: data.longitude });
-    //   vm.location.map.setCenter({ lat: data.latitude, lng: data.longitude });
-    //   new tt.Marker().setLngLat([data.longitude, data.latitude]).addTo(vm.location.map);
-    //   vm.getLocationByCoords({ lat: data.latitude, lng: data.longitude })
-    // });
+      // geolocation.then((data) => {
+      //   vm.setLocation({ latitude: data.latitude, longitude: data.longitude });
+      //   vm.location.map.setCenter({ lat: data.latitude, lng: data.longitude });
+      //   new tt.Marker().setLngLat([data.longitude, data.latitude]).addTo(vm.location.map);
+      //   vm.getLocationByCoords({ lat: data.latitude, lng: data.longitude })
+      // });
 
-    this.location.map.on("click", function(event) {
-      vm.calculateRoute(event)
-    });
+      this.location.map.on("click", function(event) {
+        vm.calculateRoute(event);
+      });
+    
   },
 };
 </script>
