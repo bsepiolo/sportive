@@ -5,7 +5,6 @@
       :is="componentName(field.type)"
       :key="index"
       :type="field.type"
-      :value="getValue(index)"
       :name="field.name"
       :icon="field.icon"
       @input="(e) => updateValue(index, e)"
@@ -24,20 +23,20 @@
 </template>
 <script>
 import SpLocationpicker from "@/components/sp-location-picker";
+import SpSelectbox from "@/components/molecules/m-sp-selectbox";
 
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
+  computed: {},
+  created() {
+    this.fields.forEach((e) => {
+      this.$store.commit(`${this.namespace}/registerFormField`, {name: e.name, type: e.type});
+    });
+  },
   methods: {
     submitForm: function() {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
-
-    getValue: function(index) {
-      debugger;
-      let name = this.fields[index].name;
-      return this.$store.state[this.namespace].form[name];
-    },
-
     updateValue: function(index, value) {
       let name = this.fields[index].name;
       this.$store.commit(`${this.namespace}/setFormField`, { name, value });
@@ -45,15 +44,18 @@ export default {
     componentName: function(type) {
       switch (type) {
         case "location":
-          return "sp-locationpicker"
+          return "sp-locationpicker";
+        case "selectbox":
+          return "sp-selectbox";
         default:
           return "sp-textinput";
       }
     },
   },
-  components:{
-        SpLocationpicker
-  }
+  components: {
+    SpLocationpicker,
+    SpSelectbox,
+  },
 };
 </script>
 <style lang="scss" scoped>

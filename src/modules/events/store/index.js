@@ -1,4 +1,5 @@
 // import * as firebase from "firebase/app";
+import Vue from 'vue'
 import "firebase/firestore";
 import { getField, updateField } from "vuex-map-fields";
 
@@ -199,16 +200,28 @@ export const EventsStore = {
       state.location.locationSearchResults = [];
     },
     setLocationCoordsSearchResults(state, payload) {
-      state.form.location.name = payload;
+      debugger
+      state.form.location= {
+        name: payload,
+        coords: { lat: 0, lon: 0 },
+      };
+    },
+    registerFormField(state, payload) {
+
+      Vue.set(state.form, payload.name, payload.type !== 'text' ? '' : null )
+
     },
     clearLocationCoordsSearchResults(state) {
       state.form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField(state, payload) {
+      
       if (payload.name == "location") {
         state.form.location.name = payload.value;
+
       } else {
         state.form[payload.name] = payload.value;
+        
       }
     },
     setMap(state) {

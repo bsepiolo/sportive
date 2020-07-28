@@ -1,6 +1,6 @@
 <template>
    <ul class="m-list">
-    <li class="m-list__el" v-for="(item, index) in items" :key="index" @click = "clickHandler(item)">
+    <li class="m-list__el" v-for="(item, index) in items" :key="index" @click="clickHandler(item)">
       {{item.address.freeformAddress}}
     </li>
   </ul>
@@ -28,9 +28,7 @@ export default {
 .m-list{
   &__el{
     padding: $space-size 0;
-    border-bottom: 1px solid $gray150;
     &:last-child{
-      border: none; 
       padding-bottom: 0;
     }
     &:first-child{

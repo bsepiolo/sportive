@@ -6,7 +6,6 @@
       'is-filled': location.distance && location.time,
     }"
   >
-
     <div class="m-location-editor__container">
       <div class="m-location-editor__input">
         <sp-icon
@@ -28,9 +27,9 @@
         />
         <sp-textarea
           :placeholder="placeholder"
-          :value="value.name"
+          :value="inputValue"
           @input="findLocation($event), handleInput($event)"
-          @focus="handleBlur"
+          @focus="handleFocus"
           :type="type"
           :size="size"
           :shadowDisabled="mapVisible || (location.distance && location.time)"
@@ -107,9 +106,12 @@ export default {
   },
   computed: {
     ...mapState(name, ["form", "location"]),
+    inputValue: function() {
+      return this.$store.state["EventsStore"].form["location"].name;
+    }
   },
   methods: {
-    handleBlur: function() {
+    handleFocus: function() {
       this.mapVisible = true;
       this.iconColor = "primary";
       this.$emit("focus");

@@ -8,15 +8,17 @@
     :value="value"
     @input="handleInput"
     @keydown="handleInput"
-    @focus="handleBlur"
+    @focus="handleFocus"
+    @blur="handleBlur"
     :type="type"
     :style="{height: height}"
     :placeholder="placeholder"
+    :readonly="readonly"
   ></textarea>
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size", "icon", "shadowDisabled", "height"],
+  props: ["placeholder", "type", "value", "size", "icon", "shadowDisabled", "height", "readonly"],
   data() {
     return {
       content: this.value,
@@ -27,8 +29,11 @@ export default {
       this.$emit("input", e.target.value);
     },
     handleBlur() {
-      this.$emit("focus");
+      this.$emit("blur");
     },
+    handleFocus() {
+      this.$emit("focus");
+    }
   },
 };
 </script>

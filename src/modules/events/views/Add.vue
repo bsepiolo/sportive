@@ -96,10 +96,10 @@ export default {
           icon: "eva eva-person-outline",
         },
         {
-          type: "text",
+          type: "selectbox",
           placeholder: "Disicipline",
-          model: "disicipline",
-          name: "disicipline",
+          model: "discipline",
+          name: "discipline",
           icon: "eva eva-award-outline",
         },
         {
