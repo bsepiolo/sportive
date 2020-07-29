@@ -3,12 +3,13 @@
     <!-- <span :class="icon" class="m-input__icon"></span> -->
     <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
 
-    <sp-textbox
+    <sp-textarea
       :placeholder="placeholder"
       :value="value"
       @input="handleInput"
       :type="type"
       :size="size"
+      :height="height"
       @focus="handleFocus"
       @blur="handleBlur"
     />
@@ -16,7 +17,7 @@
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size", "icon"],
+  props: ["placeholder", "type", "value", "size", "icon", "height"],
   data() {
     return {
       content: this.value,

@@ -1,30 +1,29 @@
 .texteditor {
-  position: relative;
-  margin-bottom: $space-size;
-  display: flex;
-  align-items: center;
-  .texteditor__input {
-    &--medium{
-      height: $space-size-5;
-    }
-    height: $space-size-6;
-    border-radius: $border-radius;
-    background: $white;
-    box-shadow: $box-shadow;
-    border: none;
-    width: 100%;
-    font-size: 1rem;
-    padding: 13px $space-size-2 13px $space-size-6;
-    color: $black;
-    &::-webkit-input-placeholder, &:-ms-input-placeholder, &::placeholder {
-      /* Edge */
-      color: #A5B0D4;
-    }
+  &--medium {
+    height: $space-size-5;
   }
-  &__icon {
-    color: $secondary-text-color;
-    position: absolute;
-    left: $space-size-2;
-    font-size: $space-size-2 + 4;
+  &--shadow-disabled {
+    box-shadow: none;
+  }
+  &--textarea {
+    resize: none;
+  }
+  height: $space-size-6;
+  border-radius: $border-radius;
+  background: $white;
+  box-shadow: $box-shadow;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  padding: 13px $space-size-2 13px $space-size-6;
+  color: $black;
+  &::-webkit-input-placeholder,
+  &:-ms-input-placeholder,
+  &::placeholder {
+    /* Edge */
+    color: #a5b0d4;
+  }
+  &.is-focused {
+    box-shadow: $box-shadow-focused;
   }
 }

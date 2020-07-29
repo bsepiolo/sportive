@@ -7,6 +7,7 @@
       :type="field.type"
       :name="field.name"
       :icon="field.icon"
+      :height="field.height"
       @input="(e) => updateValue(index, e)"
       :placeholder="field.placeholder"
     />
@@ -24,13 +25,17 @@
 <script>
 import SpLocationpicker from "@/components/sp-location-picker";
 import SpSelectbox from "@/components/molecules/m-sp-selectbox";
+import SpTextAreaInput from "@/components/molecules/m-sp-text-area-input";
 
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
   computed: {},
   created() {
     this.fields.forEach((e) => {
-      this.$store.commit(`${this.namespace}/registerFormField`, {name: e.name, type: e.type});
+      this.$store.commit(`${this.namespace}/registerFormField`, {
+        name: e.name,
+        type: e.type,
+      });
     });
   },
   methods: {
@@ -47,6 +52,8 @@ export default {
           return "sp-locationpicker";
         case "selectbox":
           return "sp-selectbox";
+        case "textarea":
+          return "sp-text-area-input";
         default:
           return "sp-textinput";
       }
@@ -55,6 +62,7 @@ export default {
   components: {
     SpLocationpicker,
     SpSelectbox,
+    SpTextAreaInput,
   },
 };
 </script>

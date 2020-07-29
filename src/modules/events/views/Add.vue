@@ -124,11 +124,12 @@ export default {
           icon: "eva eva-shield-outline",
         },
         {
-          type: "text",
+          type: "textarea",
           placeholder: "Description",
           model: "description",
           name: "description",
           icon: "eva eva-file-text-outline",
+          height: "100px"
         },
       ],
     };

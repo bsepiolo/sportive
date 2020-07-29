@@ -1,12 +1,14 @@
 <template>
   <input
-    class="a-texteditor"
+    class="texteditor"
     :class="{
-      'a-texteditor--medium': size == 'medium',
+      'texteditor--medium': size == 'medium',
+      'is-focused': isFocused == true
     }"
     :value="value"
     @input="handleInput"
-    @focus="handleBlur"
+    @focus="handleFocus"
+    @blur="handleBlur"
     :type="type"
     :placeholder="placeholder"
   />
@@ -17,37 +19,22 @@ export default {
   data() {
     return {
       content: this.value,
+      isFocused: false
     };
   },
   methods: {
     handleInput(e) {
       this.$emit("input", e.target.value);
     },
-    handleBlur() {
+    handleFocus() {
+      this.isFocused = true;
       this.$emit("focus");
     },
+    handleBlur(){
+      this.$emit("blur");
+      this.isFocused = false;
+    }
   },
 };
 </script>
-<style lang="scss" scoped>
-.a-texteditor {
-  &--medium {
-    height: $space-size-5;
-  }
-  height: $space-size-6;
-  border-radius: $border-radius;
-  background: $white;
-  box-shadow: $box-shadow;
-  border: none;
-  width: 100%;
-  font-size: 1rem;
-  padding: 13px $space-size-2 13px $space-size-6;
-  color: $black;
-  &::-webkit-input-placeholder,
-  &:-ms-input-placeholder,
-  &::placeholder {
-    /* Edge */
-    color: #a5b0d4;
-  }
-}
-</style>
+

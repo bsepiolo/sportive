@@ -27,14 +27,16 @@
           class="mr-2 m-location-editor__icon"
         />
       </div>
-      <sp-card
-        class="m-location-editor__card"
-        ratio="wide"
-        z-index="max"
-        v-if="listVisible"
-      >
-        <sp-list @click="selectItem" :items="items" />
-      </sp-card>
+      <transition name="fade">
+        <sp-card
+          class="m-location-editor__card"
+          ratio="wide"
+          z-index="max"
+          v-if="listVisible"
+        >
+          <sp-list class="m-location-editor__list" @click="selectItem" :items="items" />
+        </sp-card>
+      </transition>
     </div>
   </div>
 </template>
@@ -53,12 +55,22 @@ export default {
       items: [
         {
           address: {
-            freeformAddress: "test",
+            freeformAddress: "Soccer",
           },
         },
         {
           address: {
-            freeformAddress: "Piłka nożna spać nie można",
+            freeformAddress: "Basketball",
+          },
+        },
+        {
+          address: {
+            freeformAddress: "Volleyball",
+          },
+        },
+        {
+          address: {
+            freeformAddress: "Tennis",
           },
         },
       ],
@@ -82,10 +94,7 @@ export default {
       const vm = this;
       setTimeout(function() {
         vm.listVisible = false;
-
-        if (!vm.inputValue) {
-          vm.iconColor = "default";
-        }
+        vm.iconColor = "default";
       }, 0);
     },
     selectItem: function(e) {
@@ -116,6 +125,9 @@ export default {
   &__card {
     position: absolute;
     top: $space-size-6 + $space-size-05;
+    overflow: hidden;
+    padding: 0;
+    //max-height: 0;
   }
   &__icon {
     right: 0;
@@ -167,12 +179,14 @@ export default {
     position: relative;
     flex-direction: column;
     border-radius: $border-radius;
-    box-shadow: $box-shadow;
   }
   &__input {
     display: flex;
     align-items: center;
     position: relative;
+  }
+  &__list{
+    padding: $space-size-2;
   }
   &__details {
     background: $gray150;
@@ -187,5 +201,25 @@ export default {
     position: relative;
     z-index: 9999;
   }
+}
+@keyframes listHeightAnimation {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 200px;
+  }
+}
+.fade-enter-active,
+.fade-enter {
+  //  transition: max-height 0.2s;
+  // animation:  listHeightAnimation .5s ease-in-out alternate;
+  animation: listHeightAnimation 0.4s ease-in normal;
+}
+.fade-leave-active,
+.fade-leave-to {
+  //  transition: max-height 0.2s;
+  // animation:  listHeightAnimation .5s ease-in-out alternate;
+  animation: listHeightAnimation 0.4s ease-out reverse;
 }
 </style>
