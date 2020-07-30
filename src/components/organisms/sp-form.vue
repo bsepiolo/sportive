@@ -8,6 +8,7 @@
       :name="field.name"
       :icon="field.icon"
       :height="field.height"
+      :fields="field.fields"
       @input="(e) => updateValue(index, e)"
       :placeholder="field.placeholder"
     />
@@ -23,9 +24,10 @@
   </form>
 </template>
 <script>
-import SpLocationpicker from "@/components/sp-location-picker";
+import SpLocationpicker from "@/components/molecules/m-sp-location-input";
 import SpSelectbox from "@/components/molecules/m-sp-selectbox";
 import SpTextAreaInput from "@/components/molecules/m-sp-text-area-input";
+import SpRadioButton from "@/components/molecules/m-sp-radio-group";
 
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
@@ -54,6 +56,8 @@ export default {
           return "sp-selectbox";
         case "textarea":
           return "sp-text-area-input";
+          case "radio":
+            return "sp-radio-button";
         default:
           return "sp-textinput";
       }
@@ -63,6 +67,7 @@ export default {
     SpLocationpicker,
     SpSelectbox,
     SpTextAreaInput,
+    SpRadioButton
   },
 };
 </script>

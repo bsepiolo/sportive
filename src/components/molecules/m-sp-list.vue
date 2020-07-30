@@ -27,12 +27,12 @@ export default {
 
 .m-list{
   &__el{
-    padding: $space-size 0;
+    padding: $space-size + $space-size / 2 0;
     &:last-child{
-      padding-bottom: 0;
+      padding-bottom: $space-size / 2;
     }
     &:first-child{
-      padding-top: 0;
+      padding-top: $space-size / 2;
     }
   }
 }

@@ -7,6 +7,7 @@
       'icon--standard': type == 'standard',
       'icon--absolute': absolute,
       'icon--size-medium': size == 'medium',
+      'icon--size-large': size == 'large',
       'icon--color-primary': color == 'primary'
     }"
   >
@@ -75,6 +76,11 @@ export default {
   &--size-medium {
     i {
       font-size: calc(1em + 3px);
+    }
+  }
+   &--size-large {
+    i {
+      font-size: calc(1em + 6px);
     }
   }
   &--absolute {

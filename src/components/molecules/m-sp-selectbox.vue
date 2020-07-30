@@ -1,8 +1,8 @@
 <template>
-  <div class="m-location-editor">
+  <div class="m-selectbox-editor">
     <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <div class="m-location-editor__container">
-      <div class="m-location-editor__input">
+    <div class="m-selectbox-editor__container">
+      <div class="m-selectbox-editor__input">
         <sp-icon
           :icon="icon"
           class="ml-2"
@@ -24,17 +24,17 @@
           icon="eva eva-chevron-down-outline"
           :color="iconColor"
           :absolute="true"
-          class="mr-2 m-location-editor__icon"
+          class="mr-2 m-selectbox-editor__icon"
         />
       </div>
       <transition name="fade">
         <sp-card
-          class="m-location-editor__card"
+          class="m-selectbox-editor__card"
           ratio="wide"
           z-index="max"
           v-if="listVisible"
         >
-          <sp-list class="m-location-editor__list" @click="selectItem" :items="items" />
+          <sp-list class="m-selectbox-editor__list" @click="selectItem" :items="items" />
         </sp-card>
       </transition>
     </div>
@@ -110,18 +110,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.m-input {
-  position: relative;
-  margin-bottom: $space-size;
-  display: flex;
-  align-items: center;
-  &__icon {
-    position: absolute;
-    left: $space-size-2;
-    font-size: $space-size-2 + $space-size / 4;
-  }
-}
-.m-location-editor {
+.m-selectbox-editor {
   &__card {
     position: absolute;
     top: $space-size-6 + $space-size-05;
@@ -142,10 +131,10 @@ export default {
     z-index: 9999;
   }
   &.is-filled {
-    .m-location-editor__input {
+    .m-selectbox-editor__input {
       background: $white;
     }
-    .m-location-editor__input {
+    .m-selectbox-editor__input {
       background: $white;
     }
   }
@@ -153,16 +142,16 @@ export default {
     position: absolute;
     top: $space-size-4;
     width: calc(100% - 48px);
-    .m-location-editor__icon {
+    .m-selectbox-editor__icon {
       position: absolute;
       z-index: 99999999;
     }
-    .m-location-editor__input {
+    .m-selectbox-editor__input {
       background: $white;
       margin: 0;
       padding-right: $space-size-6;
     }
-    .m-location-editor__container {
+    .m-selectbox-editor__container {
       background: $white;
       // top: $space-size-2;
     }
@@ -214,12 +203,12 @@ export default {
 .fade-enter {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.4s ease-in normal;
+  animation: listHeightAnimation 0.3s ease-in normal;
 }
 .fade-leave-active,
 .fade-leave-to {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.4s ease-out reverse;
+  animation: listHeightAnimation 0.3s ease-out reverse;
 }
 </style>

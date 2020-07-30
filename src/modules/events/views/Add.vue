@@ -117,10 +117,20 @@ export default {
           icon: "eva eva-calendar-outline",
         },
         {
-          type: "text",
+          type: "radio",
           placeholder: "Access",
           model: "access",
           name: "access",
+          fields: [{
+            name: "Public",
+            icon: "eva eva-lock-outline",
+            default: true
+          },
+          {
+            name: "Private",
+            icon: "eva eva-people-outline",
+            default: false
+          }],
           icon: "eva eva-shield-outline",
         },
         {
