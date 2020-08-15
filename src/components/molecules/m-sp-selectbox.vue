@@ -34,7 +34,11 @@
           z-index="max"
           v-if="listVisible"
         >
-          <sp-list class="m-selectbox-editor__list" @click="selectItem" :items="items" />
+          <sp-list
+            class="m-selectbox-editor__list"
+            @click="selectItem"
+            :items="items"
+          />
         </sp-card>
       </transition>
     </div>
@@ -44,7 +48,7 @@
 <script>
 import SpCard from "../atoms/a-sp-card";
 import SpList from "../molecules/m-sp-list";
-//  const name = "EventsStore";
+const name = "EventsStore";
 
 export default {
   props: ["placeholder", "type", "value", "size", "icon"],
@@ -77,30 +81,29 @@ export default {
     };
   },
   computed: {
-    inputValue: function() {
-      return this.$store.state["EventsStore"].form["discipline"];
-    },
-    // ...mapFields(namespace, ["authForm.email"]),
+    inputValue() {
+      return this.$store.state[name].form["discipline"];
+    }
   },
   methods: {
     handleInput(e) {
       this.$emit("input", e);
     },
-    handleFocus: function() {
+    handleFocus() {
       this.listVisible = true;
       this.iconColor = "primary";
     },
-    handleBlur: function() {
+    handleBlur() {
       const vm = this;
-      setTimeout(function() {
+      setTimeout(() => {
         vm.listVisible = false;
         vm.iconColor = "default";
       }, 0);
     },
-    selectItem: function(e) {
+    selectItem({ address }) {
+      const { freeformAddress } = address;
       this.listVisible = false;
-      this.$emit("input", e.address.freeformAddress);
-      // this.$store.commit(`${name}/setDiscipline`, e);
+      this.$emit("input", freeformAddress);
     },
   },
   components: {
@@ -174,7 +177,7 @@ export default {
     align-items: center;
     position: relative;
   }
-  &__list{
+  &__list {
     padding: $space-size-2;
   }
   &__details {

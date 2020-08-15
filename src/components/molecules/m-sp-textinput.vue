@@ -1,6 +1,5 @@
 <template>
   <div class="m-input">
-    <!-- <span :class="icon" class="m-input__icon"></span> -->
     <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
 
     <sp-textbox
@@ -22,9 +21,6 @@ export default {
       content: this.value,
       iconColor: "default",
     };
-  },
-  computed: {
-    // ...mapFields(namespace, ["authForm.email"]),
   },
   methods: {
     handleInput(e) {

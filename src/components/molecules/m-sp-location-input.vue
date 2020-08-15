@@ -106,17 +106,17 @@ export default {
   },
   computed: {
     ...mapState(name, ["form", "location"]),
-    inputValue: function() {
+    inputValue() {
       return this.$store.state["EventsStore"].form["location"].name;
     }
   },
   methods: {
-    handleFocus: function() {
+    handleFocus() {
       this.mapVisible = true;
       this.iconColor = "primary";
       this.$emit("focus");
     },
-    clearInput: function() {
+    clearInput() {
       this.clearLocationName();
       this.clearLocationSearchResults();
       this.$emit("input", "");
@@ -126,19 +126,22 @@ export default {
         this.removeMarker();
       }
     },
-    handleInput: function(e) {
+    handleInput(e) {
       this.$emit("input", e);
     },
-    selectItem(e) {
-      let locationName = `${e.address.streetName || "Address unknown"} ${e
-        .address.streetNumber || ""}, ${e.address.municipality}`;
+    selectItem({position, address}) {
+      const {lat, lon} = position;
+      const {streetName, streetNumber, municipality} = address;
+
+      let locationName = `${streetName || "Address unknown"} ${streetNumber || ""}, ${municipality}`;
+
       this.setLocationCoordsSearchResults(locationName);
       this.calculateRoute({
-        lngLat: { lng: e.position.lon, lat: e.position.lat },
+        lngLat: { lng: lon, lat },
       });
-      this.location.map.setCenter({ lat: e.position.lat, lng: e.position.lon });
+      this.location.map.setCenter({ lat, lng: lon });
 
-      this.$store.commit(`${name}/clearLocationSearchResults`);
+      this.clearLocationSearchResults();
     },
     ...mapMutations(name, [
       "removeMarker",
@@ -153,12 +156,12 @@ export default {
       "calculateRoute",
       "setUserLocation",
     ]),
-    findLocation: _.debounce(function(e) {
+    findLocation: _.debounce((e) => {
       if (e.length > 2) {
         this.getLocationsByName(e);
       }
     }, 400),
-    closeMap: function() {
+    closeMap() {
       this.mapVisible = false;
     },
   },

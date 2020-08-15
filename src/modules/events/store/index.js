@@ -1,5 +1,5 @@
 // import * as firebase from "firebase/app";
-import Vue from 'vue'
+import Vue from "vue";
 import "firebase/firestore";
 import { getField, updateField } from "vuex-map-fields";
 
@@ -26,34 +26,32 @@ export const EventsStore = {
   actions: {
     setUserLocation({ state, commit, dispatch }) {
       const tt = window.tt;
-      let geolocation = new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            resolve(position.coords);
-          },
-          (error) => {
-            reject(error);
-          }
-        );
-      }).catch((error) => error);
-      geolocation.then((data) => {
-        commit("setLocation", {
-          latitude: data.latitude,
-          longitude: data.longitude,
+      const { location } = state;
+      const getCurrentPosition = (options = {}) => {
+        return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, options);
         });
-        state.location.map.setCenter({ lat: data.latitude, lng: data.longitude });
-        new tt.Marker()
-          .setLngLat([data.longitude, data.latitude])
-          .addTo(state.location.map);
-        dispatch("getLocationByCoords", {
-          lat: data.latitude,
-          lng: data.longitude,
-        });
-      });
-      if(state.location.marker){
-        commit("removeMarker")
-        commit("clearDistanceAndTime")
+      };
 
+      (async function() {
+        try {
+          const { coords } = await getCurrentPosition();
+          const { latitude: lat, longitude: lng } = coords;
+
+          commit("setLocation", { latitude: lat, longitude: lng });
+
+          state.location.map.setCenter({ lat, lng });
+
+          new tt.Marker().setLngLat([lng, lat]).addTo(state.location.map);
+          dispatch("getLocationByCoords", { lat, lng });
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+
+      if (location.marker) {
+        commit("removeMarker");
+        commit("clearDistanceAndTime");
       }
     },
     addEvent({ state, rootState }) {
@@ -69,192 +67,179 @@ export const EventsStore = {
           console.log(`${errorCode}, ${errorMessage}`);
         });
     },
-    getLocationByCoords({ commit }, payload) {
-      this._vm.$http
-        .get(
-          `https://api.tomtom.com/search/2/reverseGeocode/${payload.lat},${payload.lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
-        )
-        .then((data) => {
-          commit(
-            "setLocationCoordsSearchResults",
-            `${data.data.addresses[0].address.streetName ||
-              "Address unknown"} ${data.data.addresses[0].address
-              .streetNumber || ""}, ${
-              data.data.addresses[0].address.municipality
-            }`
-          );
-        });
-    },
-    getLocationsByName({ commit, state }, payload) {
-      this._vm.$http
-        .get(
-          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${state.location.current.lat}&lon=${state.location.current.lon}&radius=30000&idxSet=PAD,Addr,Str`
-        )
-        .then((data) => {
-          debugger;
+    async getLocationByCoords({ commit }, { lng, lat }) {
+      try {
+        const { data } = await this._vm.$http.get(
+          `https://api.tomtom.com/search/2/reverseGeocode/${lat},${lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
+        );
+        const [addresses] = data.addresses;
+        const { address } = addresses;
 
-          commit("setLocationSearchResults", data.data.results);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getEvents({ commit, rootState }) {
-      rootState.db
-        .collection("events")
-        .get()
-        .then(function(data) {
-          let eventsArray = data.docs.map((doc) => {
-            return doc.data();
-          });
-          commit("setEvents", eventsArray);
-        });
-    },
-    calculateRoute({ commit, dispatch, state }, payload) {
-      const tt = window.tt;
+        const locationName = `${address.streetName ||
+          "Address unknown"} ${address.streetNumber || ""}, ${
+          address.municipality
+        }`;
 
-      tt.services
-        .calculateRoute({
-          key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-          traffic: true,
-          locations: `${state.location.current.lon},${state.location.current.lat}:${payload.lngLat.lng},${payload.lngLat.lat}`,
-        })
-        .go()
-        .then(function(response) {
-          var geojson = response.toGeoJson();
-          commit(
-            "setDistance",
-            Math.round(response.routes[0].summary.lengthInMeters / 100) / 10
-          );
-          commit(
-            "setTime",
-            Math.round(response.routes[0].summary.travelTimeInSeconds / 60)
-          );
-
-          if (state.location.map.getLayer("route")) {
-            state.location.map.removeLayer("route");
-          }
-          if (state.location.map.getSource("route")) {
-            state.location.map.removeSource("route");
-          }
-          state.location.map.addLayer({
-            id: "route",
-            type: "line",
-            source: {
-              type: "geojson",
-              data: geojson,
-            },
-            paint: {
-              "line-color": "#4a90e2",
-              "line-width": 8,
-            },
-          });
-        });
-
-      if (state.location.marker) {
-        commit("removeMarker");
+        commit("setLocationCoordsSearchResults", locationName);
+      } catch (err) {
+        console.log(err);
       }
+    },
+    async getLocationsByName({ commit, state }, payload) {
+      const {
+        location: { current },
+      } = state;
+      try {
+        const { data } = await this._vm.$http.get(
+          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${current.lon}&radius=30000&idxSet=PAD,Addr,Str`
+        );
+        commit("setLocationSearchResults", data.results);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getEvents({ commit, rootState }) {
+      try {
+        const { docs: events } = await rootState.db.collection("events").get();
 
-      commit("setMarker", [payload.lngLat.lng, payload.lngLat.lat]);
+        const eventsArray = events.map(({ data }) => {
+          return data();
+        });
 
-      dispatch("getLocationByCoords", {
-        lng: payload.lngLat.lng,
-        lat: payload.lngLat.lat,
-      });
+        commit("setEvents", eventsArray);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async calculateRoute(
+      { commit, dispatch, state, rootState },
+      { lngLat: { lng, lat } }
+    ) {
+      const tt = window.tt;
+      const { location } = state;
+      const { current } = location;
+
+      try {
+        let response = await tt.services
+          .calculateRoute({
+            key: rootState.tomtomKey,
+            traffic: true,
+            locations: `${current.lon},${current.lat}:${lng},${lat}`,
+          })
+          .go();
+
+        var geojson = response.toGeoJson();
+
+        const [routes] = response.routes;
+        const {
+          summary: { lengthInMeters, travelTimeInSeconds },
+        } = routes;
+
+        commit("setDistance", Math.round(lengthInMeters / 100) / 10);
+        commit("setTime", Math.round(travelTimeInSeconds / 60));
+
+        location.map.getLayer("route") && location.map.removeLayer("route");
+
+        location.map.getSource("route") && location.map.removeSource("route");
+
+        location.marker && commit("removeMarker");
+        
+
+        commit("setMarker", [lng, lat]);
+
+        dispatch("getLocationByCoords", { lng, lat });
+
+        location.map.addLayer({
+          id: "route",
+          type: "line",
+          source: {
+            type: "geojson",
+            data: geojson,
+          },
+          paint: {
+            "line-color": "#4a90e2",
+            "line-width": 8,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
     },
   },
   mutations: {
     updateField,
-    setEvents(state, payload) {
-      state.events = payload;
+    setEvents({ events }, payload) {
+      events;
+      events = payload;
     },
-    setLocation(state, payload) {
-      state.location.current.lat = payload.latitude;
-      state.location.current.lon = payload.longitude;
+    setLocation({ location }, { latitude: lat, longitude: lon }) {
+      location.current = { lat, lon };
     },
-    setTime(state, payload) {
-      state.location.time = payload;
+    setTime({ location }, payload) {
+      location.time = payload;
     },
-    setLocationName(state, payload) {
-      state.form.location.name = payload;
+    setLocationName({ form }, payload) {
+      form.location.name = payload;
     },
-    clearDistanceAndTime(state) {
-      state.location.distance = null;
-      state.location.time = null;
+    clearDistanceAndTime({ location }) {
+      location.distance = location.time = null;
     },
-    clearLocationName(state) {
-      state.form.location = {
+    clearLocationName({ form }) {
+      form.location = {
         name: "",
         coords: { lat: 0, lon: 0 },
       };
-      state.location.distance = null;
-      state.location.time = null;
+      form.location.distance = form.location.time = null;
     },
-    setDistance(state, payload) {
-      state.location.distance = payload;
+    setDistance({ location }, payload) {
+      location.distance = payload;
     },
-    setLocationSearchResults(state, payload) {
-      state.location.locationSearchResults = payload;
+    setLocationSearchResults({ location }, payload) {
+      location.locationSearchResults = payload;
     },
-    clearLocationSearchResults(state) {
-      state.location.locationSearchResults = [];
+    clearLocationSearchResults({ location }) {
+      location.locationSearchResults = [];
     },
-    setLocationCoordsSearchResults(state, payload) {
-      debugger
-      state.form.location= {
+    setLocationCoordsSearchResults({ form }, payload) {
+      form.location = {
         name: payload,
         coords: { lat: 0, lon: 0 },
       };
     },
-    registerFormField(state, payload) {
-
-      Vue.set(state.form, payload.name, payload.type !== 'text' ? '' : null )
-
+    registerFormField({ form }, { name, type }) {
+      Vue.set(form, name, type !== "text" ? "" : null);
     },
-    clearLocationCoordsSearchResults(state) {
-      state.form.location = { name: "", coords: { lat: 0, lon: 0 } };
+    clearLocationCoordsSearchResults({ form }) {
+      form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    setFormField(state, payload) {
-      
-      if (payload.name == "location") {
-        state.form.location.name = payload.value;
-
-      } else {
-        state.form[payload.name] = payload.value;
-        
-      }
+    setFormField({ form }, { name, value }) {
+      name == "location" ? (form.location.name = value) : (form.name = value);
     },
-    setMap(state) {
+    setMap({ location }) {
       const tt = window.tt;
-      state.location.map = tt.map({
+      location.map = tt.map({
         key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
         container: "locationPickerMap",
         style: "tomtom://vector/1/basic-main",
         zoom: 15,
       });
     },
-    destroyMap(state) {
-      state.location.map.remove();
-      state.location.map = null;
+    destroyMap({ location }) {
+      location.map.remove();
+      location.map = null;
     },
-    setMarker(state, payload) {
+    setMarker({ location }, payload) {
       const tt = window.tt;
-      debugger;
-      state.location.marker = new tt.Marker()
-        .setLngLat(payload)
-        .addTo(state.location.map);
+      location.marker = new tt.Marker().setLngLat(payload).addTo(location.map);
     },
-    removeMarker(state) {
-      if(state.location.marker){
-      state.location.marker.remove();
-      state.location.marker = null;
-      if (state.location.map.getLayer("route")) {
-        state.location.map.removeLayer("route");
+    removeMarker({ location }) {
+      if (location.marker) {
+        location.marker.remove();
+        location.marker = null;
+
+        location.map.getLayer("route") && location.map.removeLayer("route");
+        location.map.getSource("route") && location.map.removeSource("route");
       }
-      if (state.location.map.getSource("route")) {
-        state.location.map.removeSource("route");
-      }
-    }
     },
   },
   getters: {

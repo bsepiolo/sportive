@@ -124,12 +124,12 @@ export default {
           fields: [{
             name: "Public",
             icon: "eva eva-lock-outline",
-            default: true
+            isChecked: false
           },
           {
             name: "Private",
             icon: "eva eva-people-outline",
-            default: false
+            isChecked: false
           }],
           icon: "eva eva-shield-outline",
         },

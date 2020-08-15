@@ -33,22 +33,19 @@ export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
   computed: {},
   created() {
-    this.fields.forEach((e) => {
-      this.$store.commit(`${this.namespace}/registerFormField`, {
-        name: e.name,
-        type: e.type,
-      });
+    this.fields.forEach(({name, type}) => {
+      this.$store.commit(`${this.namespace}/registerFormField`, {name, type});
     });
   },
   methods: {
-    submitForm: function() {
+    submitForm() {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
-    updateValue: function(index, value) {
+    updateValue(index, value) {
       let name = this.fields[index].name;
       this.$store.commit(`${this.namespace}/setFormField`, { name, value });
     },
-    componentName: function(type) {
+    componentName(type) {
       switch (type) {
         case "location":
           return "sp-locationpicker";

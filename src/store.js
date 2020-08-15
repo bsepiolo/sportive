@@ -30,6 +30,7 @@ export default new Vuex.Store({
   state: {
     user: null,
     db: db,
+    tomtomKey: 'T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63'
   },
   mutations: {
     setUser(state) {
