@@ -41,9 +41,10 @@ export default {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
     updateValue(index, value) {
-      debugger
+      
       let name = this.fields[index].name;
       this.$store.commit(`${this.namespace}/setFormField`, { name, value });
+      debugger
     },
     componentName(type) {
       switch (type) {

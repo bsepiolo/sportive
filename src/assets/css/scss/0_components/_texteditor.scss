@@ -23,7 +23,7 @@
     /* Edge */
     color: $gray175;
   }
-  &.is-focused {
+  &:focus {
     box-shadow: $box-shadow-focused;
   }
 }

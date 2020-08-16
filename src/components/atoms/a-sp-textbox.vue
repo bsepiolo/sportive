@@ -3,7 +3,6 @@
     class="texteditor"
     :class="{
       'texteditor--medium': size == 'medium',
-      'is-focused': isFocused == true
     }"
     :value="value"
     @input="handleInput"
@@ -27,12 +26,10 @@ export default {
       this.$emit("input", e.target.value);
     },
     handleFocus() {
-      this.isFocused = true;
       this.$emit("focus");
     },
     handleBlur(){
       this.$emit("blur");
-      this.isFocused = false;
     }
   },
 };

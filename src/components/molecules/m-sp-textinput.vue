@@ -1,7 +1,7 @@
 <template>
   <div class="m-input">
     <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
-
+{{value}}
     <sp-textbox
       :placeholder="placeholder"
       :value="value"
@@ -18,7 +18,6 @@ export default {
   props: ["placeholder", "type", "value", "size", "icon"],
   data() {
     return {
-      content: this.value,
       iconColor: "default",
     };
   },
