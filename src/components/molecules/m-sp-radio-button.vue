@@ -13,12 +13,12 @@
       type="radio"
     />
     <sp-icon size="large" :icon="icon" class="m-selectbox-editor__icon" />
-    <rd-text class="mt-1">{{ name }}</rd-text>
+    <sp-text color="light" class="mt-1">{{ name }}</sp-text>
   </div>
 </template>
 
 <script>
-import RdText from "../atoms/a-sp-text"
+import SpText from "../atoms/a-sp-text"
 export default {
   props: ["name", "icon", "isChecked"],
   data() {
@@ -33,7 +33,7 @@ export default {
     }
   },
   components:{
-    RdText
+    SpText
   }
 };
 </script>
@@ -49,8 +49,6 @@ export default {
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  margin-bottom: $space-size;
-  margin: 0 $space-size / 2;
   &__input {
     display: none;
   }

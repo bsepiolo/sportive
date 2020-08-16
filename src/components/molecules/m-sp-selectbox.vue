@@ -83,7 +83,7 @@ export default {
   computed: {
     inputValue() {
       return this.$store.state[name].form["discipline"];
-    }
+    },
   },
   methods: {
     handleInput(e) {
@@ -94,10 +94,9 @@ export default {
       this.iconColor = "primary";
     },
     handleBlur() {
-      const vm = this;
       setTimeout(() => {
-        vm.listVisible = false;
-        vm.iconColor = "default";
+        this.listVisible = false;
+        this.iconColor = "default";
       }, 0);
     },
     selectItem({ address }) {
@@ -206,12 +205,12 @@ export default {
 .fade-enter {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.3s ease-in normal;
+  animation: listHeightAnimation 0.2s ease-in normal;
 }
 .fade-leave-active,
 .fade-leave-to {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.3s ease-out reverse;
+  animation: listHeightAnimation 0.2s ease-out reverse;
 }
 </style>

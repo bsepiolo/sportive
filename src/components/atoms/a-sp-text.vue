@@ -1,5 +1,5 @@
 <template>
-  <p class="a-text" :class="{ 'text-center': textCenter, 'a-text--light': color=='light', 'a-text--small': size=='small' }">
+  <p class="a-text" :class="{ 'text-center': textCenter,'a-text--secondary': color=='secondary', 'a-text--light': color=='light', 'a-text--small': size=='small' }">
     <slot />
   </p>
 </template>
@@ -13,8 +13,11 @@ export default {
 .a-text{
   display: flex;
   align-items: center;
-  &--light{
+  &--secondary{
     color: $secondary-text-color;
+  }
+  &--light{
+    color: $gray175;
   }
   &--small{
     font-size: 12px;

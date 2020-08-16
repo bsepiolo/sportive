@@ -31,7 +31,6 @@ import SpRadioButton from "@/components/molecules/m-sp-radio-group";
 
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
-  computed: {},
   created() {
     this.fields.forEach(({name, type}) => {
       this.$store.commit(`${this.namespace}/registerFormField`, {name, type});
@@ -42,6 +41,7 @@ export default {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
     updateValue(index, value) {
+      debugger
       let name = this.fields[index].name;
       this.$store.commit(`${this.namespace}/setFormField`, { name, value });
     },

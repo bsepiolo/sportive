@@ -21,7 +21,7 @@
   &:-ms-input-placeholder,
   &::placeholder {
     /* Edge */
-    color: #a5b0d4;
+    color: $gray175;
   }
   &.is-focused {
     box-shadow: $box-shadow-focused;

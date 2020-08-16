@@ -111,6 +111,16 @@ export const EventsStore = {
         console.log(err);
       }
     },
+    setMap({ commit, rootState }) {
+      const tt = window.tt;
+      const map = tt.map({
+        key: rootState.tomtomKey,
+        container: "locationPickerMap",
+        style: "tomtom://vector/1/basic-main",
+        zoom: 15,
+      });
+      commit("setMap", map);
+    },
     async calculateRoute(
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
@@ -143,7 +153,6 @@ export const EventsStore = {
         location.map.getSource("route") && location.map.removeSource("route");
 
         location.marker && commit("removeMarker");
-        
 
         commit("setMarker", [lng, lat]);
 
@@ -175,6 +184,9 @@ export const EventsStore = {
     setLocation({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };
     },
+    setDistance({ location }, payload) {
+      location.distance = payload;
+    },
     setTime({ location }, payload) {
       location.time = payload;
     },
@@ -184,21 +196,23 @@ export const EventsStore = {
     clearDistanceAndTime({ location }) {
       location.distance = location.time = null;
     },
-    clearLocationName({ form }) {
+    clearLocationSearchResults({ location }) {
+      location.locationSearchResults = [];
+    },
+    setLocationSearchResults({ location }, payload) {
+      location.locationSearchResults = payload;
+    },
+    setMap({ location }, payload) {
+      location.map = payload;
+    },
+    clearLocation({ location, form }) {
       form.location = {
         name: "",
         coords: { lat: 0, lon: 0 },
       };
       form.location.distance = form.location.time = null;
-    },
-    setDistance({ location }, payload) {
-      location.distance = payload;
-    },
-    setLocationSearchResults({ location }, payload) {
-      location.locationSearchResults = payload;
-    },
-    clearLocationSearchResults({ location }) {
       location.locationSearchResults = [];
+      location.distance = location.time = null;
     },
     setLocationCoordsSearchResults({ form }, payload) {
       form.location = {
@@ -213,16 +227,7 @@ export const EventsStore = {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField({ form }, { name, value }) {
-      name == "location" ? (form.location.name = value) : (form.name = value);
-    },
-    setMap({ location }) {
-      const tt = window.tt;
-      location.map = tt.map({
-        key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-        container: "locationPickerMap",
-        style: "tomtom://vector/1/basic-main",
-        zoom: 15,
-      });
+      name == "location" ? (form.location.name = value) : (form[name] = value);
     },
     destroyMap({ location }) {
       location.map.remove();

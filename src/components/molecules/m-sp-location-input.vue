@@ -78,7 +78,7 @@ import SpMap from "../atoms/sp-location-map";
 import SpCard from "../atoms/a-sp-card";
 import SpList from "../molecules/m-sp-list";
 import SpButton from "../atoms/a-sp-button";
-import _ from "lodash";
+import {debounce} from "lodash";
 import { mapActions, mapState, mapMutations } from "vuex";
 const name = "EventsStore";
 
@@ -95,10 +95,6 @@ export default {
   ],
   data() {
     return {
-      content: this.value,
-      results: null,
-      currentVal: null,
-      localization: "test",
       mapVisible: false,
       iconColor: "default",
       showClearButton: false,
@@ -107,7 +103,7 @@ export default {
   computed: {
     ...mapState(name, ["form", "location"]),
     inputValue() {
-      return this.$store.state["EventsStore"].form["location"].name;
+      return this.$store.state["EventsStore"].form.location.name;
     }
   },
   methods: {
@@ -117,14 +113,12 @@ export default {
       this.$emit("focus");
     },
     clearInput() {
-      this.clearLocationName();
-      this.clearLocationSearchResults();
+      this.clearLocation();
       this.$emit("input", "");
       this.showClearButton = false;
 
-      if (this.location.marker) {
-        this.removeMarker();
-      }
+      this.location.marker && this.removeMarker();
+      
     },
     handleInput(e) {
       this.$emit("input", e);
@@ -145,10 +139,9 @@ export default {
     },
     ...mapMutations(name, [
       "removeMarker",
-      "destroyMap",
       "setLocationCoordsSearchResults",
-      "clearLocationName",
-      "clearLocationSearchResults",
+      "clearLocation",
+      "clearLocationSearchResults"
     ]),
     ...mapActions(name, [
       "getLocationByCoords",
@@ -156,9 +149,10 @@ export default {
       "calculateRoute",
       "setUserLocation",
     ]),
-    findLocation: _.debounce((e) => {
+    findLocation: debounce(function(e) {
+      let vm = this;
       if (e.length > 2) {
-        this.getLocationsByName(e);
+        vm.getLocationsByName(e);
       }
     }, 400),
     closeMap() {
