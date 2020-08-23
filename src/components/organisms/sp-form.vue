@@ -9,6 +9,7 @@
       :icon="field.icon"
       :height="field.height"
       :fields="field.fields"
+      :displayValue="field.displayValue||''"
       @input="(e) => updateValue(index, e)"
       :placeholder="field.placeholder"
     />
@@ -42,9 +43,11 @@ export default {
     },
     updateValue(index, value) {
       
-      let name = this.fields[index].name;
+      const name = this.fields[index].name;
+      // const value = typeof(data) == "object" ? data[this.fields[index].displayValue]:data;
+
       this.$store.commit(`${this.namespace}/setFormField`, { name, value });
-      debugger
+    
     },
     componentName(type) {
       switch (type) {

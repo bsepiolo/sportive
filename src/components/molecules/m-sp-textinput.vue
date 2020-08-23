@@ -1,7 +1,6 @@
 <template>
   <div class="m-input">
     <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
-{{value}}
     <sp-textbox
       :placeholder="placeholder"
       :value="value"

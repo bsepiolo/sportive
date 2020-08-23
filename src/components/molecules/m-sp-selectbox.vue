@@ -36,7 +36,7 @@
         >
           <sp-list
             class="m-selectbox-editor__list"
-            @click="selectItem"
+            @click="handleItemClick"
             :items="items"
           />
         </sp-card>
@@ -51,38 +51,34 @@ import SpList from "../molecules/m-sp-list";
 const name = "EventsStore";
 
 export default {
-  props: ["placeholder", "type", "value", "size", "icon"],
+  props: ["placeholder", "type", "value", "size", "icon", "name", "displayValue"],
   data() {
     return {
       iconColor: "default",
       listVisible: false,
       items: [
         {
-          address: {
-            freeformAddress: "Soccer",
-          },
+          id: 1,
+          value: "Soccer"
         },
         {
-          address: {
-            freeformAddress: "Basketball",
-          },
+          id: 2,
+          value: "Basketball"
         },
         {
-          address: {
-            freeformAddress: "Volleyball",
-          },
+          id: 3,
+          value: "Volleyball"
         },
         {
-          address: {
-            freeformAddress: "Tennis",
-          },
+         id: 4,
+          value: "Tennis"
         },
       ],
     };
   },
   computed: {
     inputValue() {
-      return this.$store.state[name].form["discipline"];
+      return this.$store.state[name].form[this.name][this.displayValue];
     },
   },
   methods: {
@@ -99,10 +95,9 @@ export default {
         this.iconColor = "default";
       }, 0);
     },
-    selectItem({ address }) {
-      const { freeformAddress } = address;
+    handleItemClick(item) {
       this.listVisible = false;
-      this.$emit("input", freeformAddress);
+      this.$emit("input", item);
     },
   },
   components: {

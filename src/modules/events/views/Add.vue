@@ -41,6 +41,7 @@ export default {
           model: "discipline",
           name: "discipline",
           icon: "eva eva-award-outline",
+          displayValue: "value"
         },
         {
           type: "location",
@@ -48,6 +49,7 @@ export default {
           model: "location",
           name: "location",
           icon: "eva eva-pin-outline",
+          displayValue: "locationName"
         },
         {
           type: "text",

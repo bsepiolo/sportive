@@ -1,7 +1,7 @@
 <template>
    <ul class="m-list">
     <li class="m-list__el" v-for="(item, index) in items" :key="index" @click="clickHandler(item)">
-      {{item.address.freeformAddress}}
+      {{item.value}}
     </li>
   </ul>
 </template>

@@ -91,7 +91,9 @@ export default {
     "value",
     "size",
     "dropdownSource",
+    "name",
     "is-active",
+    "displayValue"
   ],
   data() {
     return {
@@ -103,7 +105,7 @@ export default {
   computed: {
     ...mapState(name, ["form", "location"]),
     inputValue() {
-      return this.$store.state["EventsStore"].form.location.name;
+      return this.$store.state["EventsStore"].form[this.name][this.displayValue]
     }
   },
   methods: {
@@ -125,11 +127,11 @@ export default {
     },
     selectItem({position, address}) {
       const {lat, lon} = position;
-      const {streetName, streetNumber, municipality} = address;
+      // const {streetName, streetNumber, municipality} = address;
 
-      let locationName = `${streetName || "Address unknown"} ${streetNumber || ""}, ${municipality}`;
+      // let locationName = `${streetName || "Address unknown"} ${streetNumber || ""}, ${municipality}`;
 
-      this.setLocationCoordsSearchResults(locationName);
+      this.setLocationCoordsSearchResults({position, address});
       this.calculateRoute({
         lngLat: { lng: lon, lat },
       });

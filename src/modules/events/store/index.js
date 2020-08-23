@@ -6,12 +6,7 @@ import { getField, updateField } from "vuex-map-fields";
 export const EventsStore = {
   namespaced: true,
   state: {
-    form: {
-      location: {
-        name: "",
-        coords: { lat: 0, lon: 0 },
-      },
-    },
+    form: {},
     events: null,
     location: {
       locationSearchResults: [],
@@ -73,14 +68,12 @@ export const EventsStore = {
           `https://api.tomtom.com/search/2/reverseGeocode/${lat},${lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
         );
         const [addresses] = data.addresses;
+        const {position} = addresses;
         const { address } = addresses;
+        const locationName = `${address.localName}, ${address.streetNameAndNumber || ''}`
+  
+        commit("setLocationCoordsSearchResults", {locationName, position});
 
-        const locationName = `${address.streetName ||
-          "Address unknown"} ${address.streetNumber || ""}, ${
-          address.municipality
-        }`;
-
-        commit("setLocationCoordsSearchResults", locationName);
       } catch (err) {
         console.log(err);
       }
@@ -191,7 +184,7 @@ export const EventsStore = {
       location.time = payload;
     },
     setLocationName({ form }, payload) {
-      form.location.name = payload;
+      form.location = payload;
     },
     clearDistanceAndTime({ location }) {
       location.distance = location.time = null;
@@ -215,10 +208,7 @@ export const EventsStore = {
       location.distance = location.time = null;
     },
     setLocationCoordsSearchResults({ form }, payload) {
-      form.location = {
-        name: payload,
-        coords: { lat: 0, lon: 0 },
-      };
+      form.location = payload;
     },
     registerFormField({ form }, { name, type }) {
       Vue.set(form, name, type !== "text" ? "" : null);
@@ -227,7 +217,7 @@ export const EventsStore = {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField({ form }, { name, value }) {
-      name == "location" ? (form.location.name = value) : (form[name] = value);
+      form[name] = value
     },
     destroyMap({ location }) {
       location.map.remove();
