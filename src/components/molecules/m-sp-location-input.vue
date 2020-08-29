@@ -59,7 +59,7 @@
       v-if="location.locationSearchResults.length"
       z-index="max"
     >
-      <sp-list @click="selectItem" :items="location.locationSearchResults" />
+      <sp-list @click="selectItem" displayValue="locationName" :items="location.locationSearchResults" />
     </sp-card>
     <sp-button
       text="Accept"

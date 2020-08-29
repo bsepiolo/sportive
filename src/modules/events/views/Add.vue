@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import SpForm from "@/components/organisms/sp-form";
+import SpForm from "@/components/organisms/o-sp-form";
 
 import { mapActions, mapState } from "vuex";
 import _ from "lodash";

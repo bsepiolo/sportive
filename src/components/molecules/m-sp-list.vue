@@ -1,22 +1,14 @@
 <template>
    <ul class="m-list">
     <li class="m-list__el" v-for="(item, index) in items" :key="index" @click="clickHandler(item)">
-      {{item.value}}
+      {{item[displayValue]}}
     </li>
   </ul>
 </template>
 <script>
 export default {
-  props: ["items"],
-  data() {
-    return {
-      content: this.value
-    };
-  },
+  props: ["items", "displayValue"],
   methods: {
-    handleInput(e) {
-      this.$emit("input", e.target.value);
-    },
     clickHandler(e){
       this.$emit("click", e)
     }

@@ -1,13 +1,12 @@
-// import * as firebase from "firebase/app";
 import Vue from "vue";
-import "firebase/firestore";
-import { getField, updateField } from "vuex-map-fields";
-
+import * as mutation from "./mutation_types";
+import mapService from "../services";
 export const EventsStore = {
   namespaced: true,
   state: {
     form: {},
     events: null,
+    tt: window.tt,
     location: {
       locationSearchResults: [],
       locationCoordsSearchResults: [],
@@ -20,20 +19,19 @@ export const EventsStore = {
   },
   actions: {
     setUserLocation({ state, commit, dispatch }) {
-      const tt = window.tt;
-      const { location } = state;
+      const { location, tt } = state;
       const getCurrentPosition = (options = {}) => {
         return new Promise((resolve, reject) => {
           navigator.geolocation.getCurrentPosition(resolve, reject, options);
         });
       };
 
-      (async function() {
+      (async () => {
         try {
           const { coords } = await getCurrentPosition();
           const { latitude: lat, longitude: lng } = coords;
 
-          commit("setLocation", { latitude: lat, longitude: lng });
+          commit(mutation.SET_LOCATION, { latitude: lat, longitude: lng });
 
           state.location.map.setCenter({ lat, lng });
 
@@ -56,24 +54,23 @@ export const EventsStore = {
         .then((data) => {
           console.log(data.data());
         })
-        .catch(function(error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
           console.log(`${errorCode}, ${errorMessage}`);
         });
     },
-    async getLocationByCoords({ commit }, { lng, lat }) {
+    async getLocationByCoords({ commit }, payload) {
       try {
-        const { data } = await this._vm.$http.get(
-          `https://api.tomtom.com/search/2/reverseGeocode/${lat},${lng}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63`
-        );
+        const { data } = await mapService.getLocationByCoords(payload);
         const [addresses] = data.addresses;
-        const {position} = addresses;
+        const { position } = addresses;
         const { address } = addresses;
-        const locationName = `${address.localName}, ${address.streetNameAndNumber || ''}`
-  
-        commit("setLocationCoordsSearchResults", {locationName, position});
+        const locationName = `${
+          address.localName
+        }, ${address.streetNameAndNumber || ""}`;
 
+        commit("setLocationCoordsSearchResults", { locationName, position });
       } catch (err) {
         console.log(err);
       }
@@ -83,10 +80,19 @@ export const EventsStore = {
         location: { current },
       } = state;
       try {
-        const { data } = await this._vm.$http.get(
-          `https://api.tomtom.com/search/2/search/${payload}.json?key=T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63&countrySet=PL&lat=${current.lon}&radius=30000&idxSet=PAD,Addr,Str`
+        const { data } = await mapService.getLocationsByName(current, payload);
+
+        const locationSearchResults = data.results.map(
+          ({ address, position }) => {
+            let locationName = `${address.localName}, ${
+              address.streetName
+            } ${address.streetNumber || ""}`;
+
+            return { locationName, position };
+          }
         );
-        commit("setLocationSearchResults", data.results);
+
+        commit("setLocationSearchResults", locationSearchResults);
       } catch (err) {
         console.log(err);
       }
@@ -99,13 +105,13 @@ export const EventsStore = {
           return data();
         });
 
-        commit("setEvents", eventsArray);
+        commit(mutation.SET_EVENTS, eventsArray);
       } catch (err) {
         console.log(err);
       }
     },
-    setMap({ commit, rootState }) {
-      const tt = window.tt;
+    setMap({ commit, state, rootState }) {
+      const { tt } = state;
       const map = tt.map({
         key: rootState.tomtomKey,
         container: "locationPickerMap",
@@ -118,8 +124,7 @@ export const EventsStore = {
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
     ) {
-      const tt = window.tt;
-      const { location } = state;
+      const { location, tt } = state;
       const { current } = location;
 
       try {
@@ -131,15 +136,15 @@ export const EventsStore = {
           })
           .go();
 
-        var geojson = response.toGeoJson();
+        const geojson = response.toGeoJson();
 
         const [routes] = response.routes;
         const {
           summary: { lengthInMeters, travelTimeInSeconds },
         } = routes;
 
-        commit("setDistance", Math.round(lengthInMeters / 100) / 10);
-        commit("setTime", Math.round(travelTimeInSeconds / 60));
+        commit(mutation.SET_DISTANCE, Math.round(lengthInMeters / 100) / 10);
+        commit(mutation.SET_TIME, Math.round(travelTimeInSeconds / 60));
 
         location.map.getLayer("route") && location.map.removeLayer("route");
 
@@ -169,21 +174,20 @@ export const EventsStore = {
     },
   },
   mutations: {
-    updateField,
-    setEvents({ events }, payload) {
+    [mutation.SET_EVENTS]({ events }, payload) {
       events;
       events = payload;
     },
-    setLocation({ location }, { latitude: lat, longitude: lon }) {
+    [mutation.SET_LOCATION]({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };
     },
-    setDistance({ location }, payload) {
+    [mutation.SET_DISTANCE]({ location }, payload) {
       location.distance = payload;
     },
-    setTime({ location }, payload) {
+    [mutation.SET_TIME]({ location }, payload) {
       location.time = payload;
     },
-    setLocationName({ form }, payload) {
+    [mutation.SET_LOCATION_NAME]({ form }, payload) {
       form.location = payload;
     },
     clearDistanceAndTime({ location }) {
@@ -199,10 +203,7 @@ export const EventsStore = {
       location.map = payload;
     },
     clearLocation({ location, form }) {
-      form.location = {
-        name: "",
-        coords: { lat: 0, lon: 0 },
-      };
+      form.location = {};
       form.location.distance = form.location.time = null;
       location.locationSearchResults = [];
       location.distance = location.time = null;
@@ -217,14 +218,13 @@ export const EventsStore = {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
     setFormField({ form }, { name, value }) {
-      form[name] = value
+      form[name] = value;
     },
     destroyMap({ location }) {
       location.map.remove();
       location.map = null;
     },
-    setMarker({ location }, payload) {
-      const tt = window.tt;
+    setMarker({ location, tt }, payload) {
       location.marker = new tt.Marker().setLngLat(payload).addTo(location.map);
     },
     removeMarker({ location }) {
@@ -236,8 +236,5 @@ export const EventsStore = {
         location.map.getSource("route") && location.map.removeSource("route");
       }
     },
-  },
-  getters: {
-    getField,
   },
 };

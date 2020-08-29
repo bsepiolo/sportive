@@ -8,7 +8,7 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyD8N9r2ATD4-5c-uKrgg_L_m4m0KKguY_0",
   authDomain: "sportive-fbbd4.firebaseapp.com",
   databaseURL: "https://sportive-fbbd4.firebaseio.com",
@@ -20,16 +20,16 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+
 import { AuthStore } from "./modules/auth/store/index";
-import { EventsStore } from "./modules/events/store/index";
+import { EventsStore } from "./modules/events/store/add";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     user: null,
-    db: db,
+    db: firebase.firestore(),
     tomtomKey: 'T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63'
   },
   mutations: {
@@ -40,22 +40,22 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    setUser({ commit, state }, payload) {
+    setUser({ commit, state }, {uid, email}) {
       state.db
         .collection("users")
-        .doc(payload.uid)
+        .doc(uid)
         .get()
         .then((doc) => {
           commit("setUser", {
             username: doc.data().username,
-            email: payload.email,
+            email,
           });
         });
     },
   },
   getters: {
-    isAuthenticated(state) {
-      return state.user !== null && state.user !== undefined;
+    isAuthenticated({user}) {
+      return user !== null && user !== undefined;
     },
   },
   modules: {

@@ -38,6 +38,7 @@
             class="m-selectbox-editor__list"
             @click="handleItemClick"
             :items="items"
+            displayValue="value"
           />
         </sp-card>
       </transition>

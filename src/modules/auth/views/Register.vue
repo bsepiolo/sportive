@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import SpForm from "@/components/organisms/sp-form";
+import SpForm from "@/components/organisms/o-sp-form";
 
 export default {
   data() {
