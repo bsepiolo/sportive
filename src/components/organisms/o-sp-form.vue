@@ -9,7 +9,7 @@
       :icon="field.icon"
       :height="field.height"
       :fields="field.fields"
-      :displayValue="field.displayValue||''"
+      :displayValue="field.displayValue || ''"
       @input="(e) => updateValue(index, e)"
       :placeholder="field.placeholder"
     />
@@ -29,12 +29,15 @@ import SpLocationpicker from "@/components/molecules/m-sp-location-input";
 import SpSelectbox from "@/components/molecules/m-sp-selectbox";
 import SpTextAreaInput from "@/components/molecules/m-sp-text-area-input";
 import SpRadioButton from "@/components/molecules/m-sp-radio-group";
-
+import * as mutations from "../../store/mutation_types";
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
   created() {
-    this.fields.forEach(({name, type}) => {
-      this.$store.commit(`${this.namespace}/registerFormField`, {name, type});
+    this.fields.forEach(({ name, type }) => {
+      this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
+        name,
+        type,
+      });
     });
   },
   methods: {
@@ -42,12 +45,12 @@ export default {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
     updateValue(index, value) {
-      
       const name = this.fields[index].name;
-      // const value = typeof(data) == "object" ? data[this.fields[index].displayValue]:data;
 
-      this.$store.commit(`${this.namespace}/setFormField`, { name, value });
-    
+      this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
+        name,
+        value,
+      });
     },
     componentName(type) {
       switch (type) {
@@ -57,8 +60,8 @@ export default {
           return "sp-selectbox";
         case "textarea":
           return "sp-text-area-input";
-          case "radio":
-            return "sp-radio-button";
+        case "radio":
+          return "sp-radio-button";
         default:
           return "sp-textinput";
       }
@@ -68,7 +71,7 @@ export default {
     SpLocationpicker,
     SpSelectbox,
     SpTextAreaInput,
-    SpRadioButton
+    SpRadioButton,
   },
 };
 </script>

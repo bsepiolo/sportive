@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from './views/Home.vue'
+import Home from './views/home.vue'
 import {AuthRoutes} from './modules/auth/routes'
 import {EventsRoutes} from './modules/events/routes'
 import * as firebase from "firebase/app";

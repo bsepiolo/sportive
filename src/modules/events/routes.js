@@ -1,4 +1,4 @@
-import EventsModule from "./EventsModule.vue";
+import EventsModule from "./events-module.vue";
 
 export const EventsRoutes = [
   {
@@ -12,7 +12,7 @@ export const EventsRoutes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ "./views/List.vue"),
+        component: () => import(/* webpackChunkName: "about" */ "./views/list.vue"),
       },
       {
         path: "details",
@@ -20,7 +20,7 @@ export const EventsRoutes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ "./views/Details.vue"),
+        component: () => import(/* webpackChunkName: "about" */ "./views/details.vue"),
       },
       {
         path: "add",
@@ -28,7 +28,7 @@ export const EventsRoutes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ "./views/Add.vue"),
+        component: () => import(/* webpackChunkName: "about" */ "./views/add.vue"),
       }
     ],
   },

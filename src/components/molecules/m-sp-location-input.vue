@@ -59,7 +59,11 @@
       v-if="location.locationSearchResults.length"
       z-index="max"
     >
-      <sp-list @click="selectItem" displayValue="locationName" :items="location.locationSearchResults" />
+      <sp-list
+        @click="selectItem"
+        displayValue="locationName"
+        :items="location.locationSearchResults"
+      />
     </sp-card>
     <sp-button
       text="Accept"
@@ -74,11 +78,13 @@
   </div>
 </template>
 <script>
-import SpMap from "../atoms/sp-location-map";
+import SpMap from "../atoms/a-sp-location-map";
 import SpCard from "../atoms/a-sp-card";
 import SpList from "../molecules/m-sp-list";
 import SpButton from "../atoms/a-sp-button";
-import {debounce} from "lodash";
+import * as actions from "../../store/action_types";
+import * as mutations from "../../store/mutation_types";
+import { debounce } from "lodash";
 import { mapActions, mapState, mapMutations } from "vuex";
 const name = "EventsStore";
 
@@ -93,7 +99,7 @@ export default {
     "dropdownSource",
     "name",
     "is-active",
-    "displayValue"
+    "displayValue",
   ],
   data() {
     return {
@@ -105,56 +111,55 @@ export default {
   computed: {
     ...mapState(name, ["form", "location"]),
     inputValue() {
-      return this.$store.state["EventsStore"].form[this.name][this.displayValue]
-    }
+      return this.$store.state["EventsStore"].form[this.name][
+        this.displayValue
+      ];
+    },
   },
   methods: {
+    ...mapMutations(name, {
+      removeMarker: mutations.REMOVE_MARKER,
+      setLocationCoordsSearchResults: mutations.SET_LOCATION_COORDS_SEARCH_RESULTS,
+      removeLocation: mutations.REMOVE_LOCATION,
+      removeLocationSearchResults: mutations.REMOVE_LOCATION_SEARCH_RESULTS,
+    }),
+    ...mapActions(name, {
+      findLocationByCoords: actions.FIND_LOCATION_BY_COORDS,
+      findLocationByName: actions.FIND_LOCATION_BY_NAME,
+      findRouteDistance: actions.FIND_ROUTE_DISTANCE,
+      setUserLocation: actions.SET_USER_LOCATION,
+    }),
     handleFocus() {
       this.mapVisible = true;
       this.iconColor = "primary";
       this.$emit("focus");
     },
     clearInput() {
-      this.clearLocation();
+      this.removeLocation();
       this.$emit("input", "");
       this.showClearButton = false;
 
       this.location.marker && this.removeMarker();
-      
     },
     handleInput(e) {
       this.$emit("input", e);
     },
-    selectItem({position, address}) {
-      const {lat, lon} = position;
-      // const {streetName, streetNumber, municipality} = address;
+    selectItem({ position, address }) {
+      const { lat, lon } = position;
 
-      // let locationName = `${streetName || "Address unknown"} ${streetNumber || ""}, ${municipality}`;
-
-      this.setLocationCoordsSearchResults({position, address});
-      this.calculateRoute({
+      this.setLocationCoordsSearchResults({ position, address });
+      this.findRouteDistance({
         lngLat: { lng: lon, lat },
       });
       this.location.map.setCenter({ lat, lng: lon });
 
-      this.clearLocationSearchResults();
+      this.removeLocationSearchResults();
     },
-    ...mapMutations(name, [
-      "removeMarker",
-      "setLocationCoordsSearchResults",
-      "clearLocation",
-      "clearLocationSearchResults"
-    ]),
-    ...mapActions(name, [
-      "getLocationByCoords",
-      "getLocationsByName",
-      "calculateRoute",
-      "setUserLocation",
-    ]),
+
     findLocation: debounce(function(e) {
       let vm = this;
       if (e.length > 2) {
-        vm.getLocationsByName(e);
+        vm.findLocationByName(e);
       }
     }, 400),
     closeMap() {

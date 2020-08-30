@@ -3,15 +3,16 @@
 </template>
 
 <script>
+import * as actions from "../../store/action_types";
 import { mapActions, mapState } from "vuex";
 const name = "EventsStore";
 export default {
   methods: {
-    ...mapActions(name, [
-      "calculateRoute",
-      "setUserLocation",
-      "setMap",
-    ]),
+    ...mapActions(name, {
+      findRouteDistance: actions.FIND_ROUTE_DISTANCE,
+      setUserLocation: actions.SET_USER_LOCATION,
+      setMap: actions.SET_MAP,
+    }),
   },
   computed: {
     ...mapState(name, ["location"]),
@@ -21,7 +22,7 @@ export default {
     this.setUserLocation();
 
     this.location.map.on("click", (event) => {
-      this.calculateRoute(event);
+      this.findRouteDistance(event);
     });
   },
 };

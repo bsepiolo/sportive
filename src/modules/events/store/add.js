@@ -1,5 +1,6 @@
 import Vue from "vue";
 import * as mutation from "./mutation_types";
+import * as action from "./action_types";
 import mapService from "../services";
 export const EventsStore = {
   namespaced: true,
@@ -18,7 +19,7 @@ export const EventsStore = {
     },
   },
   actions: {
-    setUserLocation({ state, commit, dispatch }) {
+    [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
       const { location, tt } = state;
       const getCurrentPosition = (options = {}) => {
         return new Promise((resolve, reject) => {
@@ -36,18 +37,18 @@ export const EventsStore = {
           state.location.map.setCenter({ lat, lng });
 
           new tt.Marker().setLngLat([lng, lat]).addTo(state.location.map);
-          dispatch("getLocationByCoords", { lat, lng });
+          dispatch(action.FIND_LOCATION_BY_COORDS, { lat, lng });
         } catch (error) {
           console.error(error);
         }
       })();
 
       if (location.marker) {
-        commit("removeMarker");
-        commit("clearDistanceAndTime");
+        commit(mutation.REMOVE_MARKER);
+        commit(mutation.REMOVE_DISTANCE_AND_TIME);
       }
     },
-    addEvent({ state, rootState }) {
+    [action.ADD_EVENT]({ state, rootState }) {
       rootState.db
         .collection("events")
         .add(state.eventForm)
@@ -60,7 +61,7 @@ export const EventsStore = {
           console.log(`${errorCode}, ${errorMessage}`);
         });
     },
-    async getLocationByCoords({ commit }, payload) {
+    async [action.FIND_LOCATION_BY_COORDS]({ commit }, payload) {
       try {
         const { data } = await mapService.getLocationByCoords(payload);
         const [addresses] = data.addresses;
@@ -70,12 +71,12 @@ export const EventsStore = {
           address.localName
         }, ${address.streetNameAndNumber || ""}`;
 
-        commit("setLocationCoordsSearchResults", { locationName, position });
+        commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, { locationName, position });
       } catch (err) {
         console.log(err);
       }
     },
-    async getLocationsByName({ commit, state }, payload) {
+    async [action.FIND_LOCATION_BY_NAME]({ commit, state }, payload) {
       const {
         location: { current },
       } = state;
@@ -92,12 +93,12 @@ export const EventsStore = {
           }
         );
 
-        commit("setLocationSearchResults", locationSearchResults);
+        commit(mutation.SET_LOCATION_SEARCH_RESULTS, locationSearchResults);
       } catch (err) {
         console.log(err);
       }
     },
-    async getEvents({ commit, rootState }) {
+    async [action.FETCH_EVENTS]({ commit, rootState }) {
       try {
         const { docs: events } = await rootState.db.collection("events").get();
 
@@ -110,7 +111,7 @@ export const EventsStore = {
         console.log(err);
       }
     },
-    setMap({ commit, state, rootState }) {
+    [action.SET_MAP]({ commit, state, rootState }) {
       const { tt } = state;
       const map = tt.map({
         key: rootState.tomtomKey,
@@ -118,9 +119,9 @@ export const EventsStore = {
         style: "tomtom://vector/1/basic-main",
         zoom: 15,
       });
-      commit("setMap", map);
+      commit(mutation.SET_MAP, map);
     },
-    async calculateRoute(
+    async [action.FIND_ROUTE_DISTANCE](
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
     ) {
@@ -150,11 +151,11 @@ export const EventsStore = {
 
         location.map.getSource("route") && location.map.removeSource("route");
 
-        location.marker && commit("removeMarker");
+        location.marker && commit(mutation.REMOVE_MARKER);
 
-        commit("setMarker", [lng, lat]);
+        commit(mutation.SET_MARKER, [lng, lat]);
 
-        dispatch("getLocationByCoords", { lng, lat });
+        dispatch(action.FIND_LOCATION_BY_COORDS, { lng, lat });
 
         location.map.addLayer({
           id: "route",
@@ -190,44 +191,44 @@ export const EventsStore = {
     [mutation.SET_LOCATION_NAME]({ form }, payload) {
       form.location = payload;
     },
-    clearDistanceAndTime({ location }) {
+    [mutation.REMOVE_DISTANCE_AND_TIME]({ location }) {
       location.distance = location.time = null;
     },
-    clearLocationSearchResults({ location }) {
+    [mutation.REMOVE_LOCATION_SEARCH_RESULTS]({ location }) {
       location.locationSearchResults = [];
     },
-    setLocationSearchResults({ location }, payload) {
+    [mutation.SET_LOCATION_SEARCH_RESULTS]({ location }, payload) {
       location.locationSearchResults = payload;
     },
-    setMap({ location }, payload) {
+    [mutation.SET_MAP]({ location }, payload) {
       location.map = payload;
     },
-    clearLocation({ location, form }) {
+    [mutation.REMOVE_LOCATION]({ location, form }) {
       form.location = {};
       form.location.distance = form.location.time = null;
       location.locationSearchResults = [];
       location.distance = location.time = null;
     },
-    setLocationCoordsSearchResults({ form }, payload) {
+    [mutation.SET_LOCATION_COORDS_SEARCH_RESULTS]({ form }, payload) {
       form.location = payload;
     },
-    registerFormField({ form }, { name, type }) {
+    [mutation.ADD_FORM_FIELD]({ form }, { name, type }) {
       Vue.set(form, name, type !== "text" ? "" : null);
     },
-    clearLocationCoordsSearchResults({ form }) {
+    [mutation.REMOVE_LOCATION_COORDS_SEARCH_RESULTS]({ form }) {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    setFormField({ form }, { name, value }) {
+    [mutation.SET_FORM_FIELD]({ form }, { name, value }) {
       form[name] = value;
     },
-    destroyMap({ location }) {
+    [mutation.REMOVE_MAP]({ location }) {
       location.map.remove();
       location.map = null;
     },
-    setMarker({ location, tt }, payload) {
+    [mutation.SET_MARKER]({ location, tt }, payload) {
       location.marker = new tt.Marker().setLngLat(payload).addTo(location.map);
     },
-    removeMarker({ location }) {
+    [mutation.REMOVE_MARKER]({ location }) {
       if (location.marker) {
         location.marker.remove();
         location.marker = null;

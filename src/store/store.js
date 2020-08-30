@@ -21,8 +21,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-import { AuthStore } from "./modules/auth/store/index";
-import { EventsStore } from "./modules/events/store/add";
+import { AuthStore } from "../modules/auth/store/index";
+import { EventsStore } from "../modules/events/store/add";
 
 Vue.use(Vuex);
 

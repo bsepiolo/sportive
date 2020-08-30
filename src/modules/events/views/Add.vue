@@ -16,9 +16,10 @@
 </template>
 
 <script>
+import * as actions from "../store/action_types"
 import SpForm from "@/components/organisms/o-sp-form";
 
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import _ from "lodash";
 const namespace = "EventsStore";
 
@@ -88,34 +89,18 @@ export default {
       ],
     };
   },
-  computed: {
-    // ...mapFields(namespace, [
-    //   "eventForm.name",
-    //   "eventForm.disicipline",
-    //   "eventForm.locationData",
-    //   "eventForm.date",
-    //   "eventForm.access",
-    //   "eventForm.description",
-    // ]),
-    ...mapState(namespace, [
-      "locationCoordsSearchResults",
-      "locationSearchResults",
-    ]),
-  },
   methods: {
     findLocation: _.debounce(function(e) {
       if (e.length > 2) {
-        this.getLocationsByName(e);
+        this.findLocationByName(e);
       }
     }, 400),
     submitForm() {
       this.addEvent();
     },
-    ...mapActions(namespace, [
-      // "addEvent",
-      "getLocationByCoords",
-      "getLocationsByName",
-    ]),
+    ...mapActions(namespace, {
+      findLocationByName: actions.FIND_LOCATION_BY_NAME
+    }),
   },
   components: {
     SpForm,

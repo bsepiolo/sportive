@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './app.vue'
 import './registerServiceWorker'
 import router from './routes.js'
-import store from './store.js'
+import store from './store/store.js'
 import "./globalComponents.js"
 import * as firebase from "firebase/app";
 import Axios from 'axios'
