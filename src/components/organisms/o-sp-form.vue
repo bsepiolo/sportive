@@ -15,7 +15,7 @@
     />
 
     <div class="o-actions mt-8">
-      <sp-button
+      <a-sp-button
         :text="submitTitle"
         type="primary"
         :submit="true"
@@ -25,10 +25,6 @@
   </form>
 </template>
 <script>
-import SpLocationpicker from "@/components/molecules/m-sp-location-input";
-import SpSelectbox from "@/components/molecules/m-sp-selectbox";
-import SpTextAreaInput from "@/components/molecules/m-sp-text-area-input";
-import SpRadioButton from "@/components/molecules/m-sp-radio-group";
 import * as mutations from "../../store/mutation_types";
 export default {
   props: ["fields", "namespace", "submitAction", "submitTitle"],
@@ -55,23 +51,17 @@ export default {
     componentName(type) {
       switch (type) {
         case "location":
-          return "sp-locationpicker";
+          return "m-sp-location-input";
         case "selectbox":
-          return "sp-selectbox";
+          return "m-sp-selectbox";
         case "textarea":
-          return "sp-text-area-input";
+          return "m-sp-textarea-input";
         case "radio":
-          return "sp-radio-button";
+          return "m-sp-radio-group";
         default:
-          return "sp-textinput";
+          return "m-sp-text-input";
       }
     },
-  },
-  components: {
-    SpLocationpicker,
-    SpSelectbox,
-    SpTextAreaInput,
-    SpRadioButton,
   },
 };
 </script>

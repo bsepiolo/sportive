@@ -1,8 +1,8 @@
 <template>
   <div class="burger-nav">
     <div class="burger-nav--header">
-      <sp-icon icon="eva eva-menu-2-outline" size="medium" class="mr-1"/>
-      <sp-avatar
+      <a-sp-icon icon="eva eva-menu-2-outline" size="medium" class="mr-1"/>
+      <a-sp-avatar
         class="mr-2"
         size="medium"
         :border="false"

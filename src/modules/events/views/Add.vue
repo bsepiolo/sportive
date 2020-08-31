@@ -1,12 +1,12 @@
 <template>
   <div>
-    <sp-title size="large" :text-center="true" class="mt-6"
-      >Event creator</sp-title
+    <a-sp-title size="large" :text-center="true" class="mt-6"
+      >Event creator</a-sp-title
     >
-    <sp-subtitle size="medium" :text-center="true" class="mb-5"
-      >Sportive helps you get a good shape with smile on your face!</sp-subtitle
+    <a-sp-subtitle size="medium" :text-center="true" class="mb-5"
+      >Sportive helps you get a good shape with smile on your face!</a-sp-subtitle
     >
-    <sp-form
+    <o-sp-form
       :namespace="namespace"
       submitTitle="Create"
       submitAction="addEvent"
@@ -17,7 +17,7 @@
 
 <script>
 import * as actions from "../store/action_types"
-import SpForm from "@/components/organisms/o-sp-form";
+import OSpForm from "@/components/organisms/o-sp-form";
 
 import { mapActions } from "vuex";
 import _ from "lodash";
@@ -103,7 +103,7 @@ export default {
     }),
   },
   components: {
-    SpForm,
+    OSpForm,
   },
 };
 </script>

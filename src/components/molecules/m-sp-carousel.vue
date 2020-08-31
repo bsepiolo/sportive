@@ -6,10 +6,10 @@
           <img src="@/assets/img/carousel-man.png" />
       
         </div>
-        <sp-title :text-center="true">Run like never before</sp-title>
-        <sp-subtitle :text-center="true" size="medium">
+        <a-sp-title :text-center="true">Run like never before</a-sp-title>
+        <a-sp-subtitle :text-center="true" size="medium">
           Sportive helps you get a good shape with smile on your face!
-        </sp-subtitle>
+        </a-sp-subtitle>
       </li>
       <li class="m-carousel__el"></li>
       <li class="m-carousel__el"></li>

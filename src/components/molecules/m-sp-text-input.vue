@@ -1,7 +1,7 @@
 <template>
   <div class="m-input">
-    <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
-    <sp-textbox
+    <a-sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
+    <a-sp-textbox
       :placeholder="placeholder"
       :value="value"
       @input="handleInput"

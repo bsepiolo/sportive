@@ -1,10 +1,10 @@
 <template>
   <div class="event-upcoming">
-    <sp-icon icon="icon-basketball" type="complex" class="mb-2" />
+    <a-sp-icon icon="icon-basketball" type="complex" class="mb-2" />
 
     <div class="event-upcoming__data">
-      <sp-title :light="true" size="medium">Football sparing 5x5</sp-title>
-      <sp-subtitle :light="true" class="pt-0">Sienkiewicza 22</sp-subtitle>
+      <a-sp-title :light="true" size="medium">Football sparing 5x5</a-sp-title>
+      <a-sp-subtitle :light="true" class="pt-0">Sienkiewicza 22</a-sp-subtitle>
       <div class="time-counter mt-2">
         <span class="time-counter__el">2h</span>
         <span class="time-counter__separator">:</span>

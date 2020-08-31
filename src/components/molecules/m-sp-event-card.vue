@@ -1,13 +1,13 @@
 <template>
   <div class="m-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <div class="m-card-header">
-      <sp-icon icon="icon-basketball" type="complex" class="mb-1"/> 
-      <sp-title size="small" type="light">{{event.name}}</sp-title>
-      <sp-subtitle size="small" type="light">Angela Jenskins</sp-subtitle>
+      <a-sp-icon icon="icon-basketball" type="complex" class="mb-1"/> 
+      <a-sp-title size="small" type="light">{{event.name}}</a-sp-title>
+      <a-sp-subtitle size="small" type="light">Angela Jenskins</a-sp-subtitle>
     </div>
     <div class="m-card-meta">
-      <sp-text size="small">{{event.locationData}}</sp-text>
-      <sp-text size="small">10:30 PM</sp-text>
+      <a-sp-text size="small">{{event.locationData}}</a-sp-text>
+      <a-sp-text size="small">10:30 PM</a-sp-text>
     </div>
   </div>
 </template>

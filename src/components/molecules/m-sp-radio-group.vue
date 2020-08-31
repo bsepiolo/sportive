@@ -1,8 +1,8 @@
 <template>
   <div class="m-sp-radio-group">
-    <sp-text color="secondary" class="mt-2 mb-1">Access</sp-text>
+    <a-sp-text color="secondary" class="mt-2 mb-1">Access</a-sp-text>
     <div class="m-sp-radio-group__container">
-      <sp-radio-button
+      <m-sp-radio-button
         v-for="(field, index) in fields"
         :key="index"
         :icon="field.icon"
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import SpRadioButton from "../molecules/m-sp-radio-button";
 export default {
   props: ["fields"],
   data() {
@@ -39,9 +38,6 @@ export default {
       }
       return index == this.currentElementIndex ? true : false;
     },
-  },
-  components: {
-    SpRadioButton,
   },
 };
 </script>

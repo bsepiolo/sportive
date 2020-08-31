@@ -1,9 +1,9 @@
 <template>
   <div class="m-input">
     <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
+    <a-sp-icon :icon="icon" class="ml-2" :color="iconColor" :absolute="true" />
 
-    <sp-textarea
+    <a-sp-textarea
       :placeholder="placeholder"
       :value="value"
       @input="handleInput"

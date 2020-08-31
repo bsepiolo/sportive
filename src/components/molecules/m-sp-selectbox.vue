@@ -3,14 +3,14 @@
     <!-- <span :class="icon" class="m-input__icon"></span> -->
     <div class="m-selectbox-editor__container">
       <div class="m-selectbox-editor__input">
-        <sp-icon
+        <a-sp-icon
           :icon="icon"
           class="ml-2"
           :color="iconColor"
           :absolute="true"
         />
 
-        <sp-textarea
+        <a-sp-textarea
           :placeholder="placeholder"
           :value="inputValue"
           @input="handleInput"
@@ -20,7 +20,7 @@
           @blur="handleBlur"
           :readonly="true"
         />
-        <sp-icon
+        <a-sp-icon
           icon="eva eva-chevron-down-outline"
           :color="iconColor"
           :absolute="true"
@@ -28,27 +28,25 @@
         />
       </div>
       <transition name="fade">
-        <sp-card
+        <a-sp-card
           class="m-selectbox-editor__card"
           ratio="wide"
           z-index="max"
           v-if="listVisible"
         >
-          <sp-list
+          <m-sp-list
             class="m-selectbox-editor__list"
             @click="handleItemClick"
             :items="items"
             displayValue="value"
           />
-        </sp-card>
+        </a-sp-card>
       </transition>
     </div>
   </div>
 </template>
 
 <script>
-import SpCard from "../atoms/a-sp-card";
-import SpList from "../molecules/m-sp-list";
 const name = "EventsStore";
 
 export default {
@@ -100,10 +98,6 @@ export default {
       this.listVisible = false;
       this.$emit("input", item);
     },
-  },
-  components: {
-    SpCard,
-    SpList,
   },
 };
 </script>

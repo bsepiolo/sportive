@@ -8,7 +8,7 @@
   >
     <div class="m-location-editor__container">
       <div class="m-location-editor__input">
-        <sp-icon
+        <a-sp-icon
           :icon="icon"
           class="ml-2"
           :class="{ 'm-location-editor__icon': mapVisible }"
@@ -16,7 +16,7 @@
           :color="iconColor"
           v-if="!mapVisible || (!form.location.name && mapVisible)"
         />
-        <sp-icon
+        <a-sp-icon
           icon="eva eva-close-outline"
           class="ml-2"
           :class="{ 'm-location-editor__icon': mapVisible }"
@@ -25,7 +25,7 @@
           @click="clearInput"
           v-if="form.location.name && mapVisible"
         />
-        <sp-textarea
+        <a-sp-textarea
           :placeholder="placeholder"
           :value="inputValue"
           @input="findLocation($event), handleInput($event)"
@@ -35,7 +35,7 @@
           :shadowDisabled="mapVisible || (location.distance && location.time)"
           :class="{ 'is-active': mapVisible }"
         />
-        <sp-icon
+        <a-sp-icon
           icon="eva eva-compass-outline"
           class="ml-2"
           :class="{ 'm-location-editor__clear-button': mapVisible }"
@@ -48,24 +48,24 @@
         class="m-location-editor__details"
         v-if="location.distance || location.time"
       >
-        <sp-text
+        <a-sp-text
           >Distance: {{ location.distance }}km Time:
-          {{ location.time }}minutes</sp-text
+          {{ location.time }}minutes</a-sp-text
         >
       </div>
     </div>
-    <sp-card
+    <a-sp-card
       ratio="wide"
       v-if="location.locationSearchResults.length"
       z-index="max"
     >
-      <sp-list
+      <m-sp-list
         @click="selectItem"
         displayValue="locationName"
         :items="location.locationSearchResults"
       />
-    </sp-card>
-    <sp-button
+    </a-sp-card>
+    <a-sp-button
       text="Accept"
       type="primary"
       class="m-location-editor__submit"
@@ -74,14 +74,10 @@
       @click="closeMap"
     />
 
-    <sp-map v-if="mapVisible || form.location.name" v-show="mapVisible" />
+    <a-sp-map v-if="mapVisible || form.location.name" v-show="mapVisible" />
   </div>
 </template>
 <script>
-import SpMap from "../atoms/a-sp-location-map";
-import SpCard from "../atoms/a-sp-card";
-import SpList from "../molecules/m-sp-list";
-import SpButton from "../atoms/a-sp-button";
 import * as actions from "../../store/action_types";
 import * as mutations from "../../store/mutation_types";
 import { debounce } from "lodash";
@@ -167,12 +163,6 @@ export default {
     },
   },
 
-  components: {
-    SpMap,
-    SpCard,
-    SpList,
-    SpButton,
-  },
 };
 </script>
 <style lang="scss" scoped>

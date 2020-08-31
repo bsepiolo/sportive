@@ -13,13 +13,12 @@
       ref="radioInput"
       type="radio"
     />
-    <sp-icon size="large" :color="isChecked?'primary':''" :icon="icon" class="m-selectbox-editor__icon" />
-    <sp-text :color="isChecked?'secondary':'light'" class="mt-1">{{ name }}</sp-text>
+    <a-sp-icon size="large" :color="isChecked?'primary':''" :icon="icon" class="m-selectbox-editor__icon" />
+    <a-sp-text :color="isChecked?'secondary':'light'" class="mt-1">{{ name }}</a-sp-text>
   </div>
 </template>
 
 <script>
-import SpText from "../atoms/a-sp-text";
 export default {
   props: ["name", "icon", "isChecked"],
   data() {
@@ -33,9 +32,6 @@ export default {
       this.$refs.radioInput.click();
       this.$emit("click");
     },
-  },
-  components: {
-    SpText,
   },
 };
 </script>

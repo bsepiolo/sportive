@@ -1,16 +1,16 @@
 <template>
    <div class="l-container l-container--auth l-container--vertical-center">
-    <sp-carousel />
+    <m-sp-carousel />
     <div class="p-actions">
-      <sp-button type="primary" text="Sign in"/>
-      <sp-button type="primary" class="ml-3" styling-mode="outlined" text="Sign up"/>
+      <a-sp-button type="primary" text="Sign in"/>
+      <a-sp-button type="primary" class="ml-3" styling-mode="outlined" text="Sign up"/>
     </div>
   </div>
 </template>
 
 <script>
 
-import SpCarousel from "@/components/molecules/m-sp-carousel.vue";
+// import SpCarousel from "@/components/molecules/m-sp-carousel.vue";
 export default {
   name: "Home",
   data() {
@@ -19,7 +19,7 @@ export default {
     };
   },
   components: {
-    SpCarousel
+    // SpCarousel
   }
 };
 </script>
