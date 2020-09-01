@@ -62,7 +62,7 @@ export default {
     align-items: center;
   }
   &--z-index-max{
-    position: relative;
+    position: absolute;
     z-index: 9999999;
   }
 }

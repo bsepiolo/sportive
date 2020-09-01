@@ -108,7 +108,6 @@ export default {
     top: $space-size-6 + $space-size-05;
     overflow: hidden;
     padding: 0;
-    //max-height: 0;
   }
   &__icon {
     right: 0;
@@ -167,7 +166,7 @@ export default {
     position: relative;
   }
   &__list {
-    padding: $space-size-2;
+    padding: $space-size;
   }
   &__details {
     background: $gray150;
