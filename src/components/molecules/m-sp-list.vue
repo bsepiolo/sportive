@@ -1,6 +1,6 @@
 <template>
    <ul class="m-list">
-    <li class="m-list__el" v-for="(item, index) in items" :key="index" @click="clickHandler(item)">
+    <li class="m-list__el" v-for="(item, index) in items" :key="index" @mousedown="clickHandler(item)">
       {{item[displayValue]}}
     </li>
   </ul>
@@ -10,7 +10,7 @@ export default {
   props: ["items", "displayValue"],
   methods: {
     clickHandler(e){
-      this.$emit("click", e)
+      this.$emit("mousedown", e)
     }
   }
 };

@@ -36,7 +36,7 @@
         >
           <m-sp-list
             class="m-selectbox-editor__list"
-            @click="handleItemClick"
+            @mousedown="handleItemClick"
             :items="items"
             displayValue="value"
           />
@@ -50,7 +50,15 @@
 const name = "EventsStore";
 
 export default {
-  props: ["placeholder", "type", "value", "size", "icon", "name", "displayValue"],
+  props: [
+    "placeholder",
+    "type",
+    "value",
+    "size",
+    "icon",
+    "name",
+    "displayValue",
+  ],
   data() {
     return {
       iconColor: "default",
@@ -58,25 +66,26 @@ export default {
       items: [
         {
           id: 1,
-          value: "Soccer"
+          value: "Soccer",
         },
         {
           id: 2,
-          value: "Basketball"
+          value: "Basketball",
         },
         {
           id: 3,
-          value: "Volleyball"
+          value: "Volleyball",
         },
         {
-         id: 4,
-          value: "Tennis"
+          id: 4,
+          value: "Tennis",
         },
       ],
     };
   },
   computed: {
     inputValue() {
+      debugger;
       return this.$store.state[name].form[this.name][this.displayValue];
     },
   },
@@ -89,14 +98,14 @@ export default {
       this.iconColor = "primary";
     },
     handleBlur() {
-      setTimeout(() => {
-        this.listVisible = false;
-        this.iconColor = "default";
-      }, 0);
+      debugger;
+      this.listVisible = false;
+      this.iconColor = "default";
     },
     handleItemClick(item) {
-      this.listVisible = false;
+      debugger;
       this.$emit("input", item);
+      this.listVisible = false;
     },
   },
 };

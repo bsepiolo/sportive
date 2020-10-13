@@ -1,6 +1,6 @@
 import Vue from "vue";
-import * as mutation from "./mutation_types";
-import * as action from "./action_types";
+import * as mutation from "@/store/mutation_types";
+import * as action from "@/store/action_types";
 import mapService from "../services";
 export const EventsStore = {
   namespaced: true,

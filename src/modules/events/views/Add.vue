@@ -16,11 +16,11 @@
 </template>
 
 <script>
-import * as actions from "../store/action_types"
+import * as actions from "@/store/action_types"
 import OSpForm from "@/components/organisms/o-sp-form";
 
 import { mapActions } from "vuex";
-import _ from "lodash";
+import {debounce}from "lodash";
 const namespace = "EventsStore";
 
 export default {
@@ -53,7 +53,7 @@ export default {
           displayValue: "locationName"
         },
         {
-          type: "text",
+          type: "datebox",
           placeholder: "Date",
           model: "date",
           name: "date",
@@ -90,7 +90,10 @@ export default {
     };
   },
   methods: {
-    findLocation: _.debounce(function(e) {
+    ...mapActions(namespace, {
+      findLocationByName: actions.FIND_LOCATION_BY_NAME
+    }),
+    findLocation: debounce(function(e) {
       if (e.length > 2) {
         this.findLocationByName(e);
       }
@@ -98,9 +101,6 @@ export default {
     submitForm() {
       this.addEvent();
     },
-    ...mapActions(namespace, {
-      findLocationByName: actions.FIND_LOCATION_BY_NAME
-    }),
   },
   components: {
     OSpForm,

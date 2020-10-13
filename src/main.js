@@ -6,6 +6,9 @@ import store from './store/store.js'
 import "./globalComponents.js"
 import * as firebase from "firebase/app";
 import Axios from 'axios'
+import moment from 'moment'
+
+Vue.prototype.moment = moment
 
 Vue.prototype.$http = Axios;
 
