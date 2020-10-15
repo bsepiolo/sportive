@@ -1,7 +1,7 @@
 <template>
   <div
     class="a-card"
-    @click="handleClick()"
+    @mousedown="mousedown($event)"
     :class="{
       'a-card--minimized': minimized,
       'a-card--ratio-wide': ratio == 'wide',
@@ -33,8 +33,8 @@ export default {
     }
   },
   methods: {
-    handleClick() {
-      this.$emit("click");
+    mousedown(e) {
+      this.$emit("mousedown", e);
     },
   },
 };

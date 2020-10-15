@@ -1,15 +1,18 @@
 <template>
   <button
-    @click = "clickHandler"
+    @click="clickHandler"
+    @mousedown="mouseDownHandler"
     class="a-btn"
-    :type="{'submit': submit }"
+    :type="submit ? 'submit' : 'button'"
     :class="{
       'a-btn--primary': type == 'primary',
       'a-btn--basic': type == 'basic',
       'a-btn--circle': shape == 'circle',
-      'a-btn--rectangle': shape != 'circle',
+      'a-btn--square': shape == 'square',
+      'a-btn--rectangle': shape != 'circle' && shape != 'square',
       'a-btn--secondary': type == 'secondary',
       'a-btn--outlined': stylingMode == 'outlined',
+      'a-btn--text': stylingMode == 'text',
       'a-btn--full-width': fullWidth == true,
     }"
   >
@@ -29,28 +32,40 @@ export default {
     "shape",
     "icon",
   ],
-  methods:{
-      clickHandler: function(){
+  methods: {
+    clickHandler: function() {
       this.$emit("click");
-      }
-  }
+    },
+    mouseDownHandler: function(e) {
+      this.$emit("mousedown", e);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .a-btn {
   height: $space-size-6;
-
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   font-size: 1rem;
+  border-radius: $border-radius;
+  transition: transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  &:active {
+    transform: scale(0.85);
+  }
   &__icon {
     font-size: $space-size-2 + 4;
   }
+  &--square {
+    height: unset;
+    padding: $space-size;
+  }
   &--rectangle {
     padding: 0 $space-size-5;
-    border-radius: $border-radius;
   }
   &--circle {
     width: $space-size-6;
@@ -72,11 +87,32 @@ export default {
     color: $blue;
   }
   &--secondary {
+    background: $gray200;
+    color: $white;
+  }
+  &--secondary.a-btn--outlined {
     border: 2px solid $gray200;
     color: $gray200;
+    &:active {
+      background: $gray150;
+      border-color: $gray150;
+    }
+  }
+  &--secondary.a-btn--text {
+    color: $gray200;
+    transition: background 0.2s;
+
+    &:active {
+      background: $gray150;
+      border-color: $gray150;
+    }
   }
   &--outlined {
     background: none;
+  }
+  &--text {
+    background: none;
+    border: none;
   }
   &--full-width {
     width: 100%;

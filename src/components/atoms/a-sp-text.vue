@@ -1,35 +1,47 @@
 <template>
-  <p class="a-text" :class="{ 'text-center': textCenter,'a-text--secondary': color=='secondary', 'a-text--light': color=='light', 'a-text--small': size=='small' }">
+  <p
+    class="a-text"
+    :class="{
+      'text-center': textCenter,
+      'a-text--bold': type == 'bold',
+      'a-text--secondary': color == 'secondary',
+      'a-text--light': color == 'light',
+      'a-text--small': size == 'small',
+    }"
+  >
     <slot />
   </p>
 </template>
 <script>
 export default {
   name: "text-simple",
-  props: ["text-center","color", "size"],
+  props: ["text-center", "color", "size", "type"],
 };
 </script>
 <style lang="scss" scoped>
-.a-text{
+.a-text {
   display: flex;
   align-items: center;
-  &--secondary{
+  &--bold{
+    font-weight: 800;
+  }
+  &--secondary {
     color: $secondary-text-color;
   }
-  &--light{
+  &--light {
     color: $gray175;
   }
-  &--small{
+  &--small {
     font-size: 12px;
     margin: 4px 0;
-    &:last-child{
+    &:last-child {
       margin: 0;
     }
   }
-  &--medium{
+  &--medium {
     font-size: 1rem;
   }
-  &--center{
+  &--center {
     text-align: center;
   }
 }

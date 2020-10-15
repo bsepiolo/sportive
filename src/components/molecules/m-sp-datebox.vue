@@ -33,40 +33,53 @@
           ratio="wide"
           z-index="max"
           v-if="listVisible"
+          @mousedown="(e) => e.preventDefault()"
         >
-          <div style="display: flex; justify-content: center; padding: 8px;">
-            <div @mousedown.prevent="handlePreviousMonthClick()">left</div>
-            <h4 style="font-weight: 900">{{ monthName }}</h4>
-            <div @mousedown.prevent="handleNextMonthClick()">right</div>
+          <div class="m-selectbox-editor__header">
+            <a-sp-button
+              @click="handlePreviousMonthClick()"
+              styling-mode="text"
+              :submit="false"
+              type="secondary"
+              shape="square"
+              icon="eva eva-arrow-ios-back-outline"
+            />
+
+            <a-sp-text type="bold">{{ monthName }}</a-sp-text>
+            <a-sp-button
+              @click="handleNextMonthClick()"
+              styling-mode="text"
+              :submit="false"
+              type="secondary"
+              shape="square"
+              icon="eva eva-arrow-ios-forward-outline"
+            />
           </div>
-          <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+          <div class="m-selectbox-editor__days-list">
             <div
-              class="day-name"
+              class="m-selectbox-editor__day-label"
               v-for="(day, index) in days"
               :key="`last-${index}`"
-              style="width: calc(100% / 7); padding: 8px; display: flex; align-items: center; justify-content: center;"
             >
               {{ day }}
             </div>
           </div>
-          <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+          <div class="m-selectbox-editor__days-list">
             <div
-              class="day"
-              style="width: calc(100% / 7); color: #dedede; padding: 10px 8px; display: flex; align-items: center; justify-content: center;"
+              class="m-selectbox-editor__day-value is-last-month"
               v-for="(day, index) in startOfMonth"
               :key="`current-${index}`"
             >
               {{ previousMonthDays - startOfMonth + index }}
             </div>
             <div
-              class="day"
+              class="m-selectbox-editor__day-value"
               :class="{
-                'current-day':
+                'is-current':
                   currentDayNumber == day &&
                   currentMonthNumber == selectedMonthNumber,
-                'disabled-day': day < currentDayNumber,
+                'is-disabled': day < currentDayNumber,
               }"
-              style="width: calc(100% / 7); padding: 10px 8px; display: flex; align-items: center; justify-content: center;"
               v-for="(day, index) in daysInMonth"
               :key="index"
               @mousedown="handleSelectDayClick(day)"
@@ -114,7 +127,7 @@ export default {
       const isDateValid = date.isValid();
       debugger;
       if (isDateValid) {
-        return date.format('MMMM Do YYYY');
+        return date.format("MMMM Do YYYY");
       } else {
         return "";
       }
@@ -128,8 +141,10 @@ export default {
   },
   methods: {
     handleSelectDayClick(day) {
-      this.$emit("input", this.moment(this.fullDate).set("date", day));
-      this.listVisible = false;
+      if (day > this.currentDayNumber) {
+        this.$emit("input", this.moment(this.fullDate).set("date", day));
+        this.listVisible = false;
+      }
     },
     setSelectedMonth() {
       const moment = this.moment;
@@ -137,7 +152,6 @@ export default {
       this.fullDate = moment();
       this.daysInMonth = moment().daysInMonth();
       this.monthName = moment().format("MMMM");
-      debugger;
       this.currentDayNumber = moment().format("DD");
       this.selectedMonthNumber = moment().format("M");
       this.startOfMonth = Number(
@@ -179,7 +193,6 @@ export default {
       this.monthName = this.moment(this.fullDate)
         .subtract(1, "months")
         .format("MMMM");
-      debugger;
       this.fullDate = this.moment(this.fullDate).subtract(1, "M");
       this.selectedMonthNumber = this.moment(this.fullDate).format("M");
 
@@ -192,8 +205,6 @@ export default {
         this.moment(this.fullDate)
           .subtract(1, "months")
           .daysInMonth() + 1;
-
-      debugger;
     },
     handleInput(e) {
       this.$emit("input", e);
@@ -214,13 +225,49 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.current-day {
-  color: $blue;
-}
-.disabled-day {
-  color: gray;
-}
 .m-selectbox-editor {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 $space-size $space-size + $space-size-05 $space-size;
+  }
+  &__day-label {
+    width: calc(100% / 7);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__day-value {
+    width: calc(100% / 7);
+    color: $black;
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &.is-disabled {
+      color: $gray200;
+      cursor: unset;
+    }
+    &.is-current {
+      color: $blue;
+      font-weight: 900;
+      position: relative;
+      background: $gray150;
+      border-radius: $border-radius;
+      cursor: unset;
+    }
+    &.is-last-month {
+      color: $gray175;
+      cursor: unset;
+    }
+  }
+  &__days-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   &__card {
     position: absolute;
     top: $space-size-6 + $space-size-05;
@@ -231,6 +278,7 @@ export default {
   }
   &__icon {
     right: 0;
+    pointer-events: none;
   }
   &__clear-button {
     right: $space-size-2;
