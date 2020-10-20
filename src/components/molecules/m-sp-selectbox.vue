@@ -1,47 +1,44 @@
 <template>
-  <div class="m-selectbox-editor">
-    <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <div class="m-selectbox-editor__container">
-      <div class="m-selectbox-editor__input">
-        <a-sp-icon
-          :icon="icon"
-          class="ml-2"
-          :color="iconColor"
-          :absolute="true"
-        />
-
-        <a-sp-textarea
-          :placeholder="placeholder"
-          :value="inputValue"
-          @input="handleInput"
-          :type="type"
-          :size="size"
-          @focus="handleFocus"
-          @blur="handleBlur"
-          :readonly="true"
-        />
-        <a-sp-icon
-          icon="eva eva-chevron-down-outline"
-          :color="iconColor"
-          :absolute="true"
-          class="mr-2 m-selectbox-editor__icon"
-        />
-      </div>
-      <transition name="fade">
-        <a-sp-card
-          class="m-selectbox-editor__card"
-          ratio="wide"
-          z-index="max"
-          v-if="listVisible"
-        >
-          <m-sp-list
-            class="m-selectbox-editor__list"
-            @mousedown="handleItemClick"
-            :items="items"
-            displayValue="value"
+  <div>
+    <div class="m-selectbox-editor">
+      <div class="m-selectbox-editor__container">
+        <div class="m-selectbox-editor__input">
+          <a-sp-icon
+            :icon="icon"
+            class="ml-2"
+            :color="iconColor"
+            :absolute="true"
           />
-        </a-sp-card>
-      </transition>
+
+          <a-sp-textarea
+            :placeholder="placeholder"
+            :value="inputValue"
+            :type="type"
+            :size="size"
+            @focus="handleFocus"
+            @blur="handleBlur"
+            ref="textarea"
+            :readonly="true"
+          />
+          <a-sp-icon
+            icon="eva eva-chevron-down-outline"
+            :color="iconColor"
+            :absolute="true"
+            class="mr-2 m-selectbox-editor__icon"
+          />
+        </div>
+        <transition name="fade">
+          <a-sp-card
+            class="m-selectbox-editor__card"
+            ratio="wide"
+            z-index="max"
+            v-if="listVisible"
+            @mousedown="(e) => e.preventDefault()"
+          >
+            <slot :context="thisContext"/>
+          </a-sp-card>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -50,49 +47,59 @@
 const name = "EventsStore";
 
 export default {
-  props: [
-    "placeholder",
-    "type",
-    "value",
-    "size",
-    "icon",
-    "name",
-    "displayValue",
-  ],
+  props: {
+    displayValue: {
+      type: String,
+    },
+    placeholder: {
+      type: String,
+    },
+    name: {
+      type: String,
+    },
+    icon: {
+      type: String,
+    },
+    value: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
+    type: {
+      type: String,
+    },
+    isExpanded: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      iconColor: "default",
       listVisible: false,
-      items: [
-        {
-          id: 1,
-          value: "Soccer",
-        },
-        {
-          id: 2,
-          value: "Basketball",
-        },
-        {
-          id: 3,
-          value: "Volleyball",
-        },
-        {
-          id: 4,
-          value: "Tennis",
-        },
-      ],
+      iconColor: "default",
     };
   },
   computed: {
+    thisContext()
+    {
+      return this;
+    },
     inputValue() {
-      debugger;
-      return this.$store.state[name].form[this.name][this.displayValue];
+      if (this.displayValue) {
+        return this.$store.state[name].form[this.name][this.displayValue];
+      } else {
+        const date = this.moment(this.$store.state[name].form[this.name]);
+        const isDateValid = date.isValid();
+        if (isDateValid) {
+          return date.format("MMMM Do YYYY");
+        } else {
+          return "";
+        }
+      }
     },
   },
   methods: {
-    handleInput(e) {
-      this.$emit("input", e);
-    },
     handleFocus() {
       this.listVisible = true;
       this.iconColor = "primary";
@@ -102,10 +109,8 @@ export default {
       this.listVisible = false;
       this.iconColor = "default";
     },
-    handleItemClick(item) {
-      debugger;
-      this.$emit("input", item);
-      this.listVisible = false;
+    hideList() {
+      this.listVisible = true;
     },
   },
 };

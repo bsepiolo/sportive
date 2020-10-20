@@ -14,7 +14,7 @@ const requireMoleculeComponent = require.context(
   // The relative path of the components folder
   "./components/molecules",
   // Whether or not to look in subfolders
-  false,
+  true,
   // The regular expression used to match base component filenames
   /m-sp-(^.\/)|\w+\.(vue|js)$/
 );

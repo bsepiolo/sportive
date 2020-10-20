@@ -33,6 +33,7 @@
           :type="type"
           :size="size"
           :shadowDisabled="mapVisible || (location.distance && location.time)"
+          class="m-location-editor__textbox"
           :class="{ 'is-active': mapVisible }"
         />
         <a-sp-icon
@@ -69,7 +70,6 @@
       text="Accept"
       type="primary"
       class="m-location-editor__submit"
-      :full-width="true"
       v-if="mapVisible"
       @click="closeMap"
     />
@@ -176,6 +176,7 @@ export default {
     left: 0;
     z-index: 9999;
   }
+
   &.is-filled {
     .m-location-editor__input {
       background: $white;
@@ -223,6 +224,11 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
+    textarea{
+      &:focus{
+        box-shadow: none;
+      }
+    }
   }
   &__details {
     background: $gray150;

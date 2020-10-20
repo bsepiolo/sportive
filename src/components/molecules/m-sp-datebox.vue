@@ -1,95 +1,75 @@
 <template>
-  <div class="m-selectbox-editor">
-    <!-- <span :class="icon" class="m-input__icon"></span> -->
-    <div class="m-selectbox-editor__container">
-      <div class="m-selectbox-editor__input">
-        <a-sp-icon
-          :icon="icon"
-          class="ml-2"
-          :color="iconColor"
-          :absolute="true"
-        />
+  <div>
+    <m-sp-selectbox
+      :displayValue="displayValue"
+      :name="name"
+      :icon="icon"
+      :type="type"
+      :size="size"
+      :placeholder="placeholder"
+      class="m-datebox"
+    >
+      <template slot-scope="ctx">
+        <div class="m-datebox-editor__header">
+          <a-sp-button
+            @click="handlePreviousMonthClick()"
+            styling-mode="text"
+            :submit="false"
+            type="secondary"
+            shape="square"
+            icon="eva eva-arrow-ios-back-outline"
+          />
 
-        <a-sp-textarea
-          :placeholder="placeholder"
-          :value="inputValue"
-          @input="handleInput"
-          :type="type"
-          :size="size"
-          @blur="handleBlur"
-          @focus="handleFocus"
-          :readonly="true"
-        />
-        <a-sp-icon
-          icon="eva eva-chevron-down-outline"
-          :color="iconColor"
-          :absolute="true"
-          class="mr-2 m-selectbox-editor__icon"
-        />
-      </div>
-      <transition name="fade">
-        <a-sp-card
-          class="m-selectbox-editor__card"
-          ratio="wide"
-          z-index="max"
-          v-if="listVisible"
-          @mousedown="(e) => e.preventDefault()"
-        >
-          <div class="m-selectbox-editor__header">
-            <a-sp-button
-              @click="handlePreviousMonthClick()"
-              styling-mode="text"
-              :submit="false"
-              type="secondary"
-              shape="square"
-              icon="eva eva-arrow-ios-back-outline"
-            />
-
-            <a-sp-text type="bold">{{ monthName }}</a-sp-text>
-            <a-sp-button
-              @click="handleNextMonthClick()"
-              styling-mode="text"
-              :submit="false"
-              type="secondary"
-              shape="square"
-              icon="eva eva-arrow-ios-forward-outline"
-            />
+          <a-sp-text type="bold">{{ monthName }}</a-sp-text>
+          <a-sp-button
+            @click="handleNextMonthClick()"
+            styling-mode="text"
+            :submit="false"
+            type="secondary"
+            shape="square"
+            icon="eva eva-arrow-ios-forward-outline"
+          />
+        </div>
+        <div class="m-datebox-editor__days-list">
+          <div
+            class="m-datebox-editor__label"
+            v-for="(day, index) in days"
+            :key="`last-${index}`"
+          >
+            {{ day }}
           </div>
-          <div class="m-selectbox-editor__days-list">
-            <div
-              class="m-selectbox-editor__day-label"
-              v-for="(day, index) in days"
-              :key="`last-${index}`"
-            >
-              {{ day }}
-            </div>
+        </div>
+        <div class="m-datebox-editor__days-list">
+          <div
+            class="m-datebox-editor__value is-last-month"
+            v-for="(day, index) in startOfMonth"
+            :key="`current-${index}`"
+          >
+            {{ previousMonthDays - startOfMonth + index }}
           </div>
-          <div class="m-selectbox-editor__days-list">
-            <div
-              class="m-selectbox-editor__day-value is-last-month"
-              v-for="(day, index) in startOfMonth"
-              :key="`current-${index}`"
-            >
-              {{ previousMonthDays - startOfMonth + index }}
-            </div>
-            <div
-              class="m-selectbox-editor__day-value"
-              :class="{
-                'is-current':
-                  currentDayNumber == day &&
-                  currentMonthNumber == selectedMonthNumber,
-                'is-disabled': day < currentDayNumber,
-              }"
-              v-for="(day, index) in daysInMonth"
-              :key="index"
-              @mousedown="handleSelectDayClick(day)"
-            >
-              {{ index + 1 }}
-            </div>
+          <div
+            class="m-datebox-editor__value"
+            :class="{
+              'is-selected':
+                inputValue.monthNumber == selectedMonthNumber &&
+                inputValue.dayNumber == index + 1,
+              'is-current':
+                currentDayNumber == day &&
+                currentMonthNumber == selectedMonthNumber,
+              'is-disabled':
+                day < currentDayNumber &&
+                currentMonthNumber == selectedMonthNumber,
+            }"
+            v-for="(day, index) in daysInMonth"
+            :key="index"
+            @mousedown="handleSelectDayClick(day)"
+            @click="toggleIsExpanded(ctx)"
+          >
+            {{ index + 1 }}
           </div>
-        </a-sp-card>
-      </transition>
-    </div>
+        </div>
+      </template>
+    </m-sp-selectbox>
   </div>
 </template>
 
@@ -121,27 +101,37 @@ export default {
       currentDayNumber: 0,
     };
   },
-  computed: {
-    inputValue() {
-      const date = this.moment(this.$store.state[name].form[this.name]);
-      const isDateValid = date.isValid();
-      debugger;
-      if (isDateValid) {
-        return date.format("MMMM Do YYYY");
-      } else {
-        return "";
-      }
-    },
-  },
   created() {
     const moment = this.moment;
     this.currentMonthNumber = moment().format("M");
 
     this.setSelectedMonth();
   },
+  computed: {
+    inputValue() {
+      const date = this.moment(this.$store.state[name].form[this.name]);
+      const isDateValid = date.isValid();
+      if (isDateValid) {
+        return {
+          monthNumber: date.format("M"),
+          dayNumber: date.format("D"),
+        };
+      } else {
+        return "";
+      }
+    },
+  },
   methods: {
+    toggleIsExpanded({ context }) {
+      debugger;
+      context.listVisible = false;
+      context.$el.children[0].querySelector("textarea").blur();
+    },
     handleSelectDayClick(day) {
-      if (day > this.currentDayNumber) {
+      if (
+        day > this.currentDayNumber ||
+        this.currentMonthNumber != this.selectedMonthNumber
+      ) {
         this.$emit("input", this.moment(this.fullDate).set("date", day));
         this.listVisible = false;
       }
@@ -206,57 +196,46 @@ export default {
           .subtract(1, "months")
           .daysInMonth() + 1;
     },
-    handleInput(e) {
-      this.$emit("input", e);
-    },
-    handleFocus() {
-      this.listVisible = true;
-      this.iconColor = "primary";
-    },
-    handleBlur() {
-      this.listVisible = false;
-      this.iconColor = "default";
-    },
-    handleItemClick(item) {
-      this.$emit("input", item);
-      this.listVisible = false;
-    },
   },
 };
 </script>
 <style lang="scss" scoped>
-.m-selectbox-editor {
+.m-datebox-editor {
   &__header {
     display: flex;
     justify-content: space-between;
     padding: 0 $space-size $space-size + $space-size-05 $space-size;
   }
-  &__day-label {
+  &__label,
+  &__value {
     width: calc(100% / 7);
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &__day-value {
-    width: calc(100% / 7);
-    color: $black;
     padding: 10px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  &__value {
+    color: $black;
     cursor: pointer;
     &.is-disabled {
       color: $gray200;
       cursor: unset;
     }
-    &.is-current {
-      color: $blue;
+    &.is-current,
+    &.is-selected {
       font-weight: 900;
       position: relative;
-      background: $gray150;
-      border-radius: $border-radius;
+      border-radius: $border-radius-small;
       cursor: unset;
+    }
+    &.is-current {
+      color: $blue;
+      background: $gray100;
+    }
+    &.is-selected {
+      background: $blue;
+      color: white;
     }
     &.is-last-month {
       color: $gray175;
@@ -289,85 +268,5 @@ export default {
     left: 0;
     z-index: 9999;
   }
-  &.is-filled {
-    .m-selectbox-editor__input {
-      background: $white;
-    }
-    .m-selectbox-editor__input {
-      background: $white;
-    }
-  }
-  &.is-focused {
-    position: absolute;
-    top: $space-size-4;
-    width: calc(100% - 48px);
-    .m-selectbox-editor__icon {
-      position: absolute;
-      z-index: 99999999;
-    }
-    .m-selectbox-editor__input {
-      background: $white;
-      margin: 0;
-      padding-right: $space-size-6;
-    }
-    .m-selectbox-editor__container {
-      background: $white;
-      // top: $space-size-2;
-    }
-  }
-  &__submit {
-    position: fixed;
-    z-index: 999999;
-    bottom: $space-size-3;
-    width: calc(100% - 48px);
-  }
-  &__container {
-    margin-bottom: $space-size;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    border-radius: $border-radius;
-  }
-  &__input {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  &__list {
-    padding: $space-size;
-  }
-  &__details {
-    background: $gray150;
-    position: relative;
-    width: 100%;
-    padding: $space-size;
-    border-bottom-left-radius: $border-radius;
-    border-bottom-right-radius: $border-radius;
-  }
-  &__results-list {
-    background: $white;
-    position: relative;
-    z-index: 9999;
-  }
-}
-@keyframes listHeightAnimation {
-  0% {
-    max-height: 0;
-  }
-  100% {
-    max-height: 200px;
-  }
-}
-.fade-enter-active,
-.fade-enter {
-  //  transition: max-height 0.2s;
-  // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.2s ease-in normal;
-}
-.fade-leave-active,
-.fade-leave-to {
-  //  transition: max-height 0.2s;
-  // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.2s ease-out reverse;
 }
 </style>

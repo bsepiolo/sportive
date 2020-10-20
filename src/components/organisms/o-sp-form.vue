@@ -41,7 +41,7 @@ export default {
       this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
     updateValue(index, value) {
-      debugger
+      debugger;
       const name = this.fields[index].name;
 
       this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
@@ -54,7 +54,7 @@ export default {
         case "location":
           return "m-sp-location-input";
         case "selectbox":
-          return "m-sp-selectbox";
+          return "m-sp-dropdown";
         case "datebox":
           return "m-sp-datebox";
         case "textarea":

@@ -8,7 +8,7 @@
         :icon="field.icon"
         :name="field.name"
         :isChecked="isChecked(index)"
-        @click="handleClick(index)"
+        @click="handleClick(index, field)"
       />
     </div>
   </div>
@@ -24,12 +24,13 @@ export default {
     };
   },
   methods: {
-    handleClick(index) {
+    handleClick(index, data) {
       if (this.currentElementIndex == null) this.currentElementIndex = index;
       else {
         this.previousElementIndex = this.currentElementIndex;
         this.currentElementIndex = index;
       }
+      this.$emit("input", data);
     },
     isChecked(index) {
       if (index == this.previousElementIndex) {
@@ -48,14 +49,15 @@ export default {
   justify-content: space-between;
   margin-bottom: $space-size;
   flex-direction: column;
-  &__container{
+  &__container {
     display: flex;
-    &>*{
+    justify-content: center;
+    & > * {
       margin: $space-size / 2;
-      &:first-child{
+      &:first-child {
         margin-left: 0;
       }
-      &:last-child{
+      &:last-child {
         margin-right: 0;
       }
     }

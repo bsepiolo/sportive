@@ -52,10 +52,10 @@ export default {
   border: none;
   font-size: 1rem;
   border-radius: $border-radius;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.2s;
   -webkit-tap-highlight-color: transparent;
   &:active {
-    transform: scale(0.85);
+    transform: scale(0.95);
   }
   &__icon {
     font-size: $space-size-2 + 4;
@@ -81,10 +81,16 @@ export default {
   &--primary {
     background: $blue;
     color: $white;
+    &:not(.a-btn--outlined):active {
+      background: darken($blue, 5%);
+    }
   }
   &--primary.a-btn--outlined {
     border: 2px solid $blue;
     color: $blue;
+    &:active {
+      background: $gray150;
+    }
   }
   &--secondary {
     background: $gray200;
