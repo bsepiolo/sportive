@@ -35,7 +35,7 @@
             v-if="listVisible"
             @mousedown="(e) => e.preventDefault()"
           >
-            <slot :context="thisContext"/>
+            <slot :setValue="hideList" :inputValue="inputValue"/>
           </a-sp-card>
         </transition>
       </div>
@@ -105,12 +105,13 @@ export default {
       this.iconColor = "primary";
     },
     handleBlur() {
-      debugger;
       this.listVisible = false;
       this.iconColor = "default";
     },
     hideList() {
-      this.listVisible = true;
+
+      this.listVisible = false;
+      this.$refs.textarea.setBlur()
     },
   },
 };

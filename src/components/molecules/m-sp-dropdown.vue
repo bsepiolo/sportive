@@ -7,22 +7,23 @@
     :placeholder="placeholder"
     :isExpanded="listVisible"
   >
-    <template slot-scope="ctx">
+    <template #default="{ setValue, inputValue }">
       <m-sp-list
         class="m-selectbox-editor__list"
         @mousedown="handleItemClick"
-        @click="toggleIsExpanded(ctx)"
-        :selectedItem="ctx.context.inputValue"
+        @click="setValue"
         :activeItem="value"
         :items="items"
         displayValue="value"
+        :selectedItem="inputValue"
       />
+      <!-- :selectedItem="ctx.context.inputValue" -->
     </template>
   </m-sp-selectbox>
 </template>
 
 <script>
- const name = "EventsStore";
+const name = "EventsStore";
 
 export default {
   props: [

@@ -9,7 +9,7 @@
       :placeholder="placeholder"
       class="m-datebox"
     >
-      <template slot-scope="ctx">
+      <template #default="{ setValue }">
         <div class="m-datebox-editor__header">
           <a-sp-button
             @click="handlePreviousMonthClick()"
@@ -63,7 +63,7 @@
             v-for="(day, index) in daysInMonth"
             :key="index"
             @mousedown="handleSelectDayClick(day)"
-            @click="toggleIsExpanded(ctx)"
+            @click="setValue"
           >
             {{ index + 1 }}
           </div>
@@ -89,7 +89,6 @@ export default {
   data() {
     return {
       iconColor: "default",
-      listVisible: false,
       daysInMonth: 0,
       previousMonthDays: 0,
       monthName: "",
@@ -122,11 +121,6 @@ export default {
     },
   },
   methods: {
-    toggleIsExpanded({ context }) {
-      debugger;
-      context.listVisible = false;
-      context.$el.children[0].querySelector("textarea").blur();
-    },
     handleSelectDayClick(day) {
       if (
         day > this.currentDayNumber ||

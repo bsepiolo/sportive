@@ -45,6 +45,9 @@ export default {
           name: "discipline",
           icon: "eva eva-award-outline",
           displayValue: "value",
+          options: {
+            isOpen: true,
+          },
         },
         {
           type: "location",
@@ -69,11 +72,11 @@ export default {
           fields: [
             {
               name: "Public",
-              icon: "eva eva-people-outline"
+              icon: "eva eva-people-outline",
             },
             {
               name: "Private",
-              icon: "eva eva-lock-outline"
+              icon: "eva eva-lock-outline",
             },
           ],
           icon: "eva eva-shield-outline",

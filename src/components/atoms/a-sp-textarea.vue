@@ -14,6 +14,7 @@
     :style="{height: height}"
     :placeholder="placeholder"
     :readonly="readonly"
+    ref="textarea"
   ></textarea>
 </template>
 <script>
@@ -28,11 +29,15 @@ export default {
     handleInput(e) {
       this.$emit("input", e.target.value);
     },
-    handleBlur() {
+    handleBlur(e) {
+      console.log(e)
       this.$emit("blur");
     },
     handleFocus() {
       this.$emit("focus");
+    },
+    setBlur(){
+      this.$refs.textarea.blur();
     }
   },
 };
