@@ -3,7 +3,8 @@
     class="texteditor texteditor--textarea"
     :class="{
       'texteditor--medium': size == 'medium',
-      'texteditor--shadow-disabled': shadowDisabled
+      'texteditor--shadow-disabled': shadowDisabled,
+      'is-error': !isValid,
     }"
     :value="value"
     @input="handleInput"
@@ -11,7 +12,7 @@
     @focus="handleFocus"
     @blur="handleBlur"
     :type="type"
-    :style="{height: height}"
+    :style="{ height: height }"
     :placeholder="placeholder"
     :readonly="readonly"
     ref="textarea"
@@ -19,7 +20,21 @@
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size", "icon", "shadowDisabled", "height", "readonly"],
+  props: {
+    placeholder: String,
+    type: String,
+    value: String,
+    size: String,
+    icon: String,
+    shadowDisabled: Boolean,
+    height: String,
+    validationRules: Object,
+    isValid: {
+      type: Boolean,
+      default: true,
+    },
+    readonly: Boolean
+  },
   data() {
     return {
       content: this.value,
@@ -30,15 +45,15 @@ export default {
       this.$emit("input", e.target.value);
     },
     handleBlur(e) {
-      console.log(e)
-      this.$emit("blur");
+      console.log(e);
+      this.$emit("blur", e.target.value);
     },
-    handleFocus() {
-      this.$emit("focus");
+    handleFocus(e) {
+      this.$emit("focus", e.target.value);
     },
-    setBlur(){
+    setBlur() {
       this.$refs.textarea.blur();
-    }
+    },
   },
 };
 </script>

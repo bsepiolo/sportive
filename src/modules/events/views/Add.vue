@@ -11,7 +11,7 @@
     <o-sp-form
       :namespace="namespace"
       submitTitle="Create"
-      submitAction="addEvent"
+      :submitAction="addEvent"
       :fields="fields"
     />
   </div>
@@ -20,7 +20,6 @@
 <script>
 import * as actions from "@/store/action_types";
 import OSpForm from "@/components/organisms/o-sp-form";
-
 import { mapActions, mapState } from "vuex";
 import { debounce } from "lodash";
 const namespace = "EventsStore";
@@ -37,6 +36,9 @@ export default {
           model: "name",
           name: "name",
           icon: "eva eva-person-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
         {
           type: "selectbox",
@@ -45,8 +47,8 @@ export default {
           name: "discipline",
           icon: "eva eva-award-outline",
           displayValue: "value",
-          options: {
-            isOpen: true,
+          validationRules: {
+            required: { text: "Field is required" },
           },
         },
         {
@@ -56,6 +58,9 @@ export default {
           name: "location",
           icon: "eva eva-pin-outline",
           displayValue: "locationName",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
         {
           type: "datebox",
@@ -63,12 +68,18 @@ export default {
           model: "date",
           name: "date",
           icon: "eva eva-calendar-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
         {
           type: "radio",
           placeholder: "Access",
           model: "access",
           name: "access",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
           fields: [
             {
               name: "Public",
@@ -88,6 +99,9 @@ export default {
           name: "description",
           icon: "eva eva-file-text-outline",
           height: "100px",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
       ],
     };
@@ -98,6 +112,7 @@ export default {
   methods: {
     ...mapActions(namespace, {
       findLocationByName: actions.FIND_LOCATION_BY_NAME,
+      addEvent: actions.ADD_EVENT
     }),
     findLocation: debounce(function(e) {
       if (e.length > 2) {
@@ -105,6 +120,7 @@ export default {
       }
     }, 400),
     submitForm() {
+      debugger
       this.addEvent();
     },
   },

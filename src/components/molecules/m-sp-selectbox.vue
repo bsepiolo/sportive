@@ -19,6 +19,7 @@
             @blur="handleBlur"
             ref="textarea"
             :readonly="true"
+            :isValid="isValid"
           />
           <a-sp-icon
             icon="eva eva-chevron-down-outline"
@@ -35,7 +36,7 @@
             v-if="listVisible"
             @mousedown="(e) => e.preventDefault()"
           >
-            <slot :setValue="hideList" :inputValue="inputValue"/>
+            <slot :setValue="hideList" :inputValue="inputValue" />
           </a-sp-card>
         </transition>
       </div>
@@ -69,20 +70,24 @@ export default {
     type: {
       type: String,
     },
+    validationRules: {
+      type: Object,
+    },
     isExpanded: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       listVisible: false,
       iconColor: "default",
+      content: '',
+      isValid: true,
     };
   },
   computed: {
-    thisContext()
-    {
+    thisContext() {
       return this;
     },
     inputValue() {
@@ -100,18 +105,20 @@ export default {
     },
   },
   methods: {
+    validate() {
+      this.isValid = this.validation(this.validationRules, this.inputValue || "");
+    },
     handleFocus() {
       this.listVisible = true;
       this.iconColor = "primary";
     },
-    handleBlur() {
+    handleBlur(e) {
       this.listVisible = false;
       this.iconColor = "default";
+      this.isValid = this.validation(this.validationRules, e);
     },
     hideList() {
-
-      this.listVisible = false;
-      this.$refs.textarea.setBlur()
+      this.$refs.textarea.setBlur();
     },
   },
 };
@@ -126,6 +133,7 @@ export default {
   }
   &__icon {
     right: 0;
+    pointer-events: none;
   }
   &__clear-button {
     right: $space-size-2;
@@ -209,12 +217,12 @@ export default {
 .fade-enter {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.2s ease-in normal;
+  animation: listHeightAnimation 0.3s ease-in normal;
 }
 .fade-leave-active,
 .fade-leave-to {
   //  transition: max-height 0.2s;
   // animation:  listHeightAnimation .5s ease-in-out alternate;
-  animation: listHeightAnimation 0.2s ease-out reverse;
+  animation: listHeightAnimation 0.3s ease-out reverse;
 }
 </style>

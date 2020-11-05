@@ -8,11 +8,14 @@
   &--textarea {
     resize: none;
   }
+  &.is-error{
+    border-bottom: 1px solid red;
+  }
   height: $space-size-6;
   border-radius: $border-radius;
   background: $white;
-  box-shadow: $box-shadow;
-  border: none;
+  border: unset;
+  border-bottom: 1px solid #D6DAE9;
   width: 100%;
   font-size: 1rem;
   padding: 13px $space-size-2 13px $space-size-6;
@@ -23,7 +26,7 @@
     /* Edge */
     color: $gray175;
   }
-  &:focus {
-    box-shadow: $box-shadow-large;
-  }
+  // &:focus {
+  //   box-shadow: $box-shadow-large;
+  // }
 }

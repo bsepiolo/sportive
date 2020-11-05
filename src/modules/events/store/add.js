@@ -49,9 +49,10 @@ export const EventsStore = {
       }
     },
     [action.ADD_EVENT]({ state, rootState }) {
+      debugger
       rootState.db
         .collection("events")
-        .add(state.eventForm)
+        .add(state.form)
         .then((data) => {
           console.log(data.data());
         })
@@ -65,8 +66,7 @@ export const EventsStore = {
       try {
         const { data } = await mapService.getLocationByCoords(payload);
         const [addresses] = data.addresses;
-        const { position } = addresses;
-        const { address } = addresses;
+        const { position, address } = addresses;
         const locationName = `${
           address.localName
         }, ${address.streetNameAndNumber || ""}`;

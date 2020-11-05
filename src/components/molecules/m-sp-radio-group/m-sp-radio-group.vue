@@ -5,6 +5,7 @@
       <m-sp-radio-button
         v-for="(field, index) in fields"
         :key="index"
+        :isValid="isValid"
         :icon="field.icon"
         :name="field.name"
         :isChecked="isChecked(index)"
@@ -16,9 +17,11 @@
 
 <script>
 export default {
-  props: ["fields"],
+  props: ["fields", "validationRules"],
   data() {
     return {
+      isValid: true,
+      content: '',
       currentElementIndex: null,
       previousElementIndex: null,
     };
@@ -30,7 +33,16 @@ export default {
         this.previousElementIndex = this.currentElementIndex;
         this.currentElementIndex = index;
       }
+      this.content = data.name;
+      this.isValid = this.validation(this.validationRules, data.name);
+
+      this.$emit("isValid", this.isValid);
+
       this.$emit("input", data);
+    },
+    validate() {
+      debugger
+      this.isValid = this.validation(this.validationRules, this.content);
     },
     isChecked(index) {
       if (index == this.previousElementIndex) {

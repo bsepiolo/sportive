@@ -3,8 +3,8 @@
     class="texteditor"
     :class="{
       'texteditor--medium': size == 'medium',
+      'is-error': !isValid,
     }"
-    :value="value"
     @input="handleInput"
     @focus="handleFocus"
     @blur="handleBlur"
@@ -14,24 +14,32 @@
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size", "icon"],
+  props: {
+    placeholder: String,
+    type: String,
+    value: String,
+    size: String,
+    icon: String,
+    isValid: {
+      type: Boolean,
+      default: true,
+    }
+  },
   data() {
     return {
-      content: this.value,
-      isFocused: false
+      isFocused: false,
     };
   },
   methods: {
     handleInput(e) {
       this.$emit("input", e.target.value);
     },
-    handleFocus() {
-      this.$emit("focus");
+    handleFocus(e) {
+      this.$emit("focus", e.target.value);
     },
-    handleBlur(){
-      this.$emit("blur");
-    }
+    handleBlur(e) {
+      this.$emit("blur", e.target.value);
+    },
   },
 };
 </script>
-

@@ -8,6 +8,9 @@
       :size="size"
       :placeholder="placeholder"
       class="m-datebox"
+      :validationRules="validationRules"
+      @isValid="(e) => (isValid = e)"
+      ref="selectbox"
     >
       <template #default="{ setValue }">
         <div class="m-datebox-editor__header">
@@ -85,9 +88,11 @@ export default {
     "icon",
     "name",
     "displayValue",
+    "validationRules",
   ],
   data() {
     return {
+      isValid: true,
       iconColor: "default",
       daysInMonth: 0,
       previousMonthDays: 0,
@@ -121,12 +126,18 @@ export default {
     },
   },
   methods: {
+    validate() {
+      debugger
+      this.$refs.selectbox.validate();
+    },
     handleSelectDayClick(day) {
       if (
         day > this.currentDayNumber ||
         this.currentMonthNumber != this.selectedMonthNumber
       ) {
-        this.$emit("input", this.moment(this.fullDate).set("date", day));
+        this.$emit("isValid", this.isValid);
+        debugger;
+        this.$emit("input", this.moment(this.fullDate).toISOString());
         this.listVisible = false;
       }
     },
@@ -202,16 +213,27 @@ export default {
   }
   &__label,
   &__value {
-    width: calc(100% / 7);
-    padding: 10px 8px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-
+  &__label {
+    font-size: $space-size + $space-size-05;
+    text-transform: uppercase;
+    padding: 10px 8px;
+    width: calc(100% / 7);
+    font-weight: 900;
+    color: $secondary-text-color;
+  }
   &__value {
+    width: calc((100% / 7) - 8px);
+    padding: 6px 4px;
+    margin: 4px;
+
     color: $black;
     cursor: pointer;
+    transition: background 0.3s;
+
     &.is-disabled {
       color: $gray200;
       cursor: unset;
@@ -228,8 +250,34 @@ export default {
       background: $gray100;
     }
     &.is-selected {
-      background: $blue;
+      &:after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: -1;
+        background: $blue;
+        border-radius: $border-radius-small;
+        animation: selectedAnimation 0.4s;
+      }
       color: white;
+      @keyframes selectedAnimation {
+        0% {
+          transform: scale(1);
+          opacity: 0.3;
+        }
+        30% {
+          transform: scale(0.9);
+          opacity: 0.6;
+        }
+        60% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
     }
     &.is-last-month {
       color: $gray175;

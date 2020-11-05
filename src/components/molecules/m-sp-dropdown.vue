@@ -5,7 +5,9 @@
     :name="name"
     :icon="icon"
     :placeholder="placeholder"
-    :isExpanded="listVisible"
+    :validationRules="validationRules"
+    @isValid="(e) => (isValid = e)"
+    ref="selectbox"
   >
     <template #default="{ setValue, inputValue }">
       <m-sp-list
@@ -34,9 +36,11 @@ export default {
     "icon",
     "name",
     "displayValue",
+    "validationRules",
   ],
   data() {
     return {
+      isValid: true,
       iconColor: "default",
       listVisible: false,
       items: [
@@ -65,11 +69,17 @@ export default {
     },
   },
   methods: {
+    validate(){
+      debugger
+      this.$refs.selectbox.validate()
+    },
     toggleIsExpanded(ctx) {
       ctx.context.listVisible = false;
       ctx.context.$el.children[0].querySelector("textarea").blur();
     },
     handleItemClick(item) {
+      this.$emit("isValid", this.isValid);
+
       this.$emit("input", item);
       this.listVisible = false;
     },

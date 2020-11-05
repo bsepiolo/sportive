@@ -2,6 +2,7 @@
   <div
     class="m-location-editor"
     :class="{
+      'is-error': !isValid,
       'is-focused': mapVisible,
       'is-filled': location.distance && location.time,
     }"
@@ -32,6 +33,8 @@
           @focus="handleFocus"
           :type="type"
           :size="size"
+          :validationRules="validationRules"
+          @isValid="(e) => (isValid = e)"
           :shadowDisabled="mapVisible || (location.distance && location.time)"
           class="m-location-editor__textbox"
           :class="{ 'is-active': mapVisible }"
@@ -96,9 +99,11 @@ export default {
     "name",
     "is-active",
     "displayValue",
+    "validationRules",
   ],
   data() {
     return {
+      isValid: true,
       mapVisible: false,
       iconColor: "default",
       showClearButton: false,
@@ -111,11 +116,15 @@ export default {
         this.displayValue
       ];
     },
+    inputData() {
+      return this.$store.state["EventsStore"].form[this.name];
+    },
   },
   methods: {
     ...mapMutations(name, {
       removeMarker: mutations.REMOVE_MARKER,
-      setLocationCoordsSearchResults: mutations.SET_LOCATION_COORDS_SEARCH_RESULTS,
+      setLocationCoordsSearchResults:
+        mutations.SET_LOCATION_COORDS_SEARCH_RESULTS,
       removeLocation: mutations.REMOVE_LOCATION,
       removeLocationSearchResults: mutations.REMOVE_LOCATION_SEARCH_RESULTS,
     }),
@@ -125,6 +134,13 @@ export default {
       findRouteDistance: actions.FIND_ROUTE_DISTANCE,
       setUserLocation: actions.SET_USER_LOCATION,
     }),
+    validate() {
+      debugger;
+      this.isValid = this.validation(
+        this.validationRules,
+        this.inputValue || ""
+      );
+    },
     handleFocus() {
       this.mapVisible = true;
       this.iconColor = "primary";
@@ -142,7 +158,9 @@ export default {
     },
     selectItem({ position, address }) {
       const { lat, lon } = position;
-
+      if (!this.isValid) {
+        this.isValid = this.validation(this.validationRules, address);
+      }
       this.setLocationCoordsSearchResults({ position, address });
       this.findRouteDistance({
         lngLat: { lng: lon, lat },
@@ -159,14 +177,25 @@ export default {
       }
     }, 400),
     closeMap() {
+      debugger;
+
+      this.isValid =
+        this.validation(this.validationRules, this.inputData.position || "") &&
+        this.validation(
+          this.validationRules,
+          this.inputData.locationName || ""
+        );
+      this.$emit("isValid", this.isValid);
       this.mapVisible = false;
     },
   },
-
 };
 </script>
 <style lang="scss" scoped>
 .m-location-editor {
+  &.is-error {
+    border-bottom: 1px solid red;
+  }
   &__clear-button {
     right: $space-size-2;
   }
@@ -224,8 +253,8 @@ export default {
     display: flex;
     align-items: center;
     position: relative;
-    textarea{
-      &:focus{
+    textarea {
+      &:focus {
         box-shadow: none;
       }
     }

@@ -30,12 +30,6 @@ export default {
   &__el {
     padding: $space-size + $space-size / 2 $space-size;
     border-radius: $border-radius-small;
-    &:last-child {
-      padding-bottom: $space-size / 2;
-    }
-    &:first-child {
-      padding-top: $space-size / 2;
-    }
     &.is-active {
       background: $gray100;
     }

@@ -1,25 +1,8 @@
 <template>
-  <button
-    @click="clickHandler"
-    @mousedown="mouseDownHandler"
-    class="a-btn"
-    :type="submit ? 'submit' : 'button'"
-    :class="{
-      'a-btn--primary': type == 'primary',
-      'a-btn--basic': type == 'basic',
-      'a-btn--circle': shape == 'circle',
-      'a-btn--square': shape == 'square',
-      'a-btn--rectangle': shape != 'circle' && shape != 'square',
-      'a-btn--secondary': type == 'secondary',
-      'a-btn--outlined': stylingMode == 'outlined',
-      'a-btn--text': stylingMode == 'text',
-      'a-btn--full-width': fullWidth == true,
-    }"
-  >
-    <span v-if="icon" :class="icon" class="a-btn__icon"></span>
-
-    {{ text }}
-  </button>
+  <div>
+    <slot />
+    <button @click="handleClick">test</button>
+  </div>
 </template>
 <script>
 export default {
@@ -33,10 +16,15 @@ export default {
     "icon",
   ],
   methods: {
-    clickHandler: function() {
-      this.$emit("click");
+    handleClick() {
+      this.$children.forEach((e) => {
+        debugger;
+        if (e.validate) {
+          e.validate();
+        }
+      });
     },
-    mouseDownHandler: function(e) {
+    mouseDownHandler(e) {
       this.$emit("mousedown", e);
     },
   },

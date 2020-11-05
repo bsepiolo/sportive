@@ -1,6 +1,8 @@
 *,*:focus,*:hover{
     outline:none;
+    -webkit-tap-highlight-color: transparent;
 }
+
 .text-center{
     text-align: center;
     align-items: center;
