@@ -2,12 +2,11 @@
   <div
     class="m-location-editor"
     :class="{
-      'is-error': !isValid,
       'is-focused': mapVisible,
       'is-filled': location.distance && location.time,
     }"
   >
-    <div class="m-location-editor__container">
+    <div class="m-location-editor__container" :class="{ validator: !isValid }">
       <div class="m-location-editor__input">
         <a-sp-icon
           :icon="icon"
@@ -33,9 +32,10 @@
           @focus="handleFocus"
           :type="type"
           :size="size"
+          :isValid="isValid"
           :validationRules="validationRules"
           @isValid="(e) => (isValid = e)"
-          :shadowDisabled="mapVisible || (location.distance && location.time)"
+          :shadowDisabled="mapVisible || (location.distance && location.time) > 0"
           class="m-location-editor__textbox"
           :class="{ 'is-active': mapVisible }"
         />
@@ -78,6 +78,9 @@
     />
 
     <a-sp-map v-if="mapVisible || form.location.name" v-show="mapVisible" />
+    <span class="validator__text" v-if="!isValid">{{
+      validationRules.required.text
+    }}</span>
   </div>
 </template>
 <script>
@@ -135,11 +138,11 @@ export default {
       setUserLocation: actions.SET_USER_LOCATION,
     }),
     validate() {
-      debugger;
       this.isValid = this.validation(
         this.validationRules,
         this.inputValue || ""
       );
+      return this.isValid;
     },
     handleFocus() {
       this.mapVisible = true;
@@ -177,8 +180,6 @@ export default {
       }
     }, 400),
     closeMap() {
-      debugger;
-
       this.isValid =
         this.validation(this.validationRules, this.inputData.position || "") &&
         this.validation(
@@ -193,9 +194,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .m-location-editor {
-  &.is-error {
-    border-bottom: 1px solid red;
-  }
   &__clear-button {
     right: $space-size-2;
   }
@@ -229,7 +227,6 @@ export default {
     }
     .m-location-editor__container {
       background: $white;
-      // top: $space-size-2;
     }
   }
   &__submit {
@@ -239,7 +236,6 @@ export default {
     width: calc(100% - 48px);
   }
   &__container {
-    margin-bottom: $space-size;
     display: flex;
     position: relative;
     flex-direction: column;
@@ -247,7 +243,6 @@ export default {
     z-index: 9999;
     border-radius: $border-radius;
     overflow: hidden;
-    box-shadow: $box-shadow;
   }
   &__input {
     display: flex;

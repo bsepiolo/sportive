@@ -1,0 +1,12 @@
+.validator{
+  &__text{
+    font-size: $space-size + $space-size-05;
+    color: $red;
+    margin-top: $space-size-05;
+    margin-bottom: $space-size-05;
+    padding-left: $space-size;
+  }
+  &:after {
+    box-shadow: 0px 4px 9px rgba(255, 0, 0, 0.1) !important;
+  }
+}

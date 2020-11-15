@@ -1,9 +1,8 @@
 <template>
-  <form ref="form" @submit.prevent="submitForm($event)">
-    {{ this.validFields.length }}
-    valid {{ valid }}\
-    <a-sp-validation-group>
+  <form ref="form" class="o-form" @submit.prevent="submitForm($event)">
+    <a-sp-validation-group ref="validationGroup">
       <component
+        class="o-form__field"
         v-for="(field, index) in fields"
         :is="componentName(field.type)"
         :key="index"
@@ -14,7 +13,6 @@
         :fields="field.fields"
         :validationRules="field.validationRules"
         :displayValue="field.displayValue || ''"
-        @isValid="(e) => isValid(index, e)"
         @input="(e) => updateValue(index, e)"
         :placeholder="field.placeholder"
         :ref="`field${index}`"
@@ -54,48 +52,11 @@ export default {
     });
   },
   methods: {
-    isValid(index, e) {
-      debugger;
-      const isInArray = this.validFields.some((e) => e == index);
-      if (e && !isInArray) {
-        this.validFields.push(index);
-      } else if (!e && isInArray) {
-        this.validFields = this.validFields.filter((e) => e != index);
-      }
-    },
     submitForm() {
-      const data = this.fields.filter((el) => {
-        return el.validationRules;
-      });
-      debugger;
-    //  this.$refs.field0[0].validate();
-      // for (ref in this.$refs) {
-      //   console.log(ref);
-      // }
-      // this.$refs.forEach((e, index) => {
-      //   const valid = this.validFields.filter((validIndex) => {
-      //     return index == validIndex;
-      //   });
-      //   if (!valid) {
-      //     e[0].isValid = false;
-      //   }
-      // });
-
-      // this.$refs.field3[0].isValid = false;
-      const validated = this.validFields.filter((validIndex) => {
-        return data.filter((e, index) => {
-          validIndex != index;
-        });
-      });
-      console.log("validated", validated);
-      if (this.validFields.length == data.length) {
-        this.valid = true;
-      } else {
-        this.valid = false;
+      this.valid = this.$refs.validationGroup.validateFields();
+      if (this.valid) {
+        this.submitAction();
       }
-
-      // this.submitAction();
-      // this.$store.dispatch(`${this.namespace}/${this.submitAction}`);
     },
     updateValue(index, value) {
       const name = this.fields[index].name;
@@ -114,17 +75,22 @@ export default {
         case "datebox":
           return "m-sp-datebox";
         case "textarea":
-          return "m-sp-textarea-input";
+          return "m-sp-textarea";
         case "radio":
           return "m-sp-radio-group";
         default:
-          return "m-sp-text-input";
+          return "m-sp-textbox";
       }
     },
   },
 };
 </script>
 <style lang="scss" scoped>
+.o-form {
+  &__field {
+    margin-bottom: $space-size;
+  }
+}
 .o-actions {
   display: flex;
   flex-direction: column;

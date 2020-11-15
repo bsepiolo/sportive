@@ -1,7 +1,6 @@
 <template>
   <div>
     <slot />
-    <button @click="handleClick">test</button>
   </div>
 </template>
 <script>
@@ -16,16 +15,17 @@ export default {
     "icon",
   ],
   methods: {
-    handleClick() {
+    validateFields() {
+      let isValid = true;
       this.$children.forEach((e) => {
-        debugger;
-        if (e.validate) {
-          e.validate();
+        if (e.validationRules && e.validate) {
+          let fieldValidationResult = e.validate();
+          if (!fieldValidationResult) {
+            isValid = false;
+          }
         }
       });
-    },
-    mouseDownHandler(e) {
-      this.$emit("mousedown", e);
+      return isValid;
     },
   },
 };

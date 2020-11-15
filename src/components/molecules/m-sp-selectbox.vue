@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="m-selectbox-editor">
-      <div class="m-selectbox-editor__container">
+      <div
+        class="m-selectbox-editor__container"
+        :class="{ validator: !isValid }"
+      >
         <div class="m-selectbox-editor__input">
           <a-sp-icon
             :icon="icon"
@@ -39,6 +42,9 @@
             <slot :setValue="hideList" :inputValue="inputValue" />
           </a-sp-card>
         </transition>
+        <span class="validator__text" v-if="!isValid">{{
+          validationRules.required.text
+        }}</span>
       </div>
     </div>
   </div>
@@ -82,7 +88,7 @@ export default {
     return {
       listVisible: false,
       iconColor: "default",
-      content: '',
+      content: "",
       isValid: true,
     };
   },
@@ -106,7 +112,11 @@ export default {
   },
   methods: {
     validate() {
-      this.isValid = this.validation(this.validationRules, this.inputValue || "");
+      this.isValid = this.validation(
+        this.validationRules,
+        this.inputValue || ""
+      );
+      return this.isValid;
     },
     handleFocus() {
       this.listVisible = true;
@@ -177,7 +187,6 @@ export default {
     width: calc(100% - 48px);
   }
   &__container {
-    margin-bottom: $space-size;
     display: flex;
     position: relative;
     flex-direction: column;

@@ -1,7 +1,7 @@
 <template>
   <div
     class="m-sp-radio-button"
-    :class="{ 'is-checked': isChecked, 'is-error': !isValid }"
+    :class="{ 'is-checked': isChecked }"
     @click="handleClick"
   >
     <div class="m-sp-radio-button__selector">
@@ -29,7 +29,12 @@
 
 <script>
 export default {
-  props: ["name", "icon", "isChecked", "isValid"],
+  props: {
+    name: String,
+    icon: String,
+    isChecked: Boolean,
+    isValid: Boolean,
+  },
   data() {
     return {
       model: "",
@@ -48,7 +53,7 @@ export default {
 <style lang="scss" scoped>
 .m-sp-radio-button {
   &.is-error {
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid $red;
   }
   background: $white;
   box-shadow: $box-shadow;

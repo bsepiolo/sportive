@@ -9,7 +9,7 @@
     resize: none;
   }
   &.is-error{
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid $red;
   }
   height: $space-size-6;
   border-radius: $border-radius;
@@ -20,6 +20,7 @@
   font-size: 1rem;
   padding: 13px $space-size-2 13px $space-size-6;
   color: $black;
+  overflow: hidden;
   &::-webkit-input-placeholder,
   &:-ms-input-placeholder,
   &::placeholder {

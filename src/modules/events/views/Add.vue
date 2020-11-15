@@ -78,7 +78,7 @@ export default {
           model: "access",
           name: "access",
           validationRules: {
-            required: { text: "Field is required" },
+            required: { text: "Choose one of the fields above" },
           },
           fields: [
             {
@@ -99,9 +99,6 @@ export default {
           name: "description",
           icon: "eva eva-file-text-outline",
           height: "100px",
-          validationRules: {
-            required: { text: "Field is required" },
-          },
         },
       ],
     };
@@ -120,7 +117,6 @@ export default {
       }
     }, 400),
     submitForm() {
-      debugger
       this.addEvent();
     },
   },

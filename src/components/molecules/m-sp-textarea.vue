@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="m-input"
-    :class="{ 'is-focused': isFocused, 'is-error': !isValid }"
-  >
-    <div class="m-input__container">
+  <div class="m-input" :class="{ 'is-focused': isFocused }">
+    <div class="m-input__container" :class="{ validator: !isValid }">
       <a-sp-icon
         :icon="icon"
         class="ml-2"
@@ -23,22 +20,22 @@
         :isValid="isValid"
       />
     </div>
-    <span class="m-input__error" v-if="!isValid">{{
+    <span class="validator__text" v-if="!isValid">{{
       validationRules.required.text
     }}</span>
   </div>
 </template>
 <script>
 export default {
-  props: [
-    "placeholder",
-    "type",
-    "value",
-    "size",
-    "icon",
-    "height",
-    "validationRules",
-  ],
+  props: {
+    placeholder: String,
+    type: String,
+    value: String,
+    size: String,
+    icon: String,
+    height: String,
+    validationRules: Object,
+  },
   data() {
     return {
       isValid: true,
@@ -57,6 +54,7 @@ export default {
     },
     validate() {
       this.isValid = this.validation(this.validationRules, this.content);
+      return this.isValid;
     },
     handleFocus() {
       this.isFocused = true;
@@ -84,13 +82,7 @@ export default {
       }
     }
   }
-  &.is-error {
-    .m-input__container {
-      &:after {
-        box-shadow: 0px 4px 9px rgba(255, 0, 0, 0.1);
-      }
-    }
-  }
+
   &__container {
     position: relative;
     display: flex;
@@ -105,13 +97,6 @@ export default {
       box-shadow: $box-shadow-large;
       border-radius: $border-radius;
     }
-  }
-  &__error {
-    font-size: $space-size + $space-size-05;
-    color: $red;
-    margin-top: $space-size-05;
-    margin-bottom: $space-size-05;
-    padding-left: $space-size;
   }
   &__icon {
     position: absolute;

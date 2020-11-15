@@ -127,8 +127,8 @@ export default {
   },
   methods: {
     validate() {
-      debugger
-      this.$refs.selectbox.validate();
+      const validationResult = this.$refs.selectbox.validate();
+      return validationResult;
     },
     handleSelectDayClick(day) {
       if (

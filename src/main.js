@@ -15,26 +15,29 @@ Vue.prototype.$http = Axios;
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 Vue.mixin({
   methods: {
-    validation({ required, email }, e) {
-      let isValid = false;
-debugger
-      if (required) {
-        if (required.length && (e.length > required.length)) {
-          isValid = true;
-        } else if (e.length) {
-          isValid = true;
-        }else{
-          isValid = false;
+    validation(rules, e) {
+      if (rules) {
+        let isValid = false;
+        if (rules.required) {
+          if (rules.required.length && e.length > rules.required.length) {
+            isValid = true;
+          } else if (e.length) {
+            isValid = true;
+          } else {
+            isValid = false;
+          }
         }
-      }
 
-      if(email){
-        //eslint-disable-next-line
-        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (rules.email) {
+          //eslint-disable-next-line
+          const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
-        isValid = re.test(String(e).toLowerCase())
+          isValid = re.test(String(e).toLowerCase());
+        }
+        return isValid;
+      } else {
+        return true;
       }
-      return isValid;
     },
   },
 });

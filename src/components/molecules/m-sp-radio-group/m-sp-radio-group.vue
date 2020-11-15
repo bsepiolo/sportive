@@ -1,17 +1,24 @@
 <template>
-  <div class="m-sp-radio-group">
-    <a-sp-text color="secondary" class="mt-2 mb-1">Access</a-sp-text>
+  <div class="m-sp-radio-group" :class="{ 'is-error': !isValid }">
+    <div class="m-sp-radio-group__header mb-1 mt-2">
+      <a-sp-text color="secondary">Access</a-sp-text>
+    </div>
+
     <div class="m-sp-radio-group__container">
       <m-sp-radio-button
         v-for="(field, index) in fields"
         :key="index"
         :isValid="isValid"
+        :isDefault="field.default || false"
         :icon="field.icon"
         :name="field.name"
         :isChecked="isChecked(index)"
         @click="handleClick(index, field)"
       />
     </div>
+    <span class="validator__text" v-if="!isValid">{{
+      validationRules.required.text
+    }}</span>
   </div>
 </template>
 
@@ -21,7 +28,7 @@ export default {
   data() {
     return {
       isValid: true,
-      content: '',
+      content: "",
       currentElementIndex: null,
       previousElementIndex: null,
     };
@@ -34,6 +41,7 @@ export default {
         this.currentElementIndex = index;
       }
       this.content = data.name;
+
       this.isValid = this.validation(this.validationRules, data.name);
 
       this.$emit("isValid", this.isValid);
@@ -41,8 +49,8 @@ export default {
       this.$emit("input", data);
     },
     validate() {
-      debugger
       this.isValid = this.validation(this.validationRules, this.content);
+      return this.isValid
     },
     isChecked(index) {
       if (index == this.previousElementIndex) {
@@ -52,6 +60,7 @@ export default {
       return index == this.currentElementIndex ? true : false;
     },
   },
+  mounted() {},
 };
 </script>
 
@@ -59,8 +68,11 @@ export default {
 .m-sp-radio-group {
   display: flex;
   justify-content: space-between;
-  margin-bottom: $space-size;
   flex-direction: column;
+  &__header {
+    display: flex;
+    align-items: flex-end;
+  }
   &__container {
     display: flex;
     justify-content: center;
