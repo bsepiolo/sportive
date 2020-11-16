@@ -27,7 +27,6 @@ export default {
   props: {
     placeholder: String,
     type: String,
-    value: String,
     size: String,
     icon: String,
     validationRules: Object,
@@ -90,6 +89,7 @@ export default {
       height: 100%;
       box-shadow: $box-shadow-large;
       border-radius: $border-radius;
+      z-index: -1;
     }
   }
   &__icon {

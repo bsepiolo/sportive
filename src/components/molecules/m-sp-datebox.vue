@@ -23,7 +23,7 @@
             icon="eva eva-arrow-ios-back-outline"
           />
 
-          <a-sp-text type="bold">{{ monthName }}</a-sp-text>
+          <a-sp-text type="bold">{{ month }} {{ year }}</a-sp-text>
           <a-sp-button
             @click="handleNextMonthClick()"
             styling-mode="text"
@@ -45,28 +45,23 @@
         <div class="m-datebox-editor__days-list">
           <div
             class="m-datebox-editor__value is-last-month"
-            v-for="(day, index) in startOfMonth"
+            v-for="(day, index) in firstDayOfMonth"
             :key="`current-${index}`"
           >
-            {{ previousMonthDays - startOfMonth + index }}
+            {{ daysInLastMonth - firstDayOfMonth + day }}
           </div>
           <div
             class="m-datebox-editor__value"
             :class="{
-              'is-selected':
-                inputValue.monthNumber == selectedMonthNumber &&
-                inputValue.dayNumber == index + 1,
-              'is-current':
-                currentDayNumber == day &&
-                currentMonthNumber == selectedMonthNumber,
-              'is-disabled':
-                day < currentDayNumber &&
-                currentMonthNumber == selectedMonthNumber,
+              'is-selected': isSelected(day),
+              'is-current': isSelected(day) ? false : isCurrent(day),
+              'is-disabled': isDisabled(day),
             }"
             v-for="(day, index) in daysInMonth"
             :key="index"
-            @mousedown="handleSelectDayClick(day)"
-            @click="setValue"
+            @mousedown="
+              isDisabled(day) ? false : handleSelectDayClick(setValue, day)
+            "
           >
             {{ index + 1 }}
           </div>
@@ -80,38 +75,64 @@
 const name = "EventsStore";
 
 export default {
-  props: [
-    "placeholder",
-    "type",
-    "value",
-    "size",
-    "icon",
-    "name",
-    "displayValue",
-    "validationRules",
-  ],
+  props: {
+    placeholder: String,
+    type: String,
+    value: String,
+    size: String,
+    icon: String,
+    name: String,
+    displayValue: String,
+    validationRules: Object,
+  },
   data() {
     return {
+      today: this.moment(),
+      dateContext: this.moment(),
       isValid: true,
       iconColor: "default",
-      daysInMonth: 0,
-      previousMonthDays: 0,
-      monthName: "",
       days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-      currentMonthNumber: null,
       selectedMonthNumber: null,
-      fullDate: "",
+      selectedYear: null,
       startOfMonth: 0,
       currentDayNumber: 0,
     };
   },
-  created() {
-    const moment = this.moment;
-    this.currentMonthNumber = moment().format("M");
-
-    this.setSelectedMonth();
-  },
   computed: {
+    year() {
+      return this.dateContext.format("Y");
+    },
+    month() {
+      return this.dateContext.format("MMMM");
+    },
+    monthNumber() {
+      return this.dateContext.format("M");
+    },
+    daysInLastMonth() {
+      return this.dateContext.daysInMonth(-1);
+    },
+    daysInMonth() {
+      return this.dateContext.daysInMonth();
+    },
+    currentDate() {
+      return this.dateContext.get("date");
+    },
+    firstDayOfMonth() {
+      var firstDay = this.moment(this.dateContext).subtract(
+        this.currentDate,
+        "days"
+      );
+      return firstDay.isoWeekday();
+    },
+    initialDate() {
+      return this.today.get("date");
+    },
+    initialMonth() {
+      return this.today.format("MMMM");
+    },
+    initialYear() {
+      return this.today.format("Y");
+    },
     inputValue() {
       const date = this.moment(this.$store.state[name].form[this.name]);
       const isDateValid = date.isValid();
@@ -130,76 +151,46 @@ export default {
       const validationResult = this.$refs.selectbox.validate();
       return validationResult;
     },
-    handleSelectDayClick(day) {
+    handleSelectDayClick(setValue, day) {
       if (
-        day > this.currentDayNumber ||
+        day >= this.initialDate ||
         this.currentMonthNumber != this.selectedMonthNumber
       ) {
+        this.selectedDayTmp = day;
+        this.dateContext = this.moment(this.dateContext.set("date", day));
+        this.selectedMonthNumber = this.dateContext.format("M");
+        this.selectedYear = this.dateContext.format("Y");
         this.$emit("isValid", this.isValid);
-        debugger;
-        this.$emit("input", this.moment(this.fullDate).toISOString());
-        this.listVisible = false;
+        this.$emit("input", this.moment(this.dateContext).toISOString());
+        setValue();
       }
     },
-    setSelectedMonth() {
-      const moment = this.moment;
-
-      this.fullDate = moment();
-      this.daysInMonth = moment().daysInMonth();
-      this.monthName = moment().format("MMMM");
-      this.currentDayNumber = moment().format("DD");
-      this.selectedMonthNumber = moment().format("M");
-      this.startOfMonth = Number(
-        moment()
-          .startOf("month")
-          .format("d")
+    isDisabled(day) {
+      return (
+        day <= this.initialDate - 1 &&
+        this.initialMonth == this.month &&
+        this.initialYear == this.year
       );
-
-      this.previousMonthDays =
-        moment()
-          .subtract(1, "months")
-          .daysInMonth() + 1;
+    },
+    isCurrent(day) {
+      return (
+        this.initialMonth == this.month &&
+        day == this.initialDate &&
+        this.initialYear == this.year
+      );
+    },
+    isSelected(day) {
+      return (
+        day == this.currentDate &&
+        this.selectedMonthNumber == this.monthNumber &&
+        this.selectedYear == this.year
+      );
     },
     handleNextMonthClick() {
-      this.daysInMonth = this.moment(this.fullDate)
-        .add(1, "months")
-        .daysInMonth();
-      this.monthName = this.moment(this.fullDate)
-        .add(1, "months")
-        .format("MMMM");
-
-      this.fullDate = this.moment(this.fullDate).add(1, "M");
-      this.selectedMonthNumber = this.moment(this.fullDate).format("M");
-
-      this.startOfMonth = Number(
-        this.moment(this.fullDate)
-          .startOf("month")
-          .format("d")
-      );
-      this.previousMonthDays =
-        this.moment(this.fullDate)
-          .subtract(1, "months")
-          .daysInMonth() + 1;
+      this.dateContext = this.moment(this.dateContext).add(1, "month");
     },
     handlePreviousMonthClick() {
-      this.daysInMonth = this.moment(this.fullDate)
-        .subtract(1, "months")
-        .daysInMonth();
-      this.monthName = this.moment(this.fullDate)
-        .subtract(1, "months")
-        .format("MMMM");
-      this.fullDate = this.moment(this.fullDate).subtract(1, "M");
-      this.selectedMonthNumber = this.moment(this.fullDate).format("M");
-
-      this.startOfMonth = Number(
-        this.moment(this.fullDate)
-          .startOf("month")
-          .format("d")
-      );
-      this.previousMonthDays =
-        this.moment(this.fullDate)
-          .subtract(1, "months")
-          .daysInMonth() + 1;
+      this.dateContext = this.moment(this.dateContext).subtract(1, "month");
     },
   },
 };
@@ -246,6 +237,7 @@ export default {
       cursor: unset;
     }
     &.is-current {
+      cursor: pointer;
       color: $blue;
       background: $gray100;
     }
@@ -310,5 +302,29 @@ export default {
     left: 0;
     z-index: 9999;
   }
+}
+// .fade-enter-active,
+// .fade-enter {
+//   animation: listHeightAnimation 0.3s ease-in normal;
+// }
+// .fade-leave-active,
+// .fade-leave-to {
+//   animation: listHeightAnimation 0.3s ease-out reverse;
+// }
+@keyframes listHeightAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.list-enter-active,
+.list-leave-active {
+  animation: listHeightAnimation 0.3s ease-out reverse;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  animation: listHeightAnimation 0.3s ease-out reverse;
 }
 </style>

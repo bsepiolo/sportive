@@ -10,7 +10,6 @@
 
       <a-sp-textarea
         :placeholder="placeholder"
-        :value="value"
         @input="handleInput"
         :type="type"
         :size="size"
@@ -30,7 +29,6 @@ export default {
   props: {
     placeholder: String,
     type: String,
-    value: String,
     size: String,
     icon: String,
     height: String,

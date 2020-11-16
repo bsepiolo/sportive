@@ -93,9 +93,6 @@ export default {
     };
   },
   computed: {
-    thisContext() {
-      return this;
-    },
     inputValue() {
       if (this.displayValue) {
         return this.$store.state[name].form[this.name][this.displayValue];
@@ -128,7 +125,11 @@ export default {
       this.isValid = this.validation(this.validationRules, e);
     },
     hideList() {
-      this.$refs.textarea.setBlur();
+      setTimeout(() => {
+        this.listVisible = false;
+        this.iconColor = "default";
+        this.$refs.textarea.setBlur();
+      }, 200);
     },
   },
 };
@@ -216,7 +217,11 @@ export default {
 }
 @keyframes listHeightAnimation {
   0% {
+    opacity: 0;
     max-height: 0;
+  }
+  30% {
+    opacity: 1;
   }
   100% {
     max-height: 200px;
@@ -224,14 +229,10 @@ export default {
 }
 .fade-enter-active,
 .fade-enter {
-  //  transition: max-height 0.2s;
-  // animation:  listHeightAnimation .5s ease-in-out alternate;
   animation: listHeightAnimation 0.3s ease-in normal;
 }
 .fade-leave-active,
 .fade-leave-to {
-  //  transition: max-height 0.2s;
-  // animation:  listHeightAnimation .5s ease-in-out alternate;
   animation: listHeightAnimation 0.3s ease-out reverse;
 }
 </style>
