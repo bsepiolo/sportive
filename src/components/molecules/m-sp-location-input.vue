@@ -6,7 +6,7 @@
       'is-filled': location.distance && location.time,
     }"
   >
-    <div class="m-location-editor__container" :class="{ validator: !isValid }">
+    <div class="m-location-editor__container" :class="{'is-active': mapVisible || location.distance || location.time, validator: !isValid }">
       <div class="m-location-editor__input">
         <a-sp-icon
           :icon="icon"
@@ -194,6 +194,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .m-location-editor {
+  height: 100%;
+
   &__clear-button {
     right: $space-size-2;
   }
@@ -208,17 +210,18 @@ export default {
     .m-location-editor__input {
       background: $white;
     }
-    .m-location-editor__input {
-      background: $white;
-    }
   }
   &.is-focused {
     position: absolute;
-    top: $space-size-4;
+    top: -$space-size-6;
     width: calc(100% - 48px);
+    height: 100vh;
     .m-location-editor__icon {
       position: absolute;
       z-index: 99999999;
+    }
+    .m-location-editor__textbox {
+      border: none;
     }
     .m-location-editor__input {
       background: $white;
@@ -227,13 +230,14 @@ export default {
     }
     .m-location-editor__container {
       background: $white;
+      margin-top: $space-size-7;
     }
   }
   &__submit {
-    position: fixed;
+    position: absolute;
+    bottom: $space-size-7;
     z-index: 999999;
-    bottom: $space-size-3;
-    width: calc(100% - 48px);
+    width: 100%;
   }
   &__container {
     display: flex;
@@ -243,6 +247,13 @@ export default {
     z-index: 9999;
     border-radius: $border-radius;
     overflow: hidden;
+    &.is-active{
+      background: white;
+       .m-location-editor__textbox {
+      border: none;
+    }
+      border-bottom: 1px solid #D6DAE9;
+    }
   }
   &__input {
     display: flex;
