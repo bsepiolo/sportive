@@ -67,39 +67,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.m-input {
-  margin-bottom: $space-size;
-  display: flex;
-  flex-direction: column;
-
-  &.is-focused {
-    .m-input__container {
-      &:after {
-        opacity: 1;
-      }
-    }
-  }
-
-  &__container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    &:after {
-      transition: opacity 0.2s;
-      opacity: 0;
-      position: absolute;
-      content: "";
-      width: 100%;
-      height: 100%;
-      box-shadow: $box-shadow-large;
-      border-radius: $border-radius;
-    }
-  }
-  &__icon {
-    position: absolute;
-    left: $space-size-2;
-    font-size: $space-size-2 + $space-size / 4;
-  }
-}
-</style>

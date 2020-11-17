@@ -7,6 +7,7 @@
       'a-text--secondary': color == 'secondary',
       'a-text--light': color == 'light',
       'a-text--small': size == 'small',
+      'a-text--medium': size == 'medium',
     }"
   >
     <slot />
@@ -39,7 +40,7 @@ export default {
     }
   }
   &--medium {
-    font-size: 1rem;
+    font-size: 0.8125rem;
   }
   &--center {
     text-align: center;

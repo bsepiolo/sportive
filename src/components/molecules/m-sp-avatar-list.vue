@@ -1,7 +1,7 @@
 <template>
   <ul class="avatar-list">
-    <li class="avatar-list__el" v-for="item in items" :key="item.imageSrc">
-      <sp-avatar :image-src="item.imageSrc" />
+    <li class="avatar-list__el" v-for="(item, index) in items" :key="index">
+      <a-sp-avatar :image-src="item.imageSrc" />
     </li>
     <li class="avatar-list__el">
       <div class="avatar-list__counter">

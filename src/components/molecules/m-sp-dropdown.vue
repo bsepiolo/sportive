@@ -1,4 +1,5 @@
 <template>
+<div>
   <m-sp-selectbox
     :displayValue="displayValue"
     :value="value"
@@ -15,18 +16,18 @@
         @mousedown="handleItemClick"
         @click="setValue"
         :activeItem="value"
-        :items="items"
-        displayValue="value"
+        :items="disciplinesDictionary"
+        :displayValue="displayValue"
         :selectedItem="inputValue"
       />
       <!-- :selectedItem="ctx.context.inputValue" -->
     </template>
   </m-sp-selectbox>
+</div>
 </template>
-
 <script>
+import {mapState} from "vuex";
 const name = "EventsStore";
-
 export default {
   props: [
     "placeholder",
@@ -37,38 +38,32 @@ export default {
     "name",
     "displayValue",
     "validationRules",
+    "source",
+    "action"
   ],
   data() {
     return {
       isValid: true,
       iconColor: "default",
-      listVisible: false,
-      items: [
-        {
-          id: 1,
-          value: "Soccer",
-        },
-        {
-          id: 2,
-          value: "Basketball",
-        },
-        {
-          id: 3,
-          value: "Volleyball",
-        },
-        {
-          id: 4,
-          value: "Tennis",
-        },
-      ],
+      listVisible: false
     };
   },
+  created(){
+    this.getData()
+  },
   computed: {
+    // items(){
+    //         return this.$store.state[name][this.source];
+    // },
+    ...mapState(name,["disciplinesDictionary"]),
     inputValue() {
       return this.$store.state[name].form[this.name][this.displayValue];
     },
   },
   methods: {
+    getData(){
+      this.$store.dispatch(`${name}/${this.action}`)
+    },
     validate(){
       const validationResult = this.$refs.selectbox.validate();
       return validationResult;

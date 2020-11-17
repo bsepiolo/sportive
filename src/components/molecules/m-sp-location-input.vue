@@ -6,7 +6,7 @@
       'is-filled': location.distance && location.time,
     }"
   >
-    <div class="m-location-editor__container" :class="{'is-active': mapVisible || location.distance || location.time, validator: !isValid }">
+    <div class="m-location-editor__container" :class="{'is-active': mapVisible || (location.distance || location.time), validator: !isValid }">
       <div class="m-location-editor__input">
         <a-sp-icon
           :icon="icon"
@@ -52,10 +52,10 @@
         class="m-location-editor__details"
         v-if="location.distance || location.time"
       >
-        <a-sp-text
-          >Distance: {{ location.distance }}km Time:
-          {{ location.time }}minutes</a-sp-text
-        >
+        <a-sp-text size="medium" color="secondary" class="mr-05"
+          >Distance:</a-sp-text
+        ><a-sp-text size="medium" class="mr-1">{{ location.distance }}km</a-sp-text> <a-sp-text size="medium" color="secondary" class="mr-05">Time:</a-sp-text>
+         <a-sp-text size="medium" > {{ location.time }}minutes</a-sp-text>
       </div>
     </div>
     <a-sp-card
@@ -76,8 +76,7 @@
       v-if="mapVisible"
       @click="closeMap"
     />
-
-    <a-sp-map v-if="mapVisible || form.location.name" v-show="mapVisible" />
+    <a-sp-map v-if="mapVisible || inputValue" v-show="mapVisible" />
     <span class="validator__text" v-if="!isValid">{{
       validationRules.required.text
     }}</span>
@@ -270,9 +269,10 @@ export default {
     position: relative;
     z-index: 9999;
     width: 100%;
-    padding: $space-size;
+    padding: $space-size $space-size-2;
     border-bottom-left-radius: $border-radius;
     border-bottom-right-radius: $border-radius;
+    display: flex;
   }
   &__results-list {
     background: $white;

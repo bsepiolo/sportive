@@ -1,36 +1,36 @@
 <template>
-  <div>
+  <div style="margin-top: 400px;">
     <div class="stick-to-bottom">
-      <sp-card :minimized="messagesVisible" @click="messagesVisible = false">
+      <a-sp-card ratio="wide" :minimized="messagesVisible" @click="messagesVisible = false">
         <div class="events-list__icon" :class="{'mb-1':!messagesVisible, 'mr-2': messagesVisible}">
           <i class="icon-basketball"></i>
         </div>
-        <sp-header :size="messagesVisible?'small':'medium'">
+        <a-sp-title :size="messagesVisible?'small':'medium'">
           Football sparing 5x5
-        </sp-header>
+        </a-sp-title>
         <template v-if="!messagesVisible">
-          <sp-subheader class="pt-0" color="dark">
-            <sp-avatar
+          <a-sp-text class="pt-0" color="dark">
+            <a-sp-avatar
               class="mr-1"
               image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
             />
 
             John Walker
-          </sp-subheader>
-          <sp-list class="mt-3">
-            <sp-list-el icon="eva eva-calendar-outline">
-              <sp-text>
+          </a-sp-text>
+          <m-sp-list class="mt-3">
+            <m-sp-list-el icon="eva eva-calendar-outline">
+              <a-sp-text>
                 Monday, 24th June
-              </sp-text>
-              <sp-text size="small" color="light" class="mt-1">
+              </a-sp-text>
+              <a-sp-text size="small" color="light" class="mt-1">
                 05:30 PM
-              </sp-text>
-            </sp-list-el>
-            <sp-list-el icon="eva eva-people-outline" class="mt-2">
-              <sp-text>
+              </a-sp-text>
+            </m-sp-list-el>
+            <m-sp-list-el icon="eva eva-people-outline" class="mt-2">
+              <a-sp-text>
                 15 ongoing people
-              </sp-text>
-              <sp-avatar-list
+              </a-sp-text>
+              <m-sp-avatar-list
                 class="mt-1"
                 :items="[
                   {
@@ -47,19 +47,20 @@
                   },
                 ]"
               />
-            </sp-list-el>
-            <sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
-              <sp-text>
+            </m-sp-list-el>
+            <m-sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
+              <a-sp-text>
                 Manchester City Stadium
-              </sp-text>
-              <sp-text size="small" color="light" class="mt-1">
+              </a-sp-text>
+              <a-sp-text size="small" color="light" class="mt-1">
                 Ashton New Rd, Manchester M11 3FF
-              </sp-text>
-            </sp-list-el>
-          </sp-list>
+              </a-sp-text>
+            </m-sp-list-el>
+          </m-sp-list>
         </template>
-      </sp-card>
-      <sp-card
+      </a-sp-card>
+      <a-sp-card
+      ratio="wide"
         :minimized="!messagesVisible"
         class="mt-1 mb-2"
         @click="messagesVisible = true"
@@ -67,12 +68,12 @@
         <div class="events-list__icon" :class="{'mb-1':messagesVisible, 'mr-2': !messagesVisible}">
           <i class="eva eva-message-square-outline"></i>
         </div>
-        <sp-header :size="!messagesVisible?'small':'medium'">
+        <a-sp-title :size="!messagesVisible?'small':'medium'">
           Messages
-        </sp-header>
+        </a-sp-title>
         <template v-if="messagesVisible">
           <div class="message">
-            <sp-avatar
+            <a-sp-avatar
               image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
               class="mr-1"
             />
@@ -100,7 +101,7 @@
             </div>
           </div>
           <div class="message">
-            <sp-avatar
+            <a-sp-avatar
               image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
               class="mr-1"
             />
@@ -119,7 +120,7 @@
             </div>
           </div>
           <div class="message">
-            <sp-avatar
+            <a-sp-avatar
               image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
               class="mr-1"
             />
@@ -138,7 +139,7 @@
             </div>
           </div>
         </template>
-      </sp-card>
+      </a-sp-card>
     </div>
     <div
       id="map"

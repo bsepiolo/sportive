@@ -46,7 +46,9 @@ export default {
           model: "discipline",
           name: "discipline",
           icon: "eva eva-award-outline",
-          displayValue: "value",
+          displayValue: "name",
+          source: "disciplinesDictionary",
+          action: actions.FETCH_EVENT_DISCIPLINES,
           validationRules: {
             required: { text: "Field is required" },
           },
@@ -109,7 +111,7 @@ export default {
   methods: {
     ...mapActions(namespace, {
       findLocationByName: actions.FIND_LOCATION_BY_NAME,
-      addEvent: actions.ADD_EVENT
+      addEvent: actions.ADD_EVENT,
     }),
     findLocation: debounce(function(e) {
       if (e.length > 2) {

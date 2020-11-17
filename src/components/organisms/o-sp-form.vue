@@ -11,6 +11,8 @@
         :icon="field.icon"
         :height="field.height"
         :fields="field.fields"
+        :source="field.source"
+        :action="field.action"
         :validationRules="field.validationRules"
         :displayValue="field.displayValue || ''"
         @input="(e) => updateValue(index, e)"
