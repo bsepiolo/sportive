@@ -1,4 +1,5 @@
 export const SET_EVENTS = 'SET_EVENTS';
+export const SET_EVENT = 'SET_EVENT';
 export const SET_EVENT_DISCIPLINES = 'SET_EVENT_DISCIPLINES';
 export const SET_LOCATION = 'SET_LOCATION';
 export const SET_DISTANCE = 'SET_DISTANCE';

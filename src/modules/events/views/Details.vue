@@ -1,26 +1,35 @@
 <template>
-  <div style="margin-top: 400px;">
-    <div class="stick-to-bottom">
-      <a-sp-card ratio="wide" :minimized="messagesVisible" @click="messagesVisible = false">
-        <div class="events-list__icon" :class="{'mb-1':!messagesVisible, 'mr-2': messagesVisible}">
+  <div class="event">
+    <div class="event__container">
+      <a-sp-card
+        ratio="wide"
+        :minimized="messagesVisible"
+        @click="messagesVisible = false"
+      >
+        <div
+          class="events-list__icon"
+          :class="{ 'mb-2': !messagesVisible, 'mr-2': messagesVisible }"
+        >
           <i class="icon-basketball"></i>
         </div>
-        <a-sp-title :size="messagesVisible?'small':'medium'">
-          Football sparing 5x5
+        <a-sp-title :size="messagesVisible ? 'small' : 'medium'">
+          {{ event.name }}
         </a-sp-title>
         <template v-if="!messagesVisible">
-          <a-sp-text class="pt-0" color="dark">
+          <div class="event__author mt-1">
             <a-sp-avatar
               class="mr-1"
-              image-src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+              image-src="https://images.unsplash.com/photo-1547624643-3bf761b09502?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
             />
+            <a-sp-text class="pt-0">
+              {{ event.author.username }}
+            </a-sp-text>
+          </div>
 
-            John Walker
-          </a-sp-text>
           <m-sp-list class="mt-3">
             <m-sp-list-el icon="eva eva-calendar-outline">
               <a-sp-text>
-                Monday, 24th June
+                {{ moment(event.date).format("MMMM Do YYYY") }}
               </a-sp-text>
               <a-sp-text size="small" color="light" class="mt-1">
                 05:30 PM
@@ -53,22 +62,25 @@
                 Manchester City Stadium
               </a-sp-text>
               <a-sp-text size="small" color="light" class="mt-1">
-                Ashton New Rd, Manchester M11 3FF
+                {{ event.location.locationName }}
               </a-sp-text>
             </m-sp-list-el>
           </m-sp-list>
         </template>
       </a-sp-card>
       <a-sp-card
-      ratio="wide"
+        ratio="wide"
         :minimized="!messagesVisible"
         class="mt-1 mb-2"
         @click="messagesVisible = true"
       >
-        <div class="events-list__icon" :class="{'mb-1':messagesVisible, 'mr-2': !messagesVisible}">
+        <div
+          class="events-list__icon"
+          :class="{ 'mb-1': messagesVisible, 'mr-2': !messagesVisible }"
+        >
           <i class="eva eva-message-square-outline"></i>
         </div>
-        <a-sp-title :size="!messagesVisible?'small':'medium'">
+        <a-sp-title :size="!messagesVisible ? 'small' : 'medium'">
           Messages
         </a-sp-title>
         <template v-if="messagesVisible">
@@ -87,16 +99,14 @@
                 </span>
               </div>
               <p class="message__text mt-1">
-                  Hello amigo
+                Hello amigo
               </p>
             </div>
           </div>
-           <div class="message message--owner">
-
+          <div class="message message--owner">
             <div class="message__container">
-
               <p class="message__text">
-                  Hello amigo
+                Hello amigo
               </p>
             </div>
           </div>
@@ -115,7 +125,7 @@
                 </span>
               </div>
               <p class="message__text mt-1">
-                  Hello amigo
+                Hello amigo
               </p>
             </div>
           </div>
@@ -134,7 +144,9 @@
                 </span>
               </div>
               <p class="message__text mt-1">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus eget ipsum a pulvinar. Etiam pellentesque enim eu feugiat lacinia.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+                luctus eget ipsum a pulvinar. Etiam pellentesque enim eu feugiat
+                lacinia.
               </p>
             </div>
           </div>
@@ -150,6 +162,8 @@
   </div>
 </template>
 <script>
+import { mapActions, mapState } from "vuex";
+const namespace = "EventDetailsStore";
 export default {
   name: "GoogleMap",
   data() {
@@ -165,8 +179,19 @@ export default {
       currentPlace: null,
     };
   },
-
+  computed: {
+    ...mapState(namespace, ["event"]),
+  },
+  methods: {
+    ...mapActions(namespace, ["FETCH_EVENT"]),
+    changeIndex: function() {
+      // alert("asf")
+      this.mapFirstPlan = !this.mapFirstPlan;
+    },
+    // receives a place object via the autocomplete component
+  },
   mounted() {
+    this.FETCH_EVENT(this.$route.params.id);
     const tt = window.tt;
 
     const map = tt.map({
@@ -246,13 +271,17 @@ export default {
         });
     });
   },
-
-  methods: {
-    changeIndex: function() {
-      // alert("asf")
-      this.mapFirstPlan = !this.mapFirstPlan;
-    },
-    // receives a place object via the autocomplete component
-  },
 };
 </script>
+<style lang="scss" scoped>
+.event {
+  &__container {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+  }
+  &__author {
+    display: flex;
+  }
+}
+</style>

@@ -1,20 +1,25 @@
+import Vue from "vue";
 import * as firebase from "firebase/app";
 import 'firebase/firestore'
 import { getField } from "vuex-map-fields";
-
+import * as mutation from "@/store/mutation_types";
+// import * as action from "@/store/action_types";
 export const AuthStore = {
   namespaced: true,
   state: {
     form: {},
-    map: null
+    map: null,
+    user: null
   },
   actions: {
     signIn({commit, state}) {
+      debugger
         firebase
         .auth()
-        .signInWithEmailAndPassword(state.authForm.email, state.authForm.password)
+        .signInWithEmailAndPassword(state.form.email, state.form.password)
         .then((data) => {
-          commit("setAuthenticatedUser", data.data())
+          commit("setAuthenticatedUser", data.user.email)
+          debugger
         })
         .catch(function(error) {
           // Handle Errors here.
@@ -27,12 +32,12 @@ export const AuthStore = {
     signUp({rootState,state, dispatch}) {
       firebase
         .auth()
-        .createUserWithEmailAndPassword(state.authForm.email, state.authForm.password)
+        .createUserWithEmailAndPassword(state.form.email, state.form.password)
         .then((data) => {
           return rootState.db
             .collection("users")
             .doc(data.user.uid)
-            .set({ username: state.authForm.username }).then(()=>{
+            .set({ username: state.form.username }).then(()=>{
                 rootState.db
             .collection("users")
             .doc(data.user.uid)
@@ -52,8 +57,14 @@ export const AuthStore = {
     },
   },
   mutations: {
-    setFormField(state, payload){
-      state.form[payload.name] = payload.value
+    // setFormField(state, payload){
+    //   state.form[payload.name] = payload.value
+    // },
+    [mutation.ADD_FORM_FIELD]({ form }, { name, type }) {
+      Vue.set(form, name, type !== "text" ? "" : null);
+    },
+    [mutation.SET_FORM_FIELD]({ form }, { name, value }) {
+      form[name] = value;
     },
     setAuthenticatedUser(state, payload) {
       state.user = payload;

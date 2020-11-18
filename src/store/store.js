@@ -23,6 +23,7 @@ firebase.initializeApp(firebaseConfig);
 
 import { AuthStore } from "../modules/auth/store/index";
 import { EventsStore } from "../modules/events/store/add";
+import { EventDetailsStore } from "../modules/events/store/details";
 
 Vue.use(Vuex);
 
@@ -61,5 +62,6 @@ export default new Vuex.Store({
   modules: {
     AuthStore,
     EventsStore,
+    EventDetailsStore
   },
 });
