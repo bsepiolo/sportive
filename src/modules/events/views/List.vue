@@ -1,9 +1,10 @@
 <template>
   <div>
     <sp-top-bar />
-    <sp-title size="small" class="pt-0 mb-2 mt-2">
+    <a-sp-title size="small" class="pt-0 mb-2 mt-2">
       Upcoming
-    </sp-title>
+    </a-sp-title>
+    
     <SpIncomingEventCard />
 
 
@@ -18,7 +19,8 @@
 import SpEventCardList from "@/components/organisms/o-sp-event-card-list"
 import SpIncomingEventCard from "@/components/molecules/m-sp-incoming-event-card"
 import SpTopBar from "@/components/organisms/o-sp-top-bar"
-import {mapState} from "vuex"
+import * as actions from "@/store/action_types";
+import {mapState, mapActions} from "vuex"
 const namespace = "EventsStore";
 export default {
   data(){
@@ -32,8 +34,11 @@ export default {
     SpIncomingEventCard,
     SpTopBar
   },
+  methods:{
+    ...mapActions(namespace, {"fetchEvents": actions.FETCH_EVENTS})
+  },
   mounted() {
-      this.$store.dispatch(`${namespace}/getEvents`)
+      this.fetchEvents()
   }
 };
 </script>

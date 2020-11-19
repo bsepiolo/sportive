@@ -6,7 +6,7 @@ export const EventsStore = {
   namespaced: true,
   state: {
     form: {},
-    events: null,
+    events: [],
     tt: window.tt,
     location: {
       locationSearchResults: [],
@@ -102,8 +102,8 @@ export const EventsStore = {
       try {
         const { docs: events } = await rootState.db.collection("events").get();
 
-        const eventsArray = events.map(({ data }) => {
-          return data();
+        const eventsArray = events.map((e) => {
+          return {...e.data(), id: e.id};
         });
 
         commit(mutation.SET_EVENTS, eventsArray);
@@ -195,7 +195,8 @@ export const EventsStore = {
     },
     [mutation.SET_EVENTS]({ events }, payload) {
       events;
-      events = payload;
+      events.push(...payload);
+      debugger
     },
     [mutation.SET_LOCATION]({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };

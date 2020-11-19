@@ -1,7 +1,7 @@
 <template>
   <div>
-    <sp-subtitle>24th Thu July</sp-subtitle>
-    <sp-title size="medium" class="mt-1">Hello, Katherine</sp-title>
+    <a-sp-subtitle>24th Thu July</a-sp-subtitle>
+    <a-sp-title size="medium" class="mt-1">Hello, Katherine</a-sp-title>
   </div>
 </template>
 <script>

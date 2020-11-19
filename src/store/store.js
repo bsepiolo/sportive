@@ -20,7 +20,8 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+import * as actions from "@/store/action_types";
+import * as mutations from "@/store/mutation_types";
 import { AuthStore } from "../modules/auth/store/index";
 import { EventsStore } from "../modules/events/store/add";
 import { EventDetailsStore } from "../modules/events/store/details";
@@ -34,20 +35,21 @@ export default new Vuex.Store({
     tomtomKey: 'T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63'
   },
   mutations: {
-    setUser(state) {
+    [mutations.SET_USER](state, payload) {
       state.user = {
-        email: state.email,
+        name: payload.username,
+        email: payload.email,
       };
     },
   },
   actions: {
-    setUser({ commit, state }, {uid, email}) {
+    [actions.FETCH_USER]({ commit, state }, {uid, email}) {
       state.db
         .collection("users")
         .doc(uid)
         .get()
         .then((doc) => {
-          commit("setUser", {
+          commit(mutations.SET_USER, {
             username: doc.data().username,
             email,
           });

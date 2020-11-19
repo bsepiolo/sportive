@@ -5,7 +5,7 @@
         <m-sp-welcome-header />
       </div>
       <div class="top-bar__search mt-3">
-        <m-sp-text-input
+        <m-sp-textbox
           type="password"
           v-model="password"
           icon="eva eva-search-outline"
@@ -17,9 +17,8 @@
 </template>
 <script>
 
-
 export default {
-  props: ["title", "events"],
+  props: ["title", "events"]
 };
 </script>
 <style lang="scss" scoped>

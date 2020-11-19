@@ -1,18 +1,20 @@
 <template>
   <div class="o-events">
-    <sp-title size="small"  class="mt-3 mb-2">{{title}}</sp-title>
+    <a-sp-title size="small"  class="mt-3 mb-2">{{title}}</a-sp-title>
     <div class="o-events__list">
-      <sp-event-card v-for="(event, index) in events" :event="event" :key="index" class="mr-1" />
+      <m-sp-event-card v-for="(event, index) in events" :event="event" :key="index" @click="handleClick(event.id)" class="mr-1" />
     </div>
   </div>
 </template>
 <script>
-import SpEventCard from "../molecules/m-sp-event-card";
 
 export default {
   props: ["title", "events"],
-  components: {
-    SpEventCard
+  methods:{
+    handleClick(id){
+      debugger
+      this.$router.push({name: 'events.details', params: { id } })
+    }
   }
 };
 </script>

@@ -75,7 +75,7 @@ export const EventDetailsStore = {
         //  return {id: e.id, name: data.name}
         // })
         eventData.author = eventAuthor.data();
-        
+        debugger
         commit(mutation.SET_EVENT, {...eventData})
       } catch (err) {
         console.log(err);

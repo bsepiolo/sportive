@@ -43,13 +43,14 @@ Vue.mixin({
 });
 
 Vue.config.productionTip = false;
+import * as actions from "@/store/action_types.js";
 const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
   new Vue({
     router,
     store,
     created() {
       if (firebaseUser) {
-        store.dispatch("setUser", firebaseUser);
+        store.dispatch(actions.FETCH_USER, firebaseUser);
       }
     },
     render: (h) => h(App),

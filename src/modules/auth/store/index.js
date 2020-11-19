@@ -3,6 +3,7 @@ import * as firebase from "firebase/app";
 import 'firebase/firestore'
 import { getField } from "vuex-map-fields";
 import * as mutation from "@/store/mutation_types";
+import router from "@/routes";
 // import * as action from "@/store/action_types";
 export const AuthStore = {
   namespaced: true,
@@ -19,7 +20,7 @@ export const AuthStore = {
         .signInWithEmailAndPassword(state.form.email, state.form.password)
         .then((data) => {
           commit("setAuthenticatedUser", data.user.email)
-          debugger
+          router.push({name: 'events.list'})
         })
         .catch(function(error) {
           // Handle Errors here.
