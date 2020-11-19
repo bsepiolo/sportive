@@ -1,51 +1,52 @@
 <template>
-  <div>
-    <div class="m-selectbox-editor">
-      <div
-        class="m-selectbox-editor__container"
-        :class="{ validator: !isValid }"
-      >
-        <div class="m-selectbox-editor__input">
-          <a-sp-icon
-            :icon="icon"
-            class="ml-2"
-            :color="iconColor"
-            :absolute="true"
-          />
+  <div class="m-selectbox-editor">
+    <div class="m-selectbox-editor__container" :class="{ validator: !isValid }">
+      <div class="m-selectbox-editor__input">
+        <a-sp-icon
+          :icon="icon"
+          class="ml-2"
+          :color="iconColor"
+          :absolute="true"
+        />
 
-          <a-sp-textarea
-            :placeholder="placeholder"
-            :value="inputValue"
-            :type="type"
-            :size="size"
-            @focus="handleFocus"
-            @blur="handleBlur"
-            ref="textarea"
-            :readonly="true"
-            :isValid="isValid"
-          />
-          <a-sp-icon
-            icon="eva eva-chevron-down-outline"
-            :color="iconColor"
-            :absolute="true"
-            class="mr-2 m-selectbox-editor__icon"
-          />
-        </div>
-        <transition name="fade">
-          <a-sp-card
-            class="m-selectbox-editor__card"
-            ratio="wide"
-            z-index="max"
-            v-if="listVisible"
-            @mousedown="(e) => e.preventDefault()"
-          >
-            <slot :setValue="hideList" :inputValue="inputValue" />
-          </a-sp-card>
-        </transition>
-        <span class="validator__text" v-if="!isValid">{{
-          validationRules.required.text
-        }}</span>
+        <a-sp-textarea
+          :placeholder="placeholder"
+          :value="inputValue"
+          :type="type"
+          :size="size"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          ref="textarea"
+          :readonly="true"
+          :isValid="isValid"
+        />
+        <a-sp-icon
+          icon="eva eva-chevron-down-outline"
+          :color="iconColor"
+          :absolute="true"
+          class="mr-2 m-selectbox-editor__icon"
+        />
       </div>
+      <transition name="fade">
+        <a-sp-card
+          class="m-selectbox-editor__card"
+          ratio="wide"
+          z-index="max"
+          v-if="listVisible"
+          @mousedown="(e) => e.preventDefault()"
+        >
+          <slot :setValue="hideList" :inputValue="inputValue" />
+        </a-sp-card>
+      </transition>
+      <template v-if="!isValid">
+        <span
+          v-for="(rule, index) in rules"
+          :key="index"
+          class="validator__text"
+        >
+          {{ rule }}
+        </span>
+      </template>
     </div>
   </div>
 </template>
@@ -88,8 +89,8 @@ export default {
     return {
       listVisible: false,
       iconColor: "default",
-      content: "",
       isValid: true,
+      rules: null,
     };
   },
   computed: {
@@ -109,20 +110,19 @@ export default {
   },
   methods: {
     validate() {
-      this.isValid = this.validation(
-        this.validationRules,
-        this.inputValue || ""
-      );
+      this.rules = this.validation(this.validationRules, this.inputValue || "");
+      this.isValid = !this.rules.length;
+
       return this.isValid;
     },
     handleFocus() {
       this.listVisible = true;
       this.iconColor = "primary";
     },
-    handleBlur(e) {
+    handleBlur() {
       this.listVisible = false;
       this.iconColor = "default";
-      this.isValid = this.validation(this.validationRules, e);
+      this.validate();
     },
     hideList() {
       setTimeout(() => {

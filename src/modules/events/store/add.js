@@ -114,7 +114,7 @@ export const EventsStore = {
     async [action.FETCH_EVENT_DISCIPLINES]({ rootState, commit }) {
       try {
         const {docs} = await rootState.db.collection("dictionaries").doc("disciplines").collection("discipline").get();
-        
+        debugger
         const disciplinesDictionary = docs.map(e=>{
          const data = e.data()
          return {id: e.id, name: data.name}
@@ -192,6 +192,8 @@ export const EventsStore = {
     [mutation.SET_EVENT_DISCIPLINES]({ disciplinesDictionary }, payload) {
       disciplinesDictionary
       disciplinesDictionary.push(...payload); 
+      
+      debugger
     },
     [mutation.SET_EVENTS]({ events }, payload) {
       events;

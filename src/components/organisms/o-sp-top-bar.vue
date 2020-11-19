@@ -6,8 +6,8 @@
       </div>
       <div class="top-bar__search mt-3">
         <m-sp-textbox
-          type="password"
-          v-model="password"
+          type="text"
+          v-model="searchValue"
           icon="eva eva-search-outline"
           placeholder="Search"
           size="medium"
@@ -18,12 +18,16 @@
 <script>
 
 export default {
-  props: ["title", "events"]
+  props: ["title", "events"],
+  data(){
+    return{
+      password: ''
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 .top-bar{
-  margin-top: $space-size-3;
   display: flex;
   flex-direction: column;
   &__header{

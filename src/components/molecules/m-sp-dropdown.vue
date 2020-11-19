@@ -16,7 +16,7 @@
         @mousedown="handleItemClick"
         @click="setValue"
         :activeItem="value"
-        :items="disciplinesDictionary"
+        :items="items"
         :displayValue="displayValue"
         :selectedItem="inputValue"
       />
@@ -26,7 +26,6 @@
 </div>
 </template>
 <script>
-import {mapState} from "vuex";
 const name = "EventsStore";
 export default {
   props: [
@@ -52,10 +51,9 @@ export default {
     this.getData()
   },
   computed: {
-    // items(){
-    //         return this.$store.state[name][this.source];
-    // },
-    ...mapState(name,["disciplinesDictionary"]),
+    items(){
+            return this.$store.state[name][this.source];
+    },
     inputValue() {
       return this.$store.state[name].form[this.name][this.displayValue];
     },

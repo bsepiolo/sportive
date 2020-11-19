@@ -16,6 +16,7 @@ Vue.prototype.$http = Axios;
 Vue.mixin({
   methods: {
     validation(rules, e) {
+      const errors = [];
       if (rules) {
         let isValid = false;
         if (rules.required) {
@@ -24,19 +25,23 @@ Vue.mixin({
           } else if (e.length) {
             isValid = true;
           } else {
+            errors.push(rules.required.text);
+
             isValid = false;
           }
         }
-
-        if (rules.email) {
+        if (isValid && rules.email) {
           //eslint-disable-next-line
           const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
           isValid = re.test(String(e).toLowerCase());
+          if (!isValid) {
+            errors.push(rules.email.text);
+          }
         }
-        return isValid;
+        return errors;
       } else {
-        return true;
+        return errors;
       }
     },
   },

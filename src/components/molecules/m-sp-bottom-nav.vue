@@ -1,11 +1,11 @@
 <template>
   <div class="navbar">
     <ul class="navbar__list">
-      <li class="navbar__el is-active"><sp-icon icon="eva eva-home-outline" color="primary" size="medium" /></li>
-      <li class="navbar__el"><sp-icon icon="eva eva-people-outline" size="medium"  /></li>
-      <li class="navbar__el"><sp-icon icon="eva eva-bell-outline" size="medium" /></li>
+      <li class="navbar__el is-active"><a-sp-icon icon="eva eva-home-outline" color="primary" size="medium" /></li>
+      <li class="navbar__el"><a-sp-icon icon="eva eva-people-outline" size="medium"  /></li>
+      <li class="navbar__el"><a-sp-icon icon="eva eva-bell-outline" size="medium" /></li>
     </ul>
-    <div class="navbar__btn">
+    <div class="navbar__btn" @click="handleAddEventClick()">
       <i class="eva eva-plus"></i>
     </div>
     <svg
@@ -38,6 +38,11 @@ export default {
       default: "large",
     },
   },
+    methods:{
+    handleAddEventClick(){
+      this.$router.push({name: 'events.add'})
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

@@ -148,6 +148,9 @@ export const EventDetailsStore = {
     [mutation.SET_EVENT](state, payload) {
       Vue.set(state, 'event', payload)
     },
+    [mutation.REMOVE_EVENT](state) {
+      state.event = {};
+    },
     [mutation.REMOVE_MAP]({ location }) {
       location.map.remove();
       location.map = null;

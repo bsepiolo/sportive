@@ -6,7 +6,13 @@
       'is-filled': location.distance && location.time,
     }"
   >
-    <div class="m-location-editor__container" :class="{'is-active': mapVisible || (location.distance || location.time), validator: !isValid }">
+    <div
+      class="m-location-editor__container"
+      :class="{
+        'is-active': mapVisible || location.distance || location.time,
+        validator: !isValid,
+      }"
+    >
       <div class="m-location-editor__input">
         <a-sp-icon
           :icon="icon"
@@ -35,7 +41,9 @@
           :isValid="isValid"
           :validationRules="validationRules"
           @isValid="(e) => (isValid = e)"
-          :shadowDisabled="mapVisible || (location.distance && location.time) > 0"
+          :shadowDisabled="
+            mapVisible || (location.distance && location.time) > 0
+          "
           class="m-location-editor__textbox"
           :class="{ 'is-active': mapVisible }"
         />
@@ -54,8 +62,13 @@
       >
         <a-sp-text size="medium" color="secondary" class="mr-05"
           >Distance:</a-sp-text
-        ><a-sp-text size="medium" class="mr-1">{{ location.distance }}km</a-sp-text> <a-sp-text size="medium" color="secondary" class="mr-05">Time:</a-sp-text>
-         <a-sp-text size="medium" > {{ location.time }}minutes</a-sp-text>
+        ><a-sp-text size="medium" class="mr-1"
+          >{{ location.distance }}km</a-sp-text
+        >
+        <a-sp-text size="medium" color="secondary" class="mr-05"
+          >Time:</a-sp-text
+        >
+        <a-sp-text size="medium"> {{ location.time }}minutes</a-sp-text>
       </div>
     </div>
     <a-sp-card
@@ -77,9 +90,15 @@
       @click="closeMap"
     />
     <a-sp-map v-if="mapVisible || inputValue" v-show="mapVisible" />
-    <span class="validator__text" v-if="!isValid">{{
-      validationRules.required.text
-    }}</span>
+   <template v-if="!isValid">
+          <span
+            v-for="(rule, index) in rules"
+            :key="index"
+            class="validator__text"
+          >
+            {{ rule }}
+          </span>
+        </template>
   </div>
 </template>
 <script>
@@ -137,10 +156,10 @@ export default {
       setUserLocation: actions.SET_USER_LOCATION,
     }),
     validate() {
-      this.isValid = this.validation(
-        this.validationRules,
-        this.inputValue || ""
-      );
+      debugger
+      this.rules = this.validation(this.validationRules, this.inputValue || '');
+      this.isValid = !this.rules.length;
+
       return this.isValid;
     },
     handleFocus() {
@@ -160,8 +179,9 @@ export default {
     },
     selectItem({ position, address }) {
       const { lat, lon } = position;
+
       if (!this.isValid) {
-        this.isValid = this.validation(this.validationRules, address);
+        this.validate();
       }
       this.setLocationCoordsSearchResults({ position, address });
       this.findRouteDistance({
@@ -179,12 +199,8 @@ export default {
       }
     }, 400),
     closeMap() {
-      this.isValid =
-        this.validation(this.validationRules, this.inputData.position || "") &&
-        this.validation(
-          this.validationRules,
-          this.inputData.locationName || ""
-        );
+      this.validate();
+
       this.$emit("isValid", this.isValid);
       this.mapVisible = false;
     },
@@ -246,12 +262,12 @@ export default {
     z-index: 9999;
     border-radius: $border-radius;
     overflow: hidden;
-    &.is-active{
+    &.is-active {
       background: white;
-       .m-location-editor__textbox {
-      border: none;
-    }
-      border-bottom: 1px solid #D6DAE9;
+      .m-location-editor__textbox {
+        border: none;
+      }
+      border-bottom: 1px solid #d6dae9;
     }
   }
   &__input {

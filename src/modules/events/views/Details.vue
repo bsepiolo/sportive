@@ -162,10 +162,10 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 const namespace = "EventDetailsStore";
 export default {
-  name: "GoogleMap",
+  name: "EventDetails",
   data() {
     return {
       messagesVisible: false,
@@ -184,6 +184,7 @@ export default {
   },
   methods: {
     ...mapActions(namespace, ["FETCH_EVENT"]),
+    ...mapMutations(namespace, ["REMOVE_EVENT"]),
     changeIndex: function() {
       // alert("asf")
       this.mapFirstPlan = !this.mapFirstPlan;
@@ -271,14 +272,22 @@ export default {
         });
     });
   },
+  destroyed() {
+    this.REMOVE_EVENT();
+  },
 };
 </script>
 <style lang="scss" scoped>
 .event {
   &__container {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     z-index: 1;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 0 24px;
   }
   &__author {
     display: flex;

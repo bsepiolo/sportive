@@ -34,14 +34,21 @@ export default {
           placeholder: "E-mail address",
           model: "email",
           name: "email",
-          icon: "eva eva-email-outline"
+          icon: "eva eva-email-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+            email: { text: "Email is invalid" },
+          }
         },
         {
           type: "password",
           placeholder: "Password",
           model: "password",
           name: "password",
-          icon: "eva eva-lock-outline"
+          icon: "eva eva-lock-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+          }
         }
       ]
     };

@@ -1,4 +1,4 @@
-import EventsModule from "./events-module.vue";
+import EventsModule from "./events-layout.vue";
 
 export const EventsRoutes = [
   {

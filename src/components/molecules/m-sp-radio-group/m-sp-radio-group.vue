@@ -29,6 +29,7 @@ export default {
     return {
       isValid: true,
       content: "",
+      rules: null,
       currentElementIndex: null,
       previousElementIndex: null,
     };
@@ -42,15 +43,17 @@ export default {
       }
       this.content = data.name;
 
-      this.isValid = this.validation(this.validationRules, data.name);
+      this.validate();
 
       this.$emit("isValid", this.isValid);
 
       this.$emit("input", data);
     },
     validate() {
-      this.isValid = this.validation(this.validationRules, this.content);
-      return this.isValid
+      this.rules = this.validation(this.validationRules, this.content);
+      this.isValid = !this.rules.length;
+
+      return this.isValid;
     },
     isChecked(index) {
       if (index == this.previousElementIndex) {

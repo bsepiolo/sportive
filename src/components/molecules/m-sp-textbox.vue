@@ -17,9 +17,11 @@
         :isValid="isValid"
       />
     </div>
-    <span class="validator__text" v-if="!isValid">{{
-      validationRules.required.text
-    }}</span>
+    <template v-if="!isValid">
+      <span v-for="(rule, index) in rules" :key="index" class="validator__text">
+        {{ rule }}
+      </span>
+    </template>
   </div>
 </template>
 <script>
@@ -37,31 +39,33 @@ export default {
       isFocused: false,
       iconColor: "default",
       content: "",
+      rules: null,
     };
   },
   methods: {
     validate() {
-      this.isValid = this.validation(this.validationRules, this.content);
+      this.rules = this.validation(this.validationRules, this.content);
+      this.isValid = !this.rules.length;
+
       return this.isValid;
-  },
+    },
     handleInput(e) {
       this.content = e;
       this.$emit("input", e);
       if (!this.isValid) {
-        this.isValid = this.validation(this.validationRules, e);
+        this.validate();
       }
     },
     handleFocus() {
       this.iconColor = "primary";
       this.isFocused = true;
     },
-    handleBlur(e) {
+    handleBlur() {
       this.isFocused = false;
-      this.isValid = this.validation(this.validationRules, e);
+      this.validate();
       this.$emit("isValid", this.isValid);
       this.iconColor = "default";
     },
   },
 };
 </script>
-
