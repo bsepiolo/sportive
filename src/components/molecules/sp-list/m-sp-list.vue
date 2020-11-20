@@ -1,5 +1,5 @@
 <template>
-   <ul class="list mt-2">
+   <ul class="list">
         <slot />
       </ul>
 </template>

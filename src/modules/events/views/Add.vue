@@ -7,7 +7,6 @@
       >Sportive helps you get a good shape with smile on your
       face!</a-sp-subtitle
     >
-{{user}}
     <o-sp-form
       :namespace="namespace"
       submitTitle="Create"

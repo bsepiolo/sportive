@@ -129,7 +129,7 @@ export default {
         this.listVisible = false;
         this.iconColor = "default";
         this.$refs.textarea.setBlur();
-      }, 200);
+      }, 100);
     },
   },
 };

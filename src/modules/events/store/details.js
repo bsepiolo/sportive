@@ -62,6 +62,25 @@ export const EventDetailsStore = {
         console.log(err);
       }
     },
+    async [action.ADD_EVENT_MEMBER]({ rootState }, id) {
+      debugger
+      const user = await rootState.db
+          .collection("users")
+          .doc(rootState.user.uid);
+      debugger
+      rootState.db
+        .collection("events").doc(`${id}`).update({
+          participators: rootState.firebase.firestore.FieldValue.arrayUnion(user)
+        })
+        .then((data) => {
+          console.log(data.data());
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(`${errorCode}, ${errorMessage}`);
+        });
+    },
     async [action.FETCH_EVENT]({ rootState, commit }, id) {
       try {
         
@@ -76,7 +95,7 @@ export const EventDetailsStore = {
         // })
         eventData.author = eventAuthor.data();
         debugger
-        commit(mutation.SET_EVENT, {...eventData})
+        commit(mutation.SET_EVENT, {id: eventSnapShot.id, ...eventData})
       } catch (err) {
         console.log(err);
       }

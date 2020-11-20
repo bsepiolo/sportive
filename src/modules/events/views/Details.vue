@@ -14,6 +14,7 @@
         </div>
         <a-sp-title :size="messagesVisible ? 'small' : 'medium'">
           {{ event.name }}
+          <div style="padding: 16px; background: red;" @click="handleJoinClick">Join</div>
         </a-sp-title>
         <template v-if="!messagesVisible">
           <div class="event__author mt-1">
@@ -163,6 +164,10 @@
 </template>
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
+
+import * as actions from "@/store/action_types.js"
+import * as mutations from "@/store/mutation_types.js";
+
 const namespace = "EventDetailsStore";
 export default {
   name: "EventDetails",
@@ -183,16 +188,20 @@ export default {
     ...mapState(namespace, ["event"]),
   },
   methods: {
-    ...mapActions(namespace, ["FETCH_EVENT"]),
-    ...mapMutations(namespace, ["REMOVE_EVENT"]),
+    ...mapActions(namespace, {"fetchEvent":actions.FETCH_EVENT, "addEventMember":actions.ADD_EVENT_MEMBER}),
+    ...mapMutations(namespace, {"removeEvent":mutations.REMOVE_EVENT}),
     changeIndex: function() {
       // alert("asf")
       this.mapFirstPlan = !this.mapFirstPlan;
     },
+    handleJoinClick(){
+      debugger
+      this.addEventMember(this.event.id)
+    }
     // receives a place object via the autocomplete component
   },
   mounted() {
-    this.FETCH_EVENT(this.$route.params.id);
+    this.fetchEvent(this.$route.params.id);
     const tt = window.tt;
 
     const map = tt.map({
@@ -273,7 +282,7 @@ export default {
     });
   },
   destroyed() {
-    this.REMOVE_EVENT();
+    this.removeEvent();
   },
 };
 </script>

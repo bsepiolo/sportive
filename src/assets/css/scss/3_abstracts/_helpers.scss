@@ -108,10 +108,23 @@
 .mr-1-5 {
   margin-right: $space-size + $space-size / 2;
 }
+.mx-0-5 {
+  margin-top: $space-size / 2;
+  margin-bottom: $space-size / 2;
+}
 .mr-3 {
   margin-right: $space-size-3;
 }
-
+.p-1 {
+  padding: $space-size !important;
+}
+.px-1 {
+  padding-bottom: $space-size !important;
+  padding-top: $space-size !important;
+}
+.pb-0 {
+  padding-bottom: 0 !important;
+}
 .pb-0 {
   padding-bottom: 0 !important;
 }

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import * as firebase from "firebase/app";
-import 'firebase/firestore'
+import "firebase/firestore";
 import { getField } from "vuex-map-fields";
 import * as mutation from "@/store/mutation_types";
 import router from "@/routes";
@@ -10,27 +10,31 @@ export const AuthStore = {
   state: {
     form: {},
     map: null,
-    user: null
+    user: null,
   },
   actions: {
-    signIn({commit, state}) {
-      debugger
-        firebase
+    signIn({ commit, state }) {
+      debugger;
+      firebase
         .auth()
         .signInWithEmailAndPassword(state.form.email, state.form.password)
         .then((data) => {
-          commit("setAuthenticatedUser", data.user.email)
-          router.push({name: 'events.list'})
+          data.user.updateProfile({
+            displayName: state.form.username,
+          });
+
+          commit("setAuthenticatedUser", data.user.email);
+          router.push({ name: "events.list" });
         })
         .catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code;
           var errorMessage = error.message;
           // ...
-          console.log(`${errorCode}, ${errorMessage}`)
+          console.log(`${errorCode}, ${errorMessage}`);
         });
     },
-    signUp({rootState,state, dispatch}) {
+    signUp({ rootState, state, dispatch }) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(state.form.email, state.form.password)
@@ -38,14 +42,16 @@ export const AuthStore = {
           return rootState.db
             .collection("users")
             .doc(data.user.uid)
-            .set({ username: state.form.username }).then(()=>{
-                rootState.db
-            .collection("users")
-            .doc(data.user.uid)
-            .get().then(doc=>{
-                console.log("data", doc.data())
-                dispatch("signIn")
-            })
+            .set({ displayName: state.form.username, email: data.user.email })
+            .then(() => {
+              rootState.db
+                .collection("users")
+                .doc(data.user.uid)
+                .get()
+                .then((doc) => {
+                  console.log("data", doc.data());
+                  dispatch("signIn");
+                });
             });
         })
         .catch(function(error) {
@@ -75,7 +81,7 @@ export const AuthStore = {
     },
     clearMap(state) {
       state.map = null;
-    }
+    },
   },
   getters: {
     getField,

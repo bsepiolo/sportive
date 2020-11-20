@@ -6,7 +6,11 @@ export const EventsStore = {
   namespaced: true,
   state: {
     form: {},
-    events: [],
+    events: {
+      my: [],
+      participate: [],
+      recommended: [],
+    },
     tt: window.tt,
     location: {
       locationSearchResults: [],
@@ -17,7 +21,7 @@ export const EventsStore = {
       map: null,
       current: { lat: 0, lon: 0 },
     },
-    disciplinesDictionary: []
+    disciplinesDictionary: [],
   },
   actions: {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
@@ -62,6 +66,7 @@ export const EventsStore = {
           console.log(`${errorCode}, ${errorMessage}`);
         });
     },
+  
     async [action.FIND_LOCATION_BY_COORDS]({ commit }, payload) {
       try {
         const { data } = await mapService.getLocationByCoords(payload);
@@ -71,13 +76,15 @@ export const EventsStore = {
           address.localName
         }, ${address.streetNameAndNumber || ""}`;
 
-        commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, { locationName, position });
+        commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, {
+          locationName,
+          position,
+        });
       } catch (err) {
         console.log(err);
       }
     },
     async [action.FIND_LOCATION_BY_NAME]({ commit, state }, payload) {
-      
       const {
         location: { current },
       } = state;
@@ -98,29 +105,58 @@ export const EventsStore = {
         console.log(err);
       }
     },
-    async [action.FETCH_EVENTS]({ commit, rootState }) {
+    async [action.FETCH_MY_EVENTS]({ commit, rootState }) {
       try {
-        const { docs: events } = await rootState.db.collection("events").get();
-
+        const user = await rootState.db
+          .collection("users")
+          .doc(rootState.user.uid);
+        const { docs: events } = await rootState.db
+          .collection("events")
+          .where("author", "==", user)
+          .get();
         const eventsArray = events.map((e) => {
-          return {...e.data(), id: e.id};
+          return { ...e.data(), id: e.id };
         });
 
-        commit(mutation.SET_EVENTS, eventsArray);
+        commit(mutation.SET_MY_EVENTS, eventsArray);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async [action.FETCH_PARTICIPATE_EVENTS]({ commit, rootState }) {
+      try {
+        const user = await rootState.db
+          .collection("users")
+          .doc(rootState.user.uid);
+
+        const { docs: events } = await rootState.db
+          .collection("events")
+          .where("participators", "array-contains", user)
+          .get();
+
+        const eventsArray = events.map((e) => {
+          return { ...e.data(), id: e.id };
+        });
+
+        commit(mutation.SET_PARTICIPATE_EVENTS, eventsArray);
       } catch (err) {
         console.log(err);
       }
     },
     async [action.FETCH_EVENT_DISCIPLINES]({ rootState, commit }) {
       try {
-        const {docs} = await rootState.db.collection("dictionaries").doc("disciplines").collection("discipline").get();
-        debugger
-        const disciplinesDictionary = docs.map(e=>{
-         const data = e.data()
-         return {id: e.id, name: data.name}
-        })
+        const { docs } = await rootState.db
+          .collection("dictionaries")
+          .doc("disciplines")
+          .collection("discipline")
+          .get();
+        debugger;
+        const disciplinesDictionary = docs.map((e) => {
+          const data = e.data();
+          return { id: e.id, name: data.name };
+        });
 
-        commit(mutation.SET_EVENT_DISCIPLINES, disciplinesDictionary)
+        commit(mutation.SET_EVENT_DISCIPLINES, disciplinesDictionary);
       } catch (err) {
         console.log(err);
       }
@@ -189,16 +225,16 @@ export const EventsStore = {
     },
   },
   mutations: {
-    [mutation.SET_EVENT_DISCIPLINES]({ disciplinesDictionary }, payload) {
-      disciplinesDictionary
-      disciplinesDictionary.push(...payload); 
-      
-      debugger
+    [mutation.SET_EVENT_DISCIPLINES](state, payload) {
+      Vue.set(state, "disciplinesDictionary", payload)
     },
-    [mutation.SET_EVENTS]({ events }, payload) {
+    [mutation.SET_MY_EVENTS]({ events }, payload) {
       events;
-      events.push(...payload);
-      debugger
+      events.my = payload;
+    },
+    [mutation.SET_PARTICIPATE_EVENTS]({ events }, payload) {
+      events;
+      events.participate = payload;
     },
     [mutation.SET_LOCATION]({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };
