@@ -12,9 +12,9 @@
         >
           <i class="icon-basketball"></i>
         </div>
-        <a-sp-title :size="messagesVisible ? 'small' : 'medium'">
+        <a-sp-title class="event__header" :size="messagesVisible ? 'small' : 'medium'">
           {{ event.name }}
-          <div style="padding: 16px; background: red;" @click="handleJoinClick">Join</div>
+          <a-sp-button size="small" styling-mode="reversed" text="Join" type="primary" @click="handleJoinClick" />
         </a-sp-title>
         <template v-if="!messagesVisible">
           <div class="event__author mt-1">
@@ -23,7 +23,7 @@
               image-src="https://images.unsplash.com/photo-1547624643-3bf761b09502?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
             />
             <a-sp-text class="pt-0">
-              {{ event.author.username }}
+              {{ event.author.displayName }}
             </a-sp-text>
           </div>
 
@@ -165,7 +165,7 @@
 <script>
 import { mapActions, mapState, mapMutations } from "vuex";
 
-import * as actions from "@/store/action_types.js"
+import * as actions from "@/store/action_types.js";
 import * as mutations from "@/store/mutation_types.js";
 
 const namespace = "EventDetailsStore";
@@ -188,16 +188,19 @@ export default {
     ...mapState(namespace, ["event"]),
   },
   methods: {
-    ...mapActions(namespace, {"fetchEvent":actions.FETCH_EVENT, "addEventMember":actions.ADD_EVENT_MEMBER}),
-    ...mapMutations(namespace, {"removeEvent":mutations.REMOVE_EVENT}),
+    ...mapActions(namespace, {
+      fetchEvent: actions.FETCH_EVENT,
+      addEventMember: actions.ADD_EVENT_MEMBER,
+    }),
+    ...mapMutations(namespace, { removeEvent: mutations.REMOVE_EVENT }),
     changeIndex: function() {
       // alert("asf")
       this.mapFirstPlan = !this.mapFirstPlan;
     },
-    handleJoinClick(){
-      debugger
-      this.addEventMember(this.event.id)
-    }
+    handleJoinClick() {
+      debugger;
+      this.addEventMember(this.event.id);
+    },
     // receives a place object via the autocomplete component
   },
   mounted() {
@@ -288,6 +291,11 @@ export default {
 </script>
 <style lang="scss" scoped>
 .event {
+  &__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   &__container {
     position: absolute;
     bottom: 0;

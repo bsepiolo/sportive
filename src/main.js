@@ -55,6 +55,7 @@ const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
     store,
     created() {
       if (firebaseUser) {
+        debugger
         store.commit(mutations.SET_USER, firebaseUser);
       }
     },

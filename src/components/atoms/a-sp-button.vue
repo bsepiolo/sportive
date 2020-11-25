@@ -9,9 +9,11 @@
       'a-btn--basic': type == 'basic',
       'a-btn--circle': shape == 'circle',
       'a-btn--square': shape == 'square',
+      'a-btn--small': size == 'small',
       'a-btn--rectangle': shape != 'circle' && shape != 'square',
       'a-btn--secondary': type == 'secondary',
       'a-btn--outlined': stylingMode == 'outlined',
+      'a-btn--reversed': stylingMode == 'reversed',
       'a-btn--text': stylingMode == 'text',
       'a-btn--full-width': fullWidth == true,
     }"
@@ -31,6 +33,7 @@ export default {
     "styling-mode",
     "shape",
     "icon",
+    "size",
   ],
   methods: {
     clickHandler: function() {
@@ -59,6 +62,11 @@ export default {
   }
   &__icon {
     font-size: $space-size-2 + 4;
+  }
+  &--small {
+    padding: $space-size $space-size-2 !important;
+    font-size: 0.875rem;
+    height: auto;
   }
   &--square {
     height: unset;
@@ -92,6 +100,14 @@ export default {
       background: $gray150;
     }
   }
+  &--primary.a-btn--reversed {
+    background: $gray150;
+    color: $blue;
+    &:active {
+      background: $blue;
+      color: white;
+    }
+  }
   &--secondary {
     background: $gray200;
     color: $white;
@@ -116,6 +132,7 @@ export default {
   &--outlined {
     background: none;
   }
+
   &--text {
     background: none;
     border: none;

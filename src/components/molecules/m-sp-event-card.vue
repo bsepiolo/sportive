@@ -1,9 +1,10 @@
 <template>
   <div class="m-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <div class="m-card-header">
-      <a-sp-icon icon="icon-basketball" type="complex" class="mb-1"/> 
+      <a-sp-icon :icon="event.discipline.icon" type="complex" class="mb-1"/> 
       <a-sp-title size="small" type="light">{{event.name}}</a-sp-title>
-      <a-sp-subtitle size="small" type="light">Angela Jenskins</a-sp-subtitle>
+      <a-sp-subtitle size="small" type="light">      {{event.author.displayName}}
+</a-sp-subtitle>
     </div>
     <div class="m-card-meta">
       <a-sp-text size="small">{{event.locationData}}</a-sp-text>
@@ -19,6 +20,9 @@ export default {
     handleClick() {
       this.$emit("click");
     }
+  },
+  mounted(){
+    debugger
   }
 };
 </script>

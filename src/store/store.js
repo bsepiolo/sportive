@@ -36,6 +36,7 @@ export default new Vuex.Store({
   },
   mutations: {
     [mutations.SET_USER](state, {uid, displayName, email}) {
+      
       state.user = {
         uid,
         email,

@@ -70,11 +70,8 @@ export default {
       const validationResult = this.$refs.selectbox.validate();
       return validationResult;
     },
-    toggleIsExpanded(ctx) {
-      ctx.context.listVisible = false;
-      ctx.context.$el.children[0].querySelector("textarea").blur();
-    },
     handleItemClick(item, index) {
+      debugger
       this.$emit("isValid", this.isValid);
       this.$emit("input", item);
       this.selectedIndex = index;
