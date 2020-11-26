@@ -5,7 +5,7 @@
 <script>
 import * as actions from "../../store/action_types";
 import { mapActions, mapState } from "vuex";
-const name = "EventsStore";
+const name = "EventsAddStore";
 export default {
   methods: {
     ...mapActions(name, {

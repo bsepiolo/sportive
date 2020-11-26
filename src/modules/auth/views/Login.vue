@@ -23,11 +23,11 @@
 <script>
 import OSpForm from "@/components/organisms/o-sp-form";
 import {mapActions} from "vuex";
-const namespace = "AuthStore";
+const namespace = "SignInStore";
 export default {
   data() {
     return {
-      namespace: "AuthStore",
+      namespace: "SignInStore",
       fields: [
         {
           type: "email",

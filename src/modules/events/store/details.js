@@ -2,7 +2,7 @@ import Vue from "vue";
 import * as mutation from "@/store/mutation_types";
 import * as action from "@/store/action_types";
 import mapService from "../services";
-export const EventDetailsStore = {
+export const EventsDetailsStore = {
   namespaced: true,
   state: {
     event: {},
@@ -89,12 +89,8 @@ export const EventDetailsStore = {
         const eventData = eventSnapShot.data();
         const eventAuthor = await eventData.author.get()
 
-        // const disciplinesDictionary = docs.map(e=>{
-        //  const data = e.data()
-        //  return {id: e.id, name: data.name}
-        // })
         eventData.author = eventAuthor.data();
-        debugger
+        
         commit(mutation.SET_EVENT, {id: eventSnapShot.id, ...eventData})
       } catch (err) {
         console.log(err);

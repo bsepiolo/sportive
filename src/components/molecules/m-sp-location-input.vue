@@ -106,7 +106,7 @@ import * as actions from "../../store/action_types";
 import * as mutations from "../../store/mutation_types";
 import { debounce } from "lodash";
 import { mapActions, mapState, mapMutations } from "vuex";
-const name = "EventsStore";
+const name = "EventsAddStore";
 
 export default {
   props: [
@@ -133,12 +133,12 @@ export default {
   computed: {
     ...mapState(name, ["form", "location"]),
     inputValue() {
-      return this.$store.state["EventsStore"].form[this.name][
+      return this.$store.state[name].form[this.name][
         this.displayValue
       ];
     },
     inputData() {
-      return this.$store.state["EventsStore"].form[this.name];
+      return this.$store.state[name].form[this.name];
     },
   },
   methods: {

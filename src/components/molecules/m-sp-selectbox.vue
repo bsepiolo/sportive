@@ -52,7 +52,7 @@
 </template>
 
 <script>
-const name = "EventsStore";
+const name = "EventsAddStore";
 
 export default {
   props: {

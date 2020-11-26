@@ -4,7 +4,7 @@
       <a-sp-icon
         :icon="icon"
         class="ml-2"
-        :color="iconColor"
+        :type="iconColor"
         :absolute="true"
       />
 

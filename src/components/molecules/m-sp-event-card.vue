@@ -1,14 +1,14 @@
 <template>
   <div class="m-card" @click="handleClick()" :class="{'a-card--minimized': minimized}">
     <div class="m-card-header">
-      <a-sp-icon :icon="event.discipline.icon" type="complex" class="mb-1"/> 
+      <a-sp-icon :icon="event.discipline.icon" :color="event.discipline.color" styling-mode="complex" class="mb-2"/> 
       <a-sp-title size="small" type="light">{{event.name}}</a-sp-title>
       <a-sp-subtitle size="small" type="light">      {{event.author.displayName}}
 </a-sp-subtitle>
     </div>
     <div class="m-card-meta">
       <a-sp-text size="small">{{event.locationData}}</a-sp-text>
-      <a-sp-text size="small">10:30 PM</a-sp-text>
+      <a-sp-text size="small">{{moment(event.date.toDate()).format("hh:mm A")}}</a-sp-text>
     </div>
   </div>
 </template>

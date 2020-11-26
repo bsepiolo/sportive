@@ -3,7 +3,7 @@ import router from "@/routes";
 import * as mutation from "@/store/mutation_types";
 import * as action from "@/store/action_types";
 import mapService from "../services";
-export const EventsStore = {
+export const EventsAddStore = {
   namespaced: true,
   state: {
     form: {},
@@ -11,6 +11,7 @@ export const EventsStore = {
       my: [],
       participate: [],
       recommended: [],
+      upcoming: [],
     },
     tt: window.tt,
     location: {
@@ -112,65 +113,6 @@ export const EventsStore = {
         console.log(err);
       }
     },
-    async [action.FETCH_MY_EVENTS]({ commit, rootState }) {
-      try {
-        const user = rootState.db.collection("users").doc(rootState.user.uid);
-
-        const { docs: events } = await rootState.db
-          .collection("events")
-          .where("author", "==", user)
-          .get();
-
-        let eventsArray = events.map((e) => {
-          return { ...e.data(), id: e.id };
-        });
-        //to do
-        await Promise.all(
-          eventsArray.map(async (e) => {
-            const author = await e.author.get();
-            e.author = author.data();
-
-            const discipline = await e.discipline.get();
-            e.discipline = discipline.data();
-
-            return e;
-          })
-        );
-        debugger;
-        commit(mutation.SET_MY_EVENTS, eventsArray);
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    async [action.FETCH_PARTICIPATE_EVENTS]({ commit, rootState }) {
-      try {
-        const user = rootState.db.collection("users").doc(rootState.user.uid);
-
-        const { docs: events } = await rootState.db
-          .collection("events")
-          .where("participators", "array-contains", user)
-          .get();
-
-        const eventsArray = events.map((e) => {
-          return { ...e.data(), id: e.id };
-        });
-        await Promise.all(
-          eventsArray.map(async (e) => {
-            const author = await e.author.get();
-            const discipline = await e.discipline.get();
-
-            e.author = author.data();
-            e.discipline = discipline.data();
-
-            return e;
-          })
-        );
-        debugger
-        commit(mutation.SET_PARTICIPATE_EVENTS, eventsArray);
-      } catch (err) {
-        console.log(err);
-      }
-    },
     async [action.FETCH_EVENT_DISCIPLINES]({ rootState, commit }) {
       try {
         const { docs } = await rootState.db
@@ -178,10 +120,8 @@ export const EventsStore = {
           .doc("disciplines")
           .collection("discipline")
           .get();
-        debugger;
 
         const disciplinesDictionary = docs.map((e) => {
-          debugger;
           const data = e.data();
           const ref = rootState.db.collection("dictionaries").doc("disciplines")
           .collection("discipline").doc(e.id)
@@ -262,14 +202,6 @@ export const EventsStore = {
   mutations: {
     [mutation.SET_EVENT_DISCIPLINES](state, payload) {
       Vue.set(state, "disciplinesDictionary", payload);
-    },
-    [mutation.SET_MY_EVENTS]({ events }, payload) {
-      events;
-      events.my = payload;
-    },
-    [mutation.SET_PARTICIPATE_EVENTS]({ events }, payload) {
-      events;
-      events.participate = payload;
     },
     [mutation.SET_LOCATION]({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };

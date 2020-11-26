@@ -21,9 +21,11 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 import * as mutations from "@/store/mutation_types";
-import { AuthStore } from "../modules/auth/store/index";
-import { EventsStore } from "../modules/events/store/add";
-import { EventDetailsStore } from "../modules/events/store/details";
+import { SignUpStore } from "../modules/auth/store/signUp";
+import { SignInStore } from "../modules/auth/store/signIn";
+import { EventsAddStore } from "../modules/events/store/add";
+import { EventsDetailsStore } from "../modules/events/store/details";
+import { EventsListStore } from "../modules/events/store/list";
 
 Vue.use(Vuex);
 
@@ -50,8 +52,10 @@ export default new Vuex.Store({
     },
   },
   modules: {
-    AuthStore,
-    EventsStore,
-    EventDetailsStore
+    SignInStore,
+    SignUpStore,
+    EventsAddStore,
+    EventsListStore,
+    EventsDetailsStore
   },
 });

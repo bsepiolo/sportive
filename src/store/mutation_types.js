@@ -1,5 +1,6 @@
 export const SET_USER = 'SET_USER';
 export const SET_MY_EVENTS = 'SET_MY_EVENTS';
+export const SET_UPCOMING_EVENT = 'SET_UPCOMING_EVENT';
 export const SET_EVENT = 'SET_EVENT';
 export const REMOVE_EVENT = 'REMOVE_EVENT';
 export const SET_EVENT_DISCIPLINES = 'SET_EVENT_DISCIPLINES';

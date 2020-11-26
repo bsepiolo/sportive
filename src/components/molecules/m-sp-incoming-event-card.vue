@@ -1,14 +1,28 @@
 <template>
-  <div class="event-upcoming">
-    <a-sp-icon icon="icon-basketball" type="complex" class="mb-2" />
+  <div
+    class="event-upcoming"
+    @click="$emit('click')"
+    :style="{
+      background: event.discipline.color,
+      '--color-var': this.lightenDarkenColor(event.discipline.color, -30),
+    }"
+  >
+    <a-sp-icon
+      :icon="event.discipline.icon"
+      styling-mode="complex"
+      :color="event.discipline.color"
+      class="mb-2"
+    />
 
     <div class="event-upcoming__data">
-      <a-sp-title :light="true" size="medium">Football sparing 5x5</a-sp-title>
-      <a-sp-subtitle :light="true" class="pt-0">Sienkiewicza 22</a-sp-subtitle>
+      <a-sp-title :light="true" size="medium">{{ event.name }}</a-sp-title>
+      <a-sp-subtitle :light="true" class="pt-0">{{
+        event.location.locationName
+      }}</a-sp-subtitle>
       <div class="time-counter mt-2">
-        <span class="time-counter__el">2h</span>
+        <span class="time-counter__el">{{ countdown.hours }}h</span>
         <span class="time-counter__separator">:</span>
-        <span class="time-counter__el">15m</span>
+        <span class="time-counter__el">{{ countdown.minutes }}m</span>
       </div>
       <img class="event-upcoming__image" src="@/assets/img/player.png" />
     </div>
@@ -18,11 +32,28 @@
 <script>
 export default {
   props: ["minimized", "event"],
+  computed: {
+    countdown() {
+      let now = this.moment().format("X");
+      let { date: eventDate } = this.event;
+      let formatedDate = eventDate.toDate();
+      let end = this.moment(formatedDate);
+      var diff = end.format("X") - now;
+
+      let result = this.moment.duration(
+        this.moment(diff) * 1000,
+        "milliseconds"
+      );
+
+      // var duration = this.moment.duration(diffTime * 1000, "milliseconds");
+      return { hours: result.hours(), minutes: result.minutes() };
+    },
+  },
   methods: {
     handleClick() {
       this.$emit("click");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -46,7 +77,7 @@ export default {
     height: 100px;
     border-top-left-radius: 100%;
     border-bottom-right-radius: 10px;
-    background: $darkGreen;
+    background: var(--color-var);
     position: absolute;
     right: 0px;
     bottom: 0px;
@@ -58,23 +89,23 @@ export default {
     z-index: 1;
   }
 }
-.time-counter{
+.time-counter {
+  display: flex;
+  align-items: center;
+  &__el {
+    color: $darkGreen;
+    background: $white;
+    font-size: 13px;
+    border-radius: $border-radius / 2;
     display: flex;
+    height: $space-size-4;
+    width: $space-size-5;
     align-items: center;
-    &__el{
-        color: $darkGreen;
-        background: $white;
-        font-size: 13px;
-        border-radius: $border-radius / 2;
-        display: flex;
-        height: $space-size-4;
-        width: $space-size-5;
-        align-items: center;
-        justify-content: center;
-    }
-    &__separator{
-        color: white;
-        padding: $space-size / 2;
-    }
+    justify-content: center;
+  }
+  &__separator {
+    color: white;
+    padding: $space-size / 2;
+  }
 }
 </style>

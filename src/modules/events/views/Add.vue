@@ -21,13 +21,13 @@ import * as actions from "@/store/action_types";
 import OSpForm from "@/components/organisms/o-sp-form";
 import { mapActions, mapState } from "vuex";
 import { debounce } from "lodash";
-const namespace = "EventsStore";
+const namespace = "EventsAddStore";
 
 export default {
   data() {
     return {
       locationPickerActive: false,
-      namespace: "EventsStore",
+      namespace: "EventsAddStore",
       fields: [
         {
           type: "text",

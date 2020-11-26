@@ -62,7 +62,6 @@ export default {
     },
     updateValue(index, value) {
       const name = this.fields[index].name;
-debugger
       this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
         name,
         value,

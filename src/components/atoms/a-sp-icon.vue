@@ -2,16 +2,17 @@
   <div
     class="icon"
     @click="clickHandler"
+    :style="{ background: lightenColor }"
     :class="{
-      'icon--complex': type == 'complex',
-      'icon--standard': type == 'standard',
+      'icon--complex': stylingMode == 'complex',
+      'icon--standard': stylingMode == 'standard',
       'icon--absolute': absolute,
       'icon--size-medium': size == 'medium',
       'icon--size-large': size == 'large',
-      'icon--color-primary': color == 'primary'
+      'icon--color-primary': type == 'primary',
     }"
   >
-    <i :class="icon"></i>
+    <i :class="icon" :style="{ color: color }"></i>
   </div>
 </template>
 <script>
@@ -20,7 +21,7 @@ export default {
     icon: {
       type: String,
     },
-    type: {
+    stylingMode: {
       type: String,
       default: "standard",
     },
@@ -31,15 +32,26 @@ export default {
     size: {
       type: String,
     },
+    type: {
+      type: String,
+    },
     color: {
-      type: String
-    }
+      type: String,
+    },
   },
-  methods:{
-    clickHandler: function(){
-      this.$emit('click')
-    }
-  }
+  computed: {
+    lightenColor() {
+      if (this.color) {
+        return this.lightenDarkenColor(this.color, 120);
+      }
+      return "";
+    },
+  },
+  methods: {
+    clickHandler: function() {
+      this.$emit("click");
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -67,10 +79,18 @@ export default {
         color: $green;
       }
     }
+    &--soccer {
+    }
+    &--basketball {
+    }
+    &--football {
+    }
+    &--volleyball {
+    }
   }
-  &--color-primary{
-    i{
-    color: $blue;
+  &--color-primary {
+    i {
+      color: $blue;
     }
   }
   &--size-medium {
@@ -78,7 +98,7 @@ export default {
       font-size: calc(1em + 3px);
     }
   }
-   &--size-large {
+  &--size-large {
     i {
       font-size: calc(1em + 6px);
     }

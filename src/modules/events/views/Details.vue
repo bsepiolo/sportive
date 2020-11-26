@@ -168,7 +168,7 @@ import { mapActions, mapState, mapMutations } from "vuex";
 import * as actions from "@/store/action_types.js";
 import * as mutations from "@/store/mutation_types.js";
 
-const namespace = "EventDetailsStore";
+const namespace = "EventsDetailsStore";
 export default {
   name: "EventDetails",
   data() {
