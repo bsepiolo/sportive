@@ -23,7 +23,7 @@ export default {
   props: ["title", "events", "user"],
   data() {
     return {
-      password: "",
+      searchValue: "",
       date: this.moment().format("MMMM Do YYYY")
     };
   },

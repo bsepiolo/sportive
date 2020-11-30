@@ -1,23 +1,34 @@
 <template>
   <div>
-    <a-sp-title size="small" class="pt-0 mb-2 mt-2">
-      Upcoming
-    </a-sp-title>
-
     <sp-incoming-event-card
-      @click="$router.push({ name: 'events.details', params: { id: events.upcoming.id } })"
+    title="Upcoming"
+      @click="
+        $router.push({
+          name: 'events.details',
+          params: { id: events.upcoming.id },
+        })
+      "
       :event="events.upcoming"
+      v-if="notEmptyObject(events.upcoming)"
     />
 
     <sp-event-card-list
       class="mt-2"
       title="Created by You"
       :events="events.my"
+      v-if="events.my.length > 0"
     />
     <sp-event-card-list
       class="mt-2"
       title="Your participation"
       :events="events.participate"
+      v-if="events.participate.length > 0"
+    />
+    <sp-event-card-list
+      class="mt-2"
+      title="Recommended"
+      :events="events.recommended"
+      v-if="events.recommended.length > 0"
     />
   </div>
 </template>
@@ -43,12 +54,14 @@ export default {
       fetchMyEvents: actions.FETCH_MY_EVENTS,
       fetchParticipateEvents: actions.FETCH_PARTICIPATE_EVENTS,
       fetchUpcomingEvent: actions.FETCH_UPCOMING_EVENT,
+      fetchRecommendedEvents: actions.FETCH_RECOMMENDED_EVENTS
     }),
   },
   mounted() {
     this.fetchUpcomingEvent();
     this.fetchMyEvents();
     this.fetchParticipateEvents();
+    this.fetchRecommendedEvents();
   },
 };
 </script>

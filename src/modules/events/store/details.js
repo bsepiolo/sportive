@@ -16,7 +16,6 @@ export const EventsDetailsStore = {
       map: null,
       current: { lat: 0, lon: 0 },
     },
-    
   },
   actions: {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
@@ -57,20 +56,28 @@ export const EventsDetailsStore = {
           address.localName
         }, ${address.streetNameAndNumber || ""}`;
 
-        commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, { locationName, position });
+        commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, {
+          locationName,
+          position,
+        });
       } catch (err) {
         console.log(err);
       }
     },
     async [action.ADD_EVENT_MEMBER]({ rootState }, id) {
-      debugger
+      debugger;
       const user = await rootState.db
-          .collection("users")
-          .doc(rootState.user.uid);
-      debugger
+        .collection("users")
+        .doc(rootState.user.uid);
+      debugger;
+
+
       rootState.db
-        .collection("events").doc(`${id}`).update({
-          participators: rootState.firebase.firestore.FieldValue.arrayUnion(user)
+        .collection("eventsAttendees")
+        .doc(id)
+        .set({
+          user,
+          date: new Date()
         })
         .then((data) => {
           console.log(data.data());
@@ -83,15 +90,17 @@ export const EventsDetailsStore = {
     },
     async [action.FETCH_EVENT]({ rootState, commit }, id) {
       try {
-        
-        const eventSnapShot = await rootState.db.collection("events").doc(id).get();
-  
+        const eventSnapShot = await rootState.db
+          .collection("events")
+          .doc(id)
+          .get();
+
         const eventData = eventSnapShot.data();
-        const eventAuthor = await eventData.author.get()
+        const eventAuthor = await eventData.author.get();
 
         eventData.author = eventAuthor.data();
-        
-        commit(mutation.SET_EVENT, {id: eventSnapShot.id, ...eventData})
+
+        commit(mutation.SET_EVENT, { id: eventSnapShot.id, ...eventData });
       } catch (err) {
         console.log(err);
       }
@@ -161,7 +170,7 @@ export const EventsDetailsStore = {
   },
   mutations: {
     [mutation.SET_EVENT](state, payload) {
-      Vue.set(state, 'event', payload)
+      Vue.set(state, "event", payload);
     },
     [mutation.REMOVE_EVENT](state) {
       state.event = {};

@@ -1,37 +1,42 @@
 <template>
-  <div
-    class="event-upcoming"
-    @click="$emit('click')"
-    :style="{
-      background: event.discipline.color,
-      '--color-var': this.lightenDarkenColor(event.discipline.color, -30),
-    }"
-  >
-    <a-sp-icon
-      :icon="event.discipline.icon"
-      styling-mode="complex"
-      :color="event.discipline.color"
-      class="mb-2"
-    />
+  <div>
+    <a-sp-title size="small" class="pt-0 mb-2 mt-2">
+      {{ title }}
+    </a-sp-title>
+    <div
+      class="event-upcoming"
+      @click="$emit('click')"
+      :style="{
+        background: event.discipline.color,
+        '--color-var': this.lightenDarkenColor(event.discipline.color, -30),
+      }"
+    >
+      <a-sp-icon
+        :icon="event.discipline.icon"
+        styling-mode="complex"
+        :color="event.discipline.color"
+        class="mb-2"
+      />
 
-    <div class="event-upcoming__data">
-      <a-sp-title :light="true" size="medium">{{ event.name }}</a-sp-title>
-      <a-sp-subtitle :light="true" class="pt-0">{{
-        event.location.locationName
-      }}</a-sp-subtitle>
-      <div class="time-counter mt-2">
-        <span class="time-counter__el">{{ countdown.hours }}h</span>
-        <span class="time-counter__separator">:</span>
-        <span class="time-counter__el">{{ countdown.minutes }}m</span>
+      <div class="event-upcoming__data">
+        <a-sp-title :light="true" size="medium">{{ event.name }}</a-sp-title>
+        <a-sp-subtitle :light="true" class="pt-0">{{
+          event.location.name
+        }}</a-sp-subtitle>
+        <div class="time-counter mt-2">
+          <span class="time-counter__el">{{ countdown.hours }}h</span>
+          <span class="time-counter__separator">:</span>
+          <span class="time-counter__el">{{ countdown.minutes }}m</span>
+        </div>
+        <img class="event-upcoming__image" src="@/assets/img/player.png" />
       </div>
-      <img class="event-upcoming__image" src="@/assets/img/player.png" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["minimized", "event"],
+  props: ["minimized", "event", "title"],
   computed: {
     countdown() {
       let now = this.moment().format("X");

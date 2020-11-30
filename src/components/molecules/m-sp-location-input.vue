@@ -78,7 +78,7 @@
     >
       <m-sp-list
         @click="selectItem"
-        displayValue="locationName"
+        displayValue="name"
         :items="location.locationSearchResults"
       />
     </a-sp-card>

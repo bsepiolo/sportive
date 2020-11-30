@@ -61,12 +61,23 @@ export const EventsAddStore = {
         const user = rootState.db.collection("users").doc(rootState.user.uid);
         for (let key in state.form) {
           let value = state.form[key];
-
-          formData[key] = value.ref ? value.ref : value;
+          if (value.timestamp) {
+            formData[key] = value.timestamp;
+          } else if (value.ref) {
+            formData[key] = value.ref;
+          } else {
+            formData[key] = value;
+          }
 
           formData.author = user;
         }
-        await rootState.db.collection("events").add(formData);
+
+        const data = await rootState.db.collection("events").add(formData);
+        await rootState.db
+          .collection("eventsAttendees")
+          .doc(data.id)
+          .set({ attendeeRef:user, authorRef: user, joinDate: new Date() });
+
         router.push({ name: "events.list" });
       } catch (error) {
         const errorCode = error.code;
@@ -75,38 +86,47 @@ export const EventsAddStore = {
       }
     },
 
-    async [action.FIND_LOCATION_BY_COORDS]({ commit }, payload) {
+    async [action.FIND_LOCATION_BY_COORDS]({ commit, rootState }, payload) {
       try {
         const { data } = await mapService.getLocationByCoords(payload);
         const [addresses] = data.addresses;
-        const { position, address } = addresses;
-        const locationName = `${
-          address.localName
-        }, ${address.streetNameAndNumber || ""}`;
-
+        const { address } = addresses;
+        const name = `${address.localName}, ${address.streetNameAndNumber ||
+          ""}`;
+        debugger;
         commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, {
-          locationName,
-          position,
+          name,
+          position: new rootState.firebase.firestore.GeoPoint(
+            payload.lat,
+            payload.lng
+          ),
         });
       } catch (err) {
         console.log(err);
       }
     },
-    async [action.FIND_LOCATION_BY_NAME]({ commit, state }, payload) {
+    async [action.FIND_LOCATION_BY_NAME](
+      { commit, state, rootState },
+      payload
+    ) {
       const {
         location: { current },
       } = state;
       try {
         const { data } = await mapService.getLocationsByName(current, payload);
-        const locationSearchResults = data.results.map(
-          ({ address, position }) => {
-            let locationName = `${address.localName}, ${
-              address.streetName
-            } ${address.streetNumber || ""}`;
+        const locationSearchResults = data.results.map(({ address }) => {
+          let name = `${address.localName}, ${
+            address.streetName
+          } ${address.streetNumber || ""}`;
 
-            return { locationName, position };
-          }
-        );
+          return {
+            name,
+            position: new rootState.firebase.firestore.GeoPoint(
+              payload.lat,
+              payload.lng
+            ),
+          };
+        });
 
         commit(mutation.SET_LOCATION_SEARCH_RESULTS, locationSearchResults);
       } catch (err) {
@@ -123,8 +143,11 @@ export const EventsAddStore = {
 
         const disciplinesDictionary = docs.map((e) => {
           const data = e.data();
-          const ref = rootState.db.collection("dictionaries").doc("disciplines")
-          .collection("discipline").doc(e.id)
+          const ref = rootState.db
+            .collection("dictionaries")
+            .doc("disciplines")
+            .collection("discipline")
+            .doc(e.id);
           return {
             ref,
             name: data.name,

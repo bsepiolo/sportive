@@ -58,7 +58,7 @@ export default {
           model: "location",
           name: "location",
           icon: "eva eva-pin-outline",
-          displayValue: "locationName",
+          displayValue: "name",
           validationRules: {
             required: { text: "Field is required" },
           },

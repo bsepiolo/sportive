@@ -161,7 +161,10 @@ export default {
         this.selectedMonthNumber = this.dateContext.format("M");
         this.selectedYear = this.dateContext.format("Y");
         this.$emit("isValid", this.isValid);
-        this.$emit("input", this.moment(this.dateContext).toISOString());
+        this.$emit("input", {
+          value: this.moment(this.dateContext).toISOString(),
+          timestamp: this.moment(this.dateContext).toDate(),
+        });
         setValue();
       }
     },

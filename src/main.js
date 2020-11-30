@@ -15,6 +15,9 @@ Vue.prototype.$http = Axios;
 // If you enabled Analytics in your project, add the Firebase SDK for Analytics
 Vue.mixin({
   methods: {
+    notEmptyObject(someObject){
+      return Object.keys(someObject).length
+    },
     lightenDarkenColor(col, amt) {
       var usePound = false;
 
@@ -76,13 +79,13 @@ Vue.mixin({
 
 Vue.config.productionTip = false;
 import * as mutations from "@/store/mutation_types.js";
+
 const unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
   new Vue({
     router,
     store,
     created() {
       if (firebaseUser) {
-        debugger;
         store.commit(mutations.SET_USER, firebaseUser);
       }
     },
