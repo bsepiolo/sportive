@@ -7,6 +7,7 @@ import "firebase/analytics";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD8N9r2ATD4-5c-uKrgg_L_m4m0KKguY_0",
@@ -63,11 +64,12 @@ debugger
       state.user.lat = latitude;
       state.user.lon = longitude;
     },
-    [mutations.SET_USER](state, {uid, displayName, email}) {  
+    [mutations.SET_USER](state, {uid, displayName, email, photoURL}) {  
       state.user = {
         uid,
         email,
         displayName,
+        photoURL
       };
     },
   },

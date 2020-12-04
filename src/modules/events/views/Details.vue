@@ -12,9 +12,18 @@
         >
           <i class="icon-basketball"></i>
         </div>
-        <a-sp-title class="event__header" :size="messagesVisible ? 'small' : 'medium'">
+        <a-sp-title
+          class="event__header"
+          :size="messagesVisible ? 'small' : 'medium'"
+        >
           {{ event.name }}
-          <a-sp-button size="small" styling-mode="reversed" text="Join" type="primary" @click="handleJoinClick" />
+          <a-sp-button
+            size="small"
+            styling-mode="reversed"
+            text="Join"
+            type="primary"
+            @click="handleJoinClick"
+          />
         </a-sp-title>
         <template v-if="!messagesVisible">
           <div class="event__author mt-1">
@@ -30,18 +39,19 @@
           <m-sp-list class="mt-3">
             <m-sp-list-el icon="eva eva-calendar-outline">
               <a-sp-text>
-                {{ moment(event.date).format("MMMM Do YYYY") }}
+                {{ moment(event.date.toDate()).format("MMMM Do YYYY") }}
               </a-sp-text>
               <a-sp-text size="small" color="light" class="mt-1">
-                05:30 PM
+                {{ moment(event.date.toDate()).format("hh:mm A") }}
               </a-sp-text>
             </m-sp-list-el>
             <m-sp-list-el icon="eva eva-people-outline" class="mt-2">
               <a-sp-text>
-                15 ongoing people
+                Ongoing people
               </a-sp-text>
               <m-sp-avatar-list
                 class="mt-1"
+                :count="event.attendees.length"
                 :items="[
                   {
                     imageSrc:
@@ -60,11 +70,11 @@
             </m-sp-list-el>
             <m-sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
               <a-sp-text>
-                Manchester City Stadium
+                 {{ event.location.name }}
               </a-sp-text>
-              <a-sp-text size="small" color="light" class="mt-1">
-                {{ event.location.locationName }}
-              </a-sp-text>
+              <!-- <a-sp-text size="small" color="light" class="mt-1">
+                {{ event.location.name }}
+              </a-sp-text> -->
             </m-sp-list-el>
           </m-sp-list>
         </template>
@@ -154,12 +164,17 @@
         </template>
       </a-sp-card>
     </div>
-    <div
-      id="map"
+
+    <a-sp-map
       class="map"
+      :location="location"
+      :setUserLocation="setUserLocation"
+      :setMap="setMap"
       :class="{ 'map--first-plan': mapFirstPlan }"
       @click="changeIndex"
-    ></div>
+      :calculateRouteOnLoad="true"
+      @findRouteDistance="findRouteDistanceHandler(event)"
+    />
   </div>
 </template>
 <script>
@@ -174,124 +189,57 @@ export default {
   data() {
     return {
       messagesVisible: false,
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      map: "",
-      center: { lat: 45.508, lng: -73.587 },
-      markers: [],
-      places: [],
       mapFirstPlan: false,
       currentPlace: null,
     };
   },
   computed: {
-    ...mapState(namespace, ["event"]),
+    ...mapState(namespace, ["event", "location"]),
   },
   methods: {
+    ...mapActions(namespace, {
+      findRouteDistance: actions.FIND_ROUTE_DISTANCE,
+      setUserLocation: actions.SET_USER_LOCATION,
+      setMap: actions.SET_MAP,
+    }),
     ...mapActions(namespace, {
       fetchEvent: actions.FETCH_EVENT,
       addEventMember: actions.ADD_EVENT_MEMBER,
     }),
-    ...mapMutations(namespace, { removeEvent: mutations.REMOVE_EVENT }),
+    ...mapMutations(namespace, { removeEvent: mutations.REMOVE_EVENT, removeMap: mutations.REMOVE_MAP,removeMarker: mutations.REMOVE_MARKER}),
     changeIndex: function() {
       // alert("asf")
       this.mapFirstPlan = !this.mapFirstPlan;
     },
     handleJoinClick() {
       debugger;
-      this.addEventMember(this.event.id);
+      this.addEventMember({
+        id: this.event.id,
+        authorRef: this.event.authorRef,
+      });
+    },
+    findRouteDistanceHandler() {
+      debugger;
+      this.findRouteDistance({ lngLat: {lng: this.event.location.position.longitude, lat: this.event.location.position.latitude} });
     },
     // receives a place object via the autocomplete component
   },
   mounted() {
+    // this.findRouteDistanceHandler()
     this.fetchEvent(this.$route.params.id);
-    const tt = window.tt;
-
-    const map = tt.map({
-      key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-      container: "map",
-      style: "tomtom://vector/1/basic-main",
-      zoom: 14,
-    });
-    // map.addControl(new tt.FullscreenControl());
-    // map.addControl(new tt.NavigationControl());
-    function createMarkerElement(type) {
-      var element = document.createElement("div");
-      var innerElement = document.createElement("div");
-      element.className = "route-marker";
-      innerElement.className = "icon tt-icon -white -" + type;
-      element.appendChild(innerElement);
-      return element;
-    }
-    function addMarkers(feature) {
-      var startPoint, endPoint;
-      if (feature.geometry.type === "MultiLineString") {
-        startPoint = feature.geometry.coordinates[0][0]; //get first point from first line
-        endPoint = feature.geometry.coordinates.slice(-1)[0].slice(-1)[0]; //get last point from last line
-      } else {
-        startPoint = feature.geometry.coordinates[0];
-        endPoint = feature.geometry.coordinates.slice(-1)[0];
-      }
-      new tt.Marker({ element: createMarkerElement("start") })
-        .setLngLat(startPoint)
-        .addTo(map);
-      new tt.Marker({ element: createMarkerElement("finish") })
-        .setLngLat(endPoint)
-        .addTo(map);
-    }
-    function findFirstBuildingLayerId() {
-      var layers = map.getStyle().layers;
-      for (var index in layers) {
-        if (layers[index].type === "fill-extrusion") {
-          return layers[index].id;
-        }
-      }
-      throw new Error(
-        "Map style does not contain any layer with fill-extrusion type."
-      );
-    }
-    map.once("load", function() {
-      tt.services
-        .calculateRoute({
-          key: "T3rkU9oS8MBPuHOoOHTa85k4xgZYGl63",
-          traffic: false,
-          locations: "20.9420387,50.960699:20.6399082,50.890115",
-        })
-        .go()
-        .then(function(response) {
-          var geojson = response.toGeoJson();
-          map.addLayer(
-            {
-              id: "route",
-              type: "line",
-              source: {
-                type: "geojson",
-                data: geojson,
-              },
-              paint: {
-                "line-color": "#4a90e2",
-                "line-width": 8,
-              },
-            },
-            findFirstBuildingLayerId()
-          );
-          addMarkers(geojson.features[0]);
-          var bounds = new tt.LngLatBounds();
-          geojson.features[0].geometry.coordinates.forEach(function(point) {
-            bounds.extend(tt.LngLat.convert(point));
-          });
-          map.fitBounds(bounds, { duration: 0, padding: 50 });
-        });
-    });
+   
   },
   destroyed() {
+    debugger
     this.removeEvent();
+this.removeMarker()
+this.removeMap()
   },
 };
 </script>
 <style lang="scss" scoped>
 .event {
-  &__header{
+  &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -1,7 +1,7 @@
 <template>
   <div class="top-bar">
     <div class="top-bar__header">
-      <m-sp-burger-nav />
+      <m-sp-burger-nav :img="user.photoURL" />
       <div>
       <a-sp-subtitle>{{date}}</a-sp-subtitle>
       <a-sp-title size="medium" class="mt-1">Hello, {{user.displayName}}</a-sp-title>

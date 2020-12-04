@@ -14,9 +14,23 @@ export const EventsListStore = {
   },
   actions: {
     async [action.FETCH_UPCOMING_EVENT]({ commit, rootState }) {
+      debugger;
       try {
         const user = rootState.db.collection("users").doc(rootState.user.uid);
-
+        // const userRef = rootState.firebase.auth().currentUser;
+        // userRef;
+        // const storageRef = rootState.firebase
+        //   .storage()
+        //   .ref(`avatars/${userRef.uid}.jpg`);
+        // storageRef.getDownloadURL().then((img) => {
+        //   userRef.updateProfile({
+        //     photoURL: img,
+        //   });
+        // });
+        // userRef.updateProfile({
+        //   photoURL: storageRef
+        // }
+        // )
         const {
           docs: [event],
         } = await rootState.db
@@ -46,81 +60,81 @@ export const EventsListStore = {
       try {
         const user = rootState.db.collection("users").doc(rootState.user.uid);
 
-
         const getCurrentPosition = (options = {}) => {
           return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, options);
           });
         };
-        
+
         let location;
 
         await (async () => {
           try {
             const { coords } = await getCurrentPosition();
             const { latitude: lat, longitude: lng } = coords;
-  debugger
-          location = {lat, lon: lng };
-  
+            debugger;
+            location = { lat, lon: lng };
           } catch (error) {
             console.error(error);
           }
-        })()
-
+        })();
 
         debugger;
         const distance = 10;
-        let lat = 0.0233238261;
-        let lon = 0.0292608;
+        const lat = 0.0233238261;
+        const lon = 0.0292608;
 
-        let lowerLat = location.lat - lat * distance;
-        let lowerLon = location.lon - lon * distance;
+        const lowerLat = location.lat - lat * distance;
+        const lowerLon = location.lon - lon * distance;
 
-        let greaterLat = location.lat + lat * distance;
-        let greaterLon = location.lon + lon * distance;
+        const greaterLat = location.lat + lat * distance;
+        const greaterLon = location.lon + lon * distance;
 
-        var lesserGeopoint = new rootState.firebase.firestore.GeoPoint(
+        const lesserGeopoint = new rootState.firebase.firestore.GeoPoint(
           lowerLat,
           lowerLon
         );
-        var greaterGeopoint = new rootState.firebase.firestore.GeoPoint(
+        const greaterGeopoint = new rootState.firebase.firestore.GeoPoint(
           greaterLat,
           greaterLon
         );
 
-        const filteredByLocation = (
+        let filteredByLocation = (
           await rootState.db
             .collection("events")
             .where("location.position", ">=", lesserGeopoint)
             .where("location.position", "<=", greaterGeopoint)
+            .limit(10)
             .get()
         ).docs;
+        debugger;
+        filteredByLocation = filteredByLocation.filter((e) => {
+          return e.data().author.id != user.id;
+        });
 
-        const filteredByAttendee = (
-          await rootState.db
-            .collection("eventsAttendees")
-            .where("attendeeRef", "!=", user)
-            .get()
-        ).docs;
-
-        if (filteredByAttendee.length && filteredByLocation.length) {
-          const ev = filteredByLocation.filter((e) => {
-            return filteredByAttendee.filter((x) => {
-              e.data().author != x.data().authorRef;
-            });
+        let events = [];
+        filteredByLocation.forEach((x) => {
+          let isValid = true;
+          x.data().attendees.forEach((e) => {
+            if (e.id == user.id) {
+              isValid = false;
+            }
           });
-          let arr = [];
-          await Promise.all(
-            ev.map(async (e, index) => {
-              arr.push({ ...e.data(), id: e.id });
-              const author = await arr[index].author.get();
-              const discipline = await arr[index].discipline.get();
-              arr[index].author = author.data();
-              arr[index].discipline = discipline.data();
-            })
-          );
-          commit(mutation.SET_RECOMMENDED_EVENTS, arr);
-        }
+          if (isValid) {
+            events.push(x);
+          }
+        });
+
+        let arr = [];
+        await Promise.all(
+          events.map(async (e, index) => {
+            arr.push({ ...e.data(), id: e.id });
+            arr[index].author = (await arr[index].author.get()).data();
+            arr[index].discipline = (await arr[index].discipline.get()).data();
+          })
+        );
+        commit(mutation.SET_RECOMMENDED_EVENTS, arr);
+        //}
       } catch (err) {
         console.log(err);
       }
@@ -139,7 +153,6 @@ export const EventsListStore = {
         });
         //to do
         eventsArray.map(async (e) => {
-          e.author = (await e.author.get()).data();
           e.discipline = (await e.discipline.get()).data();
 
           return e;
@@ -155,18 +168,14 @@ export const EventsListStore = {
         const user = rootState.db.collection("users").doc(rootState.user.uid);
 
         const docs = await rootState.db
-          .collection("eventsAttendees")
-          .where("user", "==", user)
+          .collection("events")
+          .where("attendees", "array-contains", user)
           .get();
         const eventsArray = [];
 
         docs.forEach(async (e) => {
-          let event = (
-            await rootState.db
-              .collection("events")
-              .doc(e.id)
-              .get()
-          ).data();
+          debugger;
+          const event = e.data();
           if (event.author.id != user.id) {
             event.author = (await event.author.get()).data();
             event.discipline = (await event.discipline.get()).data();

@@ -5,14 +5,14 @@
     </li>
     <li class="avatar-list__el">
       <div class="avatar-list__counter">
-8
+{{count}}
       </div>
     </li>
   </ul>
 </template>
 <script>
 export default {
-  props: ["items"],
+  props: ["items", "count"],
 };
 </script>
 <style lang="scss" scoped>

@@ -6,14 +6,14 @@
         class="mr-2"
         size="medium"
         :border="false"
-        imageSrc="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=46&h=46&q=80"
+        :imageSrc="img"
       />
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["placeholder", "type", "value", "size"],
+  props: ["img"],
   data() {
     return {
       content: this.value,

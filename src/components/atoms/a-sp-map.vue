@@ -1,38 +1,50 @@
 <template>
-  <div id="locationPickerMap" class="texteditor__location-map"></div>
+    <div
+      id="locationPickerMap"
+      class="texteditor__location-map"
+      :class="{ 'texteditor__location-map--z-index-max': zIndexMax }"
+      @click="$emit('click')"
+    ></div>
 </template>
 
 <script>
-import * as actions from "../../store/action_types";
-import { mapActions, mapState } from "vuex";
-const name = "EventsAddStore";
 export default {
-  methods: {
-    ...mapActions(name, {
-      findRouteDistance: actions.FIND_ROUTE_DISTANCE,
-      setUserLocation: actions.SET_USER_LOCATION,
-      setMap: actions.SET_MAP,
-    }),
-  },
-  computed: {
-    ...mapState(name, ["location"]),
-  },
+  props: [
+    "location",
+    "setMap",
+    "calculateRouteOnLoad",
+    "setUserLocation",
+    "zIndexMax",
+  ],
+  created() {},
   mounted() {
-    this.setMap();
-    this.setUserLocation();
-
-    this.location.map.on("click", (event) => {
-      this.findRouteDistance(event);
+    this.setMap().then(() => {
+      this.setUserLocation().then(() => {
+        debugger
+        if (!this.calculateRouteOnLoad) {
+          debugger
+          this.location.map.on("click", (event) => {
+            this.$emit("findRouteDistance", event);
+          });
+        } else {
+          this.$emit("findRouteDistance", event);
+        }
+      });
     });
   },
+  destroyed(){
+    // this.$emit("removeMap");
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 .texteditor__location-map {
+  &--z-index-max {
+    z-index: 999;
+  }
   background: $gray100;
   position: fixed;
-  z-index: 999;
   height: 100vh;
   width: 100vw;
   top: 0;

@@ -27,33 +27,38 @@ export const EventsAddStore = {
   },
   actions: {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
-      const { location, tt } = state;
-      const getCurrentPosition = (options = {}) => {
-        return new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, options);
-        });
-      };
+      return new Promise((resolve, reject) => {
+        const { location, tt } = state;
+        debugger;
+        const getCurrentPosition = (options = {}) => {
+          return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, options);
+          });
+        };
 
-      (async () => {
-        try {
-          const { coords } = await getCurrentPosition();
-          const { latitude: lat, longitude: lng } = coords;
+        (async () => {
+          try {
+            const { coords } = await getCurrentPosition();
+            const { latitude: lat, longitude: lng } = coords;
 
-          commit(mutation.SET_LOCATION, { latitude: lat, longitude: lng });
+            commit(mutation.SET_LOCATION, { latitude: lat, longitude: lng });
+            debugger;
+            state.location.map.setCenter({ lat, lng });
 
-          state.location.map.setCenter({ lat, lng });
-
-          new tt.Marker().setLngLat([lng, lat]).addTo(state.location.map);
-          dispatch(action.FIND_LOCATION_BY_COORDS, { lat, lng });
-        } catch (error) {
-          console.error(error);
+            new tt.Marker().setLngLat([lng, lat]).addTo(state.location.map);
+            dispatch(action.FIND_LOCATION_BY_COORDS, { lat, lng });
+            resolve();
+          } catch (error) {
+            console.error(error);
+            reject();
+          }
+        })();
+        debugger;
+        if (location.marker && location.map) {
+          commit(mutation.REMOVE_MARKER);
+          commit(mutation.REMOVE_DISTANCE_AND_TIME);
         }
-      })();
-
-      if (location.marker) {
-        commit(mutation.REMOVE_MARKER);
-        commit(mutation.REMOVE_DISTANCE_AND_TIME);
-      }
+      });
     },
     async [action.ADD_EVENT]({ state, rootState }) {
       try {
@@ -74,10 +79,11 @@ export const EventsAddStore = {
 
         const data = await rootState.db.collection("events").add(formData);
         await rootState.db
-          .collection("eventsAttendees")
+          .collection("events")
           .doc(data.id)
-          .set({ attendeeRef:user, authorRef: user, joinDate: new Date() });
-
+          .update({
+            attendees: rootState.firebase.firestore.FieldValue.arrayUnion(user),
+          });
         router.push({ name: "events.list" });
       } catch (error) {
         const errorCode = error.code;
@@ -160,19 +166,24 @@ export const EventsAddStore = {
       }
     },
     [action.SET_MAP]({ commit, state, rootState }) {
-      const { tt } = state;
-      const map = tt.map({
-        key: rootState.tomtomKey,
-        container: "locationPickerMap",
-        style: "tomtom://vector/1/basic-main",
-        zoom: 15,
+      return new Promise((resolve) => {
+        const { tt } = state;
+        const map = tt.map({
+          key: rootState.tomtomKey,
+          container: "locationPickerMap",
+          style: "tomtom://vector/1/basic-main",
+          zoom: 15,
+        });
+
+        commit(mutation.SET_MAP, map);
+        resolve();
       });
-      commit(mutation.SET_MAP, map);
     },
     async [action.FIND_ROUTE_DISTANCE](
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
     ) {
+      debugger;
       const { location, tt } = state;
       const { current } = location;
 
@@ -184,7 +195,6 @@ export const EventsAddStore = {
             locations: `${current.lon},${current.lat}:${lng},${lat}`,
           })
           .go();
-
         const geojson = response.toGeoJson();
 
         const [routes] = response.routes;

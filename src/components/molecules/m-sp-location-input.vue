@@ -89,16 +89,21 @@
       v-if="mapVisible"
       @click="closeMap"
     />
-    <a-sp-map v-if="mapVisible || inputValue" v-show="mapVisible" />
-   <template v-if="!isValid">
-          <span
-            v-for="(rule, index) in rules"
-            :key="index"
-            class="validator__text"
-          >
-            {{ rule }}
-          </span>
-        </template>
+    <a-sp-map
+      :location="location"
+      v-if="mapVisible || inputValue"
+      :setUserLocation="setUserLocation"
+      :setMap="setMap"
+      v-show="mapVisible"
+      @findRouteDistance="findRouteDistanceHandler"
+      :calculateRouteOnLoad="false"
+      :zIndexMax="true"
+    />
+    <template v-if="!isValid">
+      <span v-for="(rule, index) in rules" :key="index" class="validator__text">
+        {{ rule }}
+      </span>
+    </template>
   </div>
 </template>
 <script>
@@ -133,9 +138,7 @@ export default {
   computed: {
     ...mapState(name, ["form", "location"]),
     inputValue() {
-      return this.$store.state[name].form[this.name][
-        this.displayValue
-      ];
+      return this.$store.state[name].form[this.name][this.displayValue];
     },
     inputData() {
       return this.$store.state[name].form[this.name];
@@ -154,10 +157,14 @@ export default {
       findLocationByName: actions.FIND_LOCATION_BY_NAME,
       findRouteDistance: actions.FIND_ROUTE_DISTANCE,
       setUserLocation: actions.SET_USER_LOCATION,
+      setMap: actions.SET_MAP,
     }),
+    findRouteDistanceHandler(e) {
+      this.findRouteDistance(e);
+    },
     validate() {
-      debugger
-      this.rules = this.validation(this.validationRules, this.inputValue || '');
+      debugger;
+      this.rules = this.validation(this.validationRules, this.inputValue || "");
       this.isValid = !this.rules.length;
 
       return this.isValid;
