@@ -100,13 +100,13 @@ export default {
   },
   computed: {
     year() {
-      return this.dateContext.format("Y");
+      return parseInt(this.dateContext.format("Y"));
     },
     month() {
       return this.dateContext.format("MMMM");
     },
     monthNumber() {
-      return this.dateContext.format("M");
+      return parseInt(this.dateContext.format("M"));
     },
     daysInLastMonth() {
       return this.dateContext.daysInMonth(-1);
@@ -130,8 +130,11 @@ export default {
     initialMonth() {
       return this.today.format("MMMM");
     },
+    initialMonthNumber() {
+      return parseInt(this.today.format("M"));
+    },
     initialYear() {
-      return this.today.format("Y");
+      return parseInt(this.today.format("Y"));
     },
     inputValue() {
       const date = this.moment(this.$store.state[name].form[this.name]);
@@ -156,7 +159,7 @@ export default {
         day >= this.initialDate ||
         this.currentMonthNumber != this.selectedMonthNumber
       ) {
-        debugger
+        debugger;
         this.selectedDayTmp = day;
         this.dateContext = this.moment(this.dateContext.set("date", day));
         this.selectedMonthNumber = this.dateContext.format("M");
@@ -171,9 +174,10 @@ export default {
     },
     isDisabled(day) {
       return (
-        day <= this.initialDate - 1 &&
-        this.initialMonth == this.month &&
-        this.initialYear == this.year
+        (day <= this.initialDate - 1 &&
+          this.initialMonthNumber == this.monthNumber &&
+          this.initialYear == this.year) ||
+        this.initialMonthNumber > this.monthNumber && this.initialYear == this.year ||  this.initialYear > this.year
       );
     },
     isCurrent(day) {

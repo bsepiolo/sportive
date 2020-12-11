@@ -71,17 +71,20 @@
         <a-sp-text size="medium"> {{ location.time }}minutes</a-sp-text>
       </div>
     </div>
-    
+
     <a-sp-card
       ratio="wide"
       v-if="location.locationSearchResults.length"
       z-index="max"
     >
-      <m-sp-list
-      >
-      <m-sp-list-el v-for="(location, index) in location.locationSearchResults" :key="index" @click="selectItem(location)">
-        {{location.name}}
-      </m-sp-list-el>
+      <m-sp-list>
+        <m-sp-list-el
+          v-for="(location, index) in location.locationSearchResults"
+          :key="index"
+          @click="selectItem(location)"
+        >
+          {{ location.name }}
+        </m-sp-list-el>
       </m-sp-list>
     </a-sp-card>
     <a-sp-button
@@ -165,7 +168,6 @@ export default {
       this.findRouteDistance(e);
     },
     validate() {
-      debugger;
       this.rules = this.validation(this.validationRules, this.inputValue || "");
       this.isValid = !this.rules.length;
 
@@ -187,7 +189,6 @@ export default {
       this.$emit("input", e);
     },
     selectItem({ position, name }) {
-      debugger
       const { latitude: lat, longitude: lon } = position;
 
       if (!this.isValid) {
