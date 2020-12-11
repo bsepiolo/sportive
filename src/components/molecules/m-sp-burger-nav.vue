@@ -3,7 +3,7 @@
     <div class="burger-nav--header">
       <a-sp-icon icon="eva eva-menu-2-outline" size="medium" class="mr-1"/>
       <a-sp-avatar
-        class="mr-2"
+        class="mr-1"
         size="medium"
         :border="false"
         :imageSrc="img"

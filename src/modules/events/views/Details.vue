@@ -29,7 +29,7 @@
           <div class="event__author mt-1">
             <a-sp-avatar
               class="mr-1"
-              image-src="https://images.unsplash.com/photo-1547624643-3bf761b09502?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=50&h=50&q=80"
+              :image-src="event.author.photoURL"
             />
             <a-sp-text class="pt-0">
               {{ event.author.displayName }}

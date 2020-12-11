@@ -2,9 +2,7 @@
   <div
     class="icon"
     @click="clickHandler"
-    :style="{ background: lightenColor }"
     :class="{
-      'icon--complex': stylingMode == 'complex',
       'icon--standard': stylingMode == 'standard',
       'icon--absolute': absolute,
       'icon--size-medium': size == 'medium',
@@ -39,14 +37,6 @@ export default {
       type: String,
     },
   },
-  computed: {
-    lightenColor() {
-      if (this.color) {
-        return this.lightenDarkenColor(this.color, 120);
-      }
-      return "";
-    },
-  },
   methods: {
     clickHandler: function() {
       this.$emit("click");
@@ -56,38 +46,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .icon {
-  &--complex {
-    width: $space-size-4;
-    height: $space-size-4;
-    background: #f1ebfc;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    flex-shrink: 0;
-    i {
-      color: #9e79e8;
-      font-size: $space-size-2 + 2;
-      display: block;
-      height: $space-size-2 + 2;
-      width: $space-size-2 + 2;
-    }
-    &--color-reverse {
-      background: $white;
-      i {
-        color: $green;
-      }
-    }
-    &--soccer {
-    }
-    &--basketball {
-    }
-    &--football {
-    }
-    &--volleyball {
-    }
-  }
   &--color-primary {
     i {
       color: $blue;

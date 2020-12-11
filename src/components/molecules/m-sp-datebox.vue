@@ -156,6 +156,7 @@ export default {
         day >= this.initialDate ||
         this.currentMonthNumber != this.selectedMonthNumber
       ) {
+        debugger
         this.selectedDayTmp = day;
         this.dateContext = this.moment(this.dateContext.set("date", day));
         this.selectedMonthNumber = this.dateContext.format("M");

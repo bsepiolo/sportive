@@ -120,7 +120,7 @@ export const EventsAddStore = {
       } = state;
       try {
         const { data } = await mapService.getLocationsByName(current, payload);
-        const locationSearchResults = data.results.map(({ address }) => {
+        const locationSearchResults = data.results.map(({address, position}) => {
           let name = `${address.localName}, ${
             address.streetName
           } ${address.streetNumber || ""}`;
@@ -128,12 +128,12 @@ export const EventsAddStore = {
           return {
             name,
             position: new rootState.firebase.firestore.GeoPoint(
-              payload.lat,
-              payload.lng
+              position.lat,
+              position.lon
             ),
           };
         });
-
+debugger
         commit(mutation.SET_LOCATION_SEARCH_RESULTS, locationSearchResults);
       } catch (err) {
         console.log(err);

@@ -71,16 +71,18 @@
         <a-sp-text size="medium"> {{ location.time }}minutes</a-sp-text>
       </div>
     </div>
+    
     <a-sp-card
       ratio="wide"
       v-if="location.locationSearchResults.length"
       z-index="max"
     >
       <m-sp-list
-        @click="selectItem"
-        displayValue="name"
-        :items="location.locationSearchResults"
-      />
+      >
+      <m-sp-list-el v-for="(location, index) in location.locationSearchResults" :key="index" @click="selectItem(location)">
+        {{location.name}}
+      </m-sp-list-el>
+      </m-sp-list>
     </a-sp-card>
     <a-sp-button
       text="Accept"
@@ -184,13 +186,14 @@ export default {
     handleInput(e) {
       this.$emit("input", e);
     },
-    selectItem({ position, address }) {
-      const { lat, lon } = position;
+    selectItem({ position, name }) {
+      debugger
+      const { latitude: lat, longitude: lon } = position;
 
       if (!this.isValid) {
         this.validate();
       }
-      this.setLocationCoordsSearchResults({ position, address });
+      this.setLocationCoordsSearchResults({ position, name });
       this.findRouteDistance({
         lngLat: { lng: lon, lat },
       });

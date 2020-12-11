@@ -95,10 +95,11 @@ export default {
   },
   computed: {
     inputValue() {
+      debugger
       if (this.displayValue) {
         return this.$store.state[name].form[this.name][this.displayValue];
       } else {
-        const date = this.moment(this.$store.state[name].form[this.name]);
+        const date = this.moment(this.$store.state[name].form[this.name].value);
         const isDateValid = date.isValid();
         if (isDateValid) {
           return date.format("MMMM Do YYYY");
