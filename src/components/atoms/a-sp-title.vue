@@ -4,11 +4,13 @@
     :class="{
       'text-center': textCenter,
       'a-title--small': size == 'small',
+      'a-title--extra-small': size == 'extra-small',
       'a-title--medium': size == 'medium',
       'a-title--large': size == 'large',
-      'a-title--thin': type=='thin',
-      'a-title--bold': type=='bold',
-      'a-title--light': light
+      'a-title--thin': type == 'thin',
+      'a-title--bold': type == 'bold',
+      'a-title--light': light,
+      'a-title--shadow': shadow
     }"
   >
     <slot />
@@ -20,20 +22,23 @@ export default {
   props: {
     textCenter: {
       type: Boolean,
-      default: false
+      default: false,
     },
     size: {
       type: String,
-      default: "large"
+      default: "large",
     },
     type: {
       type: String,
-      default: "bold"
+      default: "bold",
     },
-    light:{
-      type: Boolean
-    }
-  }
+    light: {
+      type: Boolean,
+    },
+    shadow: {
+      type: Boolean,
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -56,9 +61,17 @@ export default {
   }
   &--small {
     font-size: 1rem;
+    line-height: 20px;
   }
-  &--light{
+   &--extra-small {
+    font-size: 14px;
+    line-height: 18px;
+  }
+  &--light {
     color: white;
+  }
+  &--shadow{
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
   }
 }
 </style>

@@ -74,6 +74,47 @@ export default {
           },
         },
         {
+          type: "group",
+          fields: [
+            {
+              type: "selectbox",
+              placeholder: "Hour",
+              model: "discipline",
+              name: "discipline",
+              displayValue: "name",
+              source: "hours",
+              action: actions.FETCH_EVENT_DISCIPLINES,
+              validationRules: {
+                required: { text: "Field is required" },
+              },
+            },
+            {
+              type: "selectbox",
+              placeholder: "Minute",
+              model: "discipline",
+              name: "discipline",
+              displayValue: "name",
+              source: "minutes",
+              action: actions.FETCH_EVENT_DISCIPLINES,
+              validationRules: {
+                required: { text: "Field is required" },
+              },
+            },
+            {
+              type: "selectbox",
+              placeholder: "AM/PM",
+              model: "timeOfDay",
+              name: "timeOfDay",
+              displayValue: "name",
+              source: "disciplinesDictionary",
+              action: actions.FETCH_EVENT_DISCIPLINES,
+              validationRules: {
+                required: { text: "Field is required" },
+              },
+            },
+          ],
+        },
+        {
           type: "radio",
           placeholder: "Access",
           model: "access",

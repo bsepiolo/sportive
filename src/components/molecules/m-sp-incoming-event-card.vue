@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-sp-title size="small" class="pt-0 mb-2 mt-2">
+    <a-sp-title size="small" class="pt-0 mb-2 mt-3">
       {{ title }}
     </a-sp-title>
     <div
@@ -13,23 +13,35 @@
     >
       <a-sp-icon
         :icon="event.discipline.icon"
-        styling-mode="complex"
-        :color="event.discipline.color"
-        class="mb-2"
+        class="event-upcoming__icon mb-2"
+        color="white"
+        :shadow="true"
       />
 
-      <div class="event-upcoming__data">
-        <a-sp-title :light="true" size="medium">{{ event.name }}</a-sp-title>
-        <a-sp-subtitle :light="true" class="pt-0">{{
-          event.location.name
-        }}</a-sp-subtitle>
-        <div class="time-counter mt-2">
-          <span class="time-counter__el">{{ countdown.hours }}h</span>
+      <div class="event-upcoming__data mt-3">
+        <a-sp-title :light="true" size="medium" :shadow="true">{{
+          event.name
+        }}</a-sp-title>
+        <a-sp-subtitle
+          :light="true"
+          size="medium"
+          :shadow="true"
+          class="pt-0 mt-0"
+          >{{ event.location.name }}</a-sp-subtitle
+        >
+        <div class="time-counter mt-1">
+          <div class="time-counter__el">
+            <span class="time-counter__value">{{ countdown.hours }}</span>
+            <span class="time-counter__label">Hours</span>
+          </div>
           <span class="time-counter__separator">:</span>
-          <span class="time-counter__el">{{ countdown.minutes }}m</span>
+          <div class="time-counter__el">
+            <span class="time-counter__value">{{ countdown.minutes }}</span>
+            <span class="time-counter__label">Minutes</span>
+          </div>
         </div>
-        <img class="event-upcoming__image" src="@/assets/img/player.png" />
       </div>
+      <img class="event-upcoming__image" src="@/assets/img/soccer.jpg" />
     </div>
   </div>
 </template>
@@ -68,6 +80,7 @@ export default {
   background: $green;
   padding: $space-size-2;
   position: relative;
+  overflow: hidden;
   .header {
     color: $white;
   }
@@ -75,42 +88,57 @@ export default {
     color: $white;
     opacity: 0.8;
   }
-  &:after {
-    content: "";
-    display: block;
-    width: 125px;
-    height: 100px;
-    border-top-left-radius: 100%;
-    border-bottom-right-radius: 10px;
-    background: var(--color-var);
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
+  &__data,
+  &__icon {
+    position: relative;
+    z-index: 1;
   }
   &__image {
     position: absolute;
-    right: -20px;
-    top: -$space-size-2;
+    top: 0;
+    right: 0;
     z-index: 1;
+    width: 100%;
+    z-index: 0;
+    opacity: 0.2;
+    mix-blend-mode: luminosity;
   }
 }
 .time-counter {
   display: flex;
   align-items: center;
+  margin-bottom: $space-size;
   &__el {
-    color: $darkGreen;
-    background: $white;
-    font-size: 13px;
+    color: white;
     border-radius: $border-radius / 2;
     display: flex;
-    height: $space-size-4;
-    width: $space-size-5;
+    margin: 0 $space-size-05;
     align-items: center;
     justify-content: center;
+    font-family: "Nunito";
+  }
+  &__value {
+    line-height: 15px;
+    font-size: 30px;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    font-weight: 800;
+  }
+  &__label {
+    position: absolute;
+    font-size: 9px;
+    text-transform: uppercase;
+    bottom: -$space-size-05 - 3px;
+    opacity: 0.7;
+    letter-spacing: 1.4px;
   }
   &__separator {
-    color: white;
+    color: var(--color-var);
     padding: $space-size / 2;
+    margin-top: -4px;
+    font-weight: 800;
+    font-size: 35px;
+        font-family: "Nunito";
+
   }
 }
 </style>

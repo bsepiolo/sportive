@@ -1,24 +1,67 @@
 <template>
   <form ref="form" class="o-form" @submit.prevent="submitForm($event)">
     <a-sp-validation-group ref="validationGroup">
-      <component
-        class="o-form__field"
-        v-for="(field, index) in fields"
-        :is="componentName(field.type)"
-        :key="index"
-        :type="field.type"
-        :name="field.name"
-        :icon="field.icon"
-        :height="field.height"
-        :fields="field.fields"
-        :source="field.source"
-        :action="field.action"
-        :validationRules="field.validationRules"
-        :displayValue="field.displayValue || ''"
-        @input="(e) => updateValue(index, e)"
-        :placeholder="field.placeholder"
-        :ref="`field${index}`"
-      />
+      <div v-for="(field, index) in fields" :key="index">
+        <div class="o-form__group" v-if="field.type == 'group'">
+          <div v-for="(field, index) in field.fields" :key="index">
+            {{ field.type }}
+            <component
+              class="o-form__field"
+              :is="componentName(field.type)"
+              :type="field.type"
+              :name="field.name"
+              :icon="field.icon"
+              :height="field.height"
+              :fields="field.fields"
+              :source="field.source"
+              :action="field.action"
+              :validationRules="field.validationRules"
+              :displayValue="field.displayValue || ''"
+              @input="(e) => updateValue(index, e)"
+              :placeholder="field.placeholder"
+              :ref="`field${index}`"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <component
+            class="o-form__field"
+            :is="componentName(field.type)"
+            :type="field.type"
+            :name="field.name"
+            :icon="field.icon"
+            :height="field.height"
+            :fields="field.fields"
+            :source="field.source"
+            :action="field.action"
+            :validationRules="field.validationRules"
+            :displayValue="field.displayValue || ''"
+            @input="(e) => updateValue(index, e)"
+            :placeholder="field.placeholder"
+            :ref="`field${index}`"
+          />
+        </div>
+      </div>
+      <!-- <div>
+        <component
+          class="o-form__field"
+          v-for="(field, index) in fields"
+          :is="componentName(field.type)"
+          :key="index"
+          :type="field.type"
+          :name="field.name"
+          :icon="field.icon"
+          :height="field.height"
+          :fields="field.fields"
+          :source="field.source"
+          :action="field.action"
+          :validationRules="field.validationRules"
+          :displayValue="field.displayValue || ''"
+          @input="(e) => updateValue(index, e)"
+          :placeholder="field.placeholder"
+          :ref="`field${index}`"
+        />
+      </div> -->
     </a-sp-validation-group>
 
     <div class="o-actions mt-8">
@@ -43,14 +86,23 @@ export default {
     };
   },
   created() {
-    this.fields.forEach(({ name, type, validationRules }) => {
+    this.fields.forEach(({ name, type, validationRules, ...data }) => {
       if (validationRules) {
         this.validFieldsNumber++;
       }
-      this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
-        name,
-        type,
-      });
+      if (type == "group") {
+        data.fields.forEach(({ name, type }) => {
+          this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
+            name,
+            type,
+          });
+        });
+      } else {
+        this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
+          name,
+          type,
+        });
+      }
     });
   },
   methods: {
@@ -90,6 +142,16 @@ export default {
 .o-form {
   &__field {
     margin-bottom: $space-size;
+  }
+  &__group {
+    display: flex;
+    justify-content: space-between;
+    > * {
+      margin-right: $space-size;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 .o-actions {

@@ -15,6 +15,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         :isValid="isValid"
+        :icon="icon"
       />
     </div>
     <template v-if="!isValid">

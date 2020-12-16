@@ -149,7 +149,7 @@ export const EventsListStore = {
           .get();
 
         let eventsArray = events.map((e) => {
-          return { ...e.data(), id: e.id };
+          return { name: e.data().name, discipline: e.data().discipline, id: e.id };
         });
         //to do
         eventsArray.map(async (e) => {

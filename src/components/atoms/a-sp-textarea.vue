@@ -3,6 +3,7 @@
     class="texteditor texteditor--textarea"
     :class="{
       'texteditor--medium': size == 'medium',
+      'texteditor--padding-regular': !icon,
       'texteditor--shadow-disabled': shadowDisabled,
       'is-error': !isValid,
     }"

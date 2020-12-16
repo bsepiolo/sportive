@@ -38,6 +38,7 @@
           @focus="handleFocus"
           :type="type"
           :size="size"
+          :icon="icon"
           :isValid="isValid"
           :validationRules="validationRules"
           @isValid="(e) => (isValid = e)"

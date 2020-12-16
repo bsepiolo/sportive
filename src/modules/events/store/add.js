@@ -24,6 +24,7 @@ export const EventsAddStore = {
       current: { lat: 0, lon: 0 },
     },
     disciplinesDictionary: [],
+    hours: [{ name: "1" }, { name: "1" }, { name: "1" }, { name: "1" }],
   },
   actions: {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
@@ -120,20 +121,22 @@ export const EventsAddStore = {
       } = state;
       try {
         const { data } = await mapService.getLocationsByName(current, payload);
-        const locationSearchResults = data.results.map(({address, position}) => {
-          let name = `${address.localName}, ${
-            address.streetName
-          } ${address.streetNumber || ""}`;
+        const locationSearchResults = data.results.map(
+          ({ address, position }) => {
+            let name = `${address.localName}, ${
+              address.streetName
+            } ${address.streetNumber || ""}`;
 
-          return {
-            name,
-            position: new rootState.firebase.firestore.GeoPoint(
-              position.lat,
-              position.lon
-            ),
-          };
-        });
-debugger
+            return {
+              name,
+              position: new rootState.firebase.firestore.GeoPoint(
+                position.lat,
+                position.lon
+              ),
+            };
+          }
+        );
+        debugger;
         commit(mutation.SET_LOCATION_SEARCH_RESULTS, locationSearchResults);
       } catch (err) {
         console.log(err);
@@ -270,7 +273,9 @@ debugger
       form.location = payload;
     },
     [mutation.ADD_FORM_FIELD]({ form }, { name, type }) {
-      Vue.set(form, name, type !== "text" ? "" : null);
+      if (type != "group") {
+        Vue.set(form, name, type !== "text" ? "" : null);
+      }
     },
     [mutation.REMOVE_LOCATION_COORDS_SEARCH_RESULTS]({ form }) {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };

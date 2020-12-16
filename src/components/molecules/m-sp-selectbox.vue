@@ -1,14 +1,14 @@
 <template>
   <div class="m-selectbox-editor">
     <div class="m-selectbox-editor__container" :class="{ validator: !isValid }">
-      <div class="m-selectbox-editor__input">
+      <div class="m-selectbox-editor__input" >
         <a-sp-icon
           :icon="icon"
           class="ml-2"
           :color="iconColor"
           :absolute="true"
+          v-if="icon"
         />
-
         <a-sp-textarea
           :placeholder="placeholder"
           :value="inputValue"
@@ -18,6 +18,7 @@
           @blur="handleBlur"
           ref="textarea"
           :readonly="true"
+          :icon="icon"
           :isValid="isValid"
         />
         <a-sp-icon

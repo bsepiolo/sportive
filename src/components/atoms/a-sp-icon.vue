@@ -5,9 +5,12 @@
     :class="{
       'icon--standard': stylingMode == 'standard',
       'icon--absolute': absolute,
+      'icon--size-small': size == 'small',
+      'icon--size-extra-small': size == 'extra-small',
       'icon--size-medium': size == 'medium',
       'icon--size-large': size == 'large',
       'icon--color-primary': type == 'primary',
+      'icon--shadow': shadow,
     }"
   >
     <i :class="icon" :style="{ color: color }"></i>
@@ -36,6 +39,9 @@ export default {
     color: {
       type: String,
     },
+    shadow: {
+      type: Boolean,
+    },
   },
   methods: {
     clickHandler: function() {
@@ -49,6 +55,16 @@ export default {
   &--color-primary {
     i {
       color: $blue;
+    }
+  }
+  &--size-small {
+    i {
+      font-size: 0.9em;
+    }
+  }
+   &--size-extra-small {
+    i {
+      font-size: 0.8em;
     }
   }
   &--size-medium {
@@ -68,6 +84,11 @@ export default {
     color: $secondary-text-color;
     // position: absolute;
     font-size: $space-size-2 + 4;
+  }
+  &--shadow {
+    i {
+      text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 </style>

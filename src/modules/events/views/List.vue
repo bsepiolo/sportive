@@ -1,7 +1,7 @@
 <template>
   <div>
     <sp-incoming-event-card
-    title="Upcoming"
+      title="Upcoming"
       @click="
         $router.push({
           name: 'events.details',
@@ -16,6 +16,7 @@
       class="mt-2"
       title="Created by You"
       :events="events.my"
+      size="small"
       v-if="events.my.length > 0"
     />
     <sp-event-card-list
@@ -25,7 +26,7 @@
       v-if="events.participate.length > 0"
     />
     <sp-event-card-list
-      class="mt-2"
+      class="mt-2 mb-10"
       title="Recommended"
       :events="events.recommended"
       v-if="events.recommended.length > 0"
@@ -54,7 +55,7 @@ export default {
       fetchMyEvents: actions.FETCH_MY_EVENTS,
       fetchParticipateEvents: actions.FETCH_PARTICIPATE_EVENTS,
       fetchUpcomingEvent: actions.FETCH_UPCOMING_EVENT,
-      fetchRecommendedEvents: actions.FETCH_RECOMMENDED_EVENTS
+      fetchRecommendedEvents: actions.FETCH_RECOMMENDED_EVENTS,
     }),
   },
   mounted() {

@@ -11,6 +11,9 @@
   &.is-error{
     border-bottom: 1px solid $red;
   }
+  &--padding-regular{
+    padding: 13px $space-size-2 13px $space-size-2;
+  }
   height: $space-size-6;
   border-radius: $border-radius;
   background: $white;
