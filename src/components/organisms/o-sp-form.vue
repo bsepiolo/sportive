@@ -4,7 +4,6 @@
       <div v-for="(field, index) in fields" :key="index">
         <div class="o-form__group" v-if="field.type == 'group'">
           <div v-for="(field, index) in field.fields" :key="index">
-            {{ field.type }}
             <component
               class="o-form__field"
               :is="componentName(field.type)"
@@ -15,6 +14,8 @@
               :fields="field.fields"
               :source="field.source"
               :action="field.action"
+              :joinAs="field.joinAs"
+              :maxHeight="field.maxHeight"
               :validationRules="field.validationRules"
               :displayValue="field.displayValue || ''"
               @input="(e) => updateValue(index, e)"
@@ -30,7 +31,9 @@
             :type="field.type"
             :name="field.name"
             :icon="field.icon"
+            :maxHeight="field.maxHeight"
             :height="field.height"
+            :joinAs="field.joinAs"
             :fields="field.fields"
             :source="field.source"
             :action="field.action"
@@ -42,26 +45,6 @@
           />
         </div>
       </div>
-      <!-- <div>
-        <component
-          class="o-form__field"
-          v-for="(field, index) in fields"
-          :is="componentName(field.type)"
-          :key="index"
-          :type="field.type"
-          :name="field.name"
-          :icon="field.icon"
-          :height="field.height"
-          :fields="field.fields"
-          :source="field.source"
-          :action="field.action"
-          :validationRules="field.validationRules"
-          :displayValue="field.displayValue || ''"
-          @input="(e) => updateValue(index, e)"
-          :placeholder="field.placeholder"
-          :ref="`field${index}`"
-        />
-      </div> -->
     </a-sp-validation-group>
 
     <div class="o-actions mt-8">
@@ -91,15 +74,22 @@ export default {
         this.validFieldsNumber++;
       }
       if (type == "group") {
-        data.fields.forEach(({ name, type }) => {
+        if (data.mutation) {
+          this.$store.commit(`${this.namespace}/${data.mutation}`);
+        }
+        data.fields.forEach(({ name, type, joinAs }) => {
+          debugger;
+
           this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
             name,
             type,
+            joinAs,
           });
         });
       } else {
         this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
           name,
+          joinAs: data.joinAs,
           type,
         });
       }
@@ -113,11 +103,19 @@ export default {
       }
     },
     updateValue(index, value) {
-      const name = this.fields[index].name;
-      this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
-        name,
-        value,
-      });
+      // const name = this.fields[index].name;
+      debugger;
+      if (value.joinAs) {
+        this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
+          name: value.joinAs,
+          value: value.item,
+        });
+      } else {
+        this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
+          name: value.name,
+          value: value.item,
+        });
+      }
     },
     componentName(type) {
       switch (type) {

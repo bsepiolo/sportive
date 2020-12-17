@@ -24,7 +24,12 @@ export const EventsAddStore = {
       current: { lat: 0, lon: 0 },
     },
     disciplinesDictionary: [],
-    hours: [{ name: "1" }, { name: "1" }, { name: "1" }, { name: "1" }],
+    time: {
+      hours: [],
+      minutes: [],
+      timeOfDay: [],
+    },
+    hours: [],
   },
   actions: {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
@@ -242,6 +247,19 @@ export const EventsAddStore = {
     [mutation.SET_LOCATION]({ location }, { latitude: lat, longitude: lon }) {
       location.current = { lat, lon };
     },
+    [mutation.SET_CLOCK](state) {
+      let hoursTmp = [];
+      let minutes = [];
+      for (let i = 0; i <= 12; i++) {
+        hoursTmp[i] = { name: i };
+      }
+      for (let i = 0; i <= 3; i++) {
+        minutes[i] = { name: i * 15 };
+      }
+      Vue.set(state, "time.hours", hoursTmp);
+      Vue.set(state, "time.minutes", minutes);
+      Vue.set(state, "time.timeOfDay", [{ name: "AM" }, { name: "PM" }]);
+    },
     [mutation.SET_DISTANCE]({ location }, payload) {
       location.distance = payload;
     },
@@ -272,16 +290,24 @@ export const EventsAddStore = {
     [mutation.SET_LOCATION_COORDS_SEARCH_RESULTS]({ form }, payload) {
       form.location = payload;
     },
-    [mutation.ADD_FORM_FIELD]({ form }, { name, type }) {
-      if (type != "group") {
-        Vue.set(form, name, type !== "text" ? "" : null);
+    [mutation.ADD_FORM_FIELD]({ form }, payload) {
+      if (payload.joinAs && !form[payload.joinAs]) {
+        Vue.set(form, payload.joinAs, payload.type !== "text" ? "" : null);
+      } else {
+        Vue.set(form, payload.name, payload.type !== "text" ? "" : null);
+        debugger;
       }
     },
     [mutation.REMOVE_LOCATION_COORDS_SEARCH_RESULTS]({ form }) {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    [mutation.SET_FORM_FIELD]({ form }, { name, value }) {
-      form[name] = value;
+    [mutation.SET_FORM_FIELD]({ form }, payload) {
+      if (payload.joinAs) {
+        form[payload.name] += payload.value.name.toString();
+        debugger;
+      } else {
+        form[payload.name] = payload.value;
+      }
     },
     [mutation.REMOVE_MAP]({ location }) {
       location.map.remove();

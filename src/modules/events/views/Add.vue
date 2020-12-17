@@ -18,6 +18,7 @@
 
 <script>
 import * as actions from "@/store/action_types";
+import * as mutations from "@/store/mutation_types";
 import OSpForm from "@/components/organisms/o-sp-form";
 import { mapActions, mapState } from "vuex";
 import { debounce } from "lodash";
@@ -75,15 +76,17 @@ export default {
         },
         {
           type: "group",
+          mutation: mutations.SET_CLOCK,
           fields: [
             {
               type: "selectbox",
               placeholder: "Hour",
-              model: "discipline",
-              name: "discipline",
+              model: "hours",
+              name: "hours",
               displayValue: "name",
-              source: "hours",
-              action: actions.FETCH_EVENT_DISCIPLINES,
+              source: "time.hours",
+              maxHeight: 200,
+              joinAs: "time",
               validationRules: {
                 required: { text: "Field is required" },
               },
@@ -91,11 +94,12 @@ export default {
             {
               type: "selectbox",
               placeholder: "Minute",
-              model: "discipline",
-              name: "discipline",
+              model: "minutes",
+              name: "minutes",
               displayValue: "name",
-              source: "minutes",
-              action: actions.FETCH_EVENT_DISCIPLINES,
+              source: "time.minutes",
+              maxHeight: 200,
+              joinAs: "time",
               validationRules: {
                 required: { text: "Field is required" },
               },
@@ -106,8 +110,8 @@ export default {
               model: "timeOfDay",
               name: "timeOfDay",
               displayValue: "name",
-              source: "disciplinesDictionary",
-              action: actions.FETCH_EVENT_DISCIPLINES,
+              source: "time.timeOfDay",
+              joinAs: "time",
               validationRules: {
                 required: { text: "Field is required" },
               },

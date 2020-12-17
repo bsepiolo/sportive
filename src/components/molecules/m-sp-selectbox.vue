@@ -1,7 +1,7 @@
 <template>
   <div class="m-selectbox-editor">
     <div class="m-selectbox-editor__container" :class="{ validator: !isValid }">
-      <div class="m-selectbox-editor__input" >
+      <div class="m-selectbox-editor__input">
         <a-sp-icon
           :icon="icon"
           class="ml-2"
@@ -30,6 +30,7 @@
       </div>
       <transition name="fade">
         <a-sp-card
+          :style="`max-height: ${maxHeight}px`"
           class="m-selectbox-editor__card"
           ratio="wide"
           z-index="max"
@@ -63,6 +64,9 @@ export default {
     placeholder: {
       type: String,
     },
+    maxHeight: {
+      type: Number,
+    },
     name: {
       type: String,
     },
@@ -85,6 +89,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    joinAs: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -97,8 +104,11 @@ export default {
   computed: {
     inputValue() {
       debugger
-      if (this.displayValue) {
+      if (this.displayValue && !this.joinAs) {
         return this.$store.state[name].form[this.name][this.displayValue];
+      } else if (this.joinAs) {
+        debugger;
+        return this.$store.state[name].form[this.joinAs].value;
       } else {
         const date = this.moment(this.$store.state[name].form[this.name].value);
         const isDateValid = date.isValid();
@@ -141,7 +151,7 @@ export default {
   &__card {
     position: absolute;
     top: $space-size-6 + $space-size-05;
-    overflow: hidden;
+    overflow-y: scroll;
     padding: 0;
   }
   &__icon {

@@ -8,7 +8,9 @@
       :placeholder="placeholder"
       :validationRules="validationRules"
       @isValid="(e) => (isValid = e)"
+      :maxHeight="maxHeight"
       ref="selectbox"
+      :joinAs="joinAs"
     >
       <template #default="{ setValue, value }">
         <m-sp-list>
@@ -42,6 +44,8 @@ export default {
     "validationRules",
     "source",
     "action",
+    "joinAs",
+    "maxHeight"
   ],
   data() {
     return {
@@ -52,7 +56,9 @@ export default {
     };
   },
   created() {
-    this.getData();
+    if (this.action) {
+      this.getData();
+    }
   },
   computed: {
     items() {
@@ -71,9 +77,9 @@ export default {
       return validationResult;
     },
     handleItemClick(item, index) {
-      debugger
+      debugger;
       this.$emit("isValid", this.isValid);
-      this.$emit("input", item);
+      this.$emit("input", {item, name: this.name, joinAs: this.joinAs});
       this.selectedIndex = index;
       this.listVisible = false;
     },
