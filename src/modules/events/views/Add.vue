@@ -20,7 +20,7 @@
 import * as actions from "@/store/action_types";
 import * as mutations from "@/store/mutation_types";
 import OSpForm from "@/components/organisms/o-sp-form";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 import { debounce } from "lodash";
 const namespace = "EventsAddStore";
 
@@ -84,9 +84,10 @@ export default {
               model: "hours",
               name: "hours",
               displayValue: "name",
-              source: "time.hours",
+              source: "hours",
               maxHeight: 200,
               joinAs: "time",
+              depends: "date",
               validationRules: {
                 required: { text: "Field is required" },
               },
@@ -97,21 +98,10 @@ export default {
               model: "minutes",
               name: "minutes",
               displayValue: "name",
-              source: "time.minutes",
+              source: "minutes",
               maxHeight: 200,
               joinAs: "time",
-              validationRules: {
-                required: { text: "Field is required" },
-              },
-            },
-            {
-              type: "selectbox",
-              placeholder: "AM/PM",
-              model: "timeOfDay",
-              name: "timeOfDay",
-              displayValue: "name",
-              source: "time.timeOfDay",
-              joinAs: "time",
+              depends: "date",
               validationRules: {
                 required: { text: "Field is required" },
               },
@@ -154,6 +144,9 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    ...mapMutations(namespace, {
+      removeDistanceAndTime: mutations.REMOVE_DISTANCE_AND_TIME,
+    }),
     ...mapActions(namespace, {
       findLocationByName: actions.FIND_LOCATION_BY_NAME,
       addEvent: actions.ADD_EVENT,
@@ -166,6 +159,9 @@ export default {
     submitForm() {
       this.addEvent();
     },
+  },
+  destroyed() {
+    this.removeDistanceAndTime();
   },
   components: {
     OSpForm,

@@ -3,6 +3,7 @@ import router from "@/routes";
 import * as mutation from "@/store/mutation_types";
 import * as action from "@/store/action_types";
 import mapService from "../services";
+import moment from "moment";
 export const EventsAddStore = {
   namespaced: true,
   state: {
@@ -35,7 +36,6 @@ export const EventsAddStore = {
     [action.SET_USER_LOCATION]({ state, commit, dispatch }) {
       return new Promise((resolve, reject) => {
         const { location, tt } = state;
-        debugger;
         const getCurrentPosition = (options = {}) => {
           return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, options);
@@ -48,7 +48,6 @@ export const EventsAddStore = {
             const { latitude: lat, longitude: lng } = coords;
 
             commit(mutation.SET_LOCATION, { latitude: lat, longitude: lng });
-            debugger;
             state.location.map.setCenter({ lat, lng });
 
             new tt.Marker().setLngLat([lng, lat]).addTo(state.location.map);
@@ -59,7 +58,7 @@ export const EventsAddStore = {
             reject();
           }
         })();
-        debugger;
+
         if (location.marker && location.map) {
           commit(mutation.REMOVE_MARKER);
           commit(mutation.REMOVE_DISTANCE_AND_TIME);
@@ -105,7 +104,7 @@ export const EventsAddStore = {
         const { address } = addresses;
         const name = `${address.localName}, ${address.streetNameAndNumber ||
           ""}`;
-        debugger;
+
         commit(mutation.SET_LOCATION_COORDS_SEARCH_RESULTS, {
           name,
           position: new rootState.firebase.firestore.GeoPoint(
@@ -124,7 +123,9 @@ export const EventsAddStore = {
       const {
         location: { current },
       } = state;
+      
       try {
+
         const { data } = await mapService.getLocationsByName(current, payload);
         const locationSearchResults = data.results.map(
           ({ address, position }) => {
@@ -141,7 +142,7 @@ export const EventsAddStore = {
             };
           }
         );
-        debugger;
+
         commit(mutation.SET_LOCATION_SEARCH_RESULTS, locationSearchResults);
       } catch (err) {
         console.log(err);
@@ -191,7 +192,7 @@ export const EventsAddStore = {
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
     ) {
-      debugger;
+
       const { location, tt } = state;
       const { current } = location;
 
@@ -248,17 +249,26 @@ export const EventsAddStore = {
       location.current = { lat, lon };
     },
     [mutation.SET_CLOCK](state) {
-      let hoursTmp = [];
+      let hours = [];
       let minutes = [];
-      for (let i = 0; i <= 12; i++) {
-        hoursTmp[i] = { name: i };
+      for (let i = 0; i <= 24; i++) {
+        let hour;
+        if (i.toString().length < 2) {
+          hour = `0${i}`;
+        } else {
+          hour = i;
+        }
+        hours[i] = { name: hour };
       }
       for (let i = 0; i <= 3; i++) {
-        minutes[i] = { name: i * 15 };
+        let minute = i * 15;
+        if (minute.toString().length < 2) {
+          minute = `0${i}`;
+        } 
+        minutes[i] = { name: minute };
       }
-      Vue.set(state, "time.hours", hoursTmp);
-      Vue.set(state, "time.minutes", minutes);
-      Vue.set(state, "time.timeOfDay", [{ name: "AM" }, { name: "PM" }]);
+      Vue.set(state, "hours", hours.reverse());
+      Vue.set(state, "minutes", minutes);
     },
     [mutation.SET_DISTANCE]({ location }, payload) {
       location.distance = payload;
@@ -290,23 +300,38 @@ export const EventsAddStore = {
     [mutation.SET_LOCATION_COORDS_SEARCH_RESULTS]({ form }, payload) {
       form.location = payload;
     },
-    [mutation.ADD_FORM_FIELD]({ form }, payload) {
-      if (payload.joinAs && !form[payload.joinAs]) {
-        Vue.set(form, payload.joinAs, payload.type !== "text" ? "" : null);
+    [mutation.ADD_FORM_FIELD](state, {joinAs, name, type}) {
+      if (joinAs && !state[joinAs]) {
+        Vue.set(state, joinAs, { [name]: { name: "" } });
+      } else if (joinAs && state[joinAs]) {
+        Vue.set(state[joinAs], name, { name: "" });
       } else {
-        Vue.set(form, payload.name, payload.type !== "text" ? "" : null);
-        debugger;
+        Vue.set(state.form, name, type !== "text" ? "" : null);
       }
     },
     [mutation.REMOVE_LOCATION_COORDS_SEARCH_RESULTS]({ form }) {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    [mutation.SET_FORM_FIELD]({ form }, payload) {
-      if (payload.joinAs) {
-        form[payload.name] += payload.value.name.toString();
-        debugger;
+    [mutation.SET_FORM_FIELD](state, {joinAs, name, timestamp, value}) {
+      if (joinAs == "time") {
+        state[joinAs][name] = {
+          name: value.name.toString(),
+        };
+        state.form.date.timestamp = moment(
+          state.form.date.timestamp.setHours(
+            state[joinAs]["hours"].name,
+            state[joinAs]["minutes"].name
+          )
+        ).toDate();
+      } else if (timestamp) {
+        state.form[name] = {
+          value,
+          timestamp,
+        };
+        state.time.hours = '' 
+        state.time.minutes = '' 
       } else {
-        form[payload.name] = payload.value;
+        state.form[name] = value;
       }
     },
     [mutation.REMOVE_MAP]({ location }) {

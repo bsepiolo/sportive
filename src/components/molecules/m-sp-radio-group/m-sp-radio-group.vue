@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  props: ["fields", "validationRules"],
+  props: ["fields", "validationRules", "name"],
   data() {
     return {
       isValid: true,
@@ -47,7 +47,7 @@ export default {
 
       this.$emit("isValid", this.isValid);
 
-      this.$emit("input", data);
+      this.$emit("input", {name: this.name, value: data});
     },
     validate() {
       this.rules = this.validation(this.validationRules, this.content);

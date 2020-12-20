@@ -92,6 +92,9 @@ export default {
     joinAs: {
       type: String,
     },
+    depends: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -103,12 +106,12 @@ export default {
   },
   computed: {
     inputValue() {
-      debugger
       if (this.displayValue && !this.joinAs) {
         return this.$store.state[name].form[this.name][this.displayValue];
-      } else if (this.joinAs) {
-        debugger;
-        return this.$store.state[name].form[this.joinAs].value;
+      } else if (this.joinAs == "time") {
+        return this.$store.state[name][this.joinAs][this.name][
+          this.displayValue
+        ];
       } else {
         const date = this.moment(this.$store.state[name].form[this.name].value);
         const isDateValid = date.isValid();

@@ -32,6 +32,7 @@ export default {
     type: String,
     size: String,
     icon: String,
+    name: String,
     validationRules: Object,
   },
   data() {
@@ -52,7 +53,7 @@ export default {
     },
     handleInput(e) {
       this.content = e;
-      this.$emit("input", e);
+      this.$emit("input", {name: this.name, value: e});
       if (!this.isValid) {
         this.validate();
       }

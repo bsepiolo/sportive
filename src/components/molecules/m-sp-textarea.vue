@@ -1,12 +1,7 @@
 <template>
   <div class="m-input" :class="{ 'is-focused': isFocused }">
     <div class="m-input__container" :class="{ validator: !isValid }">
-      <a-sp-icon
-        :icon="icon"
-        class="ml-2"
-        :type="iconColor"
-        :absolute="true"
-      />
+      <a-sp-icon :icon="icon" class="ml-2" :type="iconColor" :absolute="true" />
 
       <a-sp-textarea
         :placeholder="placeholder"
@@ -17,6 +12,7 @@
         @focus="handleFocus"
         @blur="handleBlur"
         :isValid="isValid"
+        class="pl-6"
       />
     </div>
     <template v-if="!isValid">
@@ -34,6 +30,7 @@ export default {
     size: String,
     icon: String,
     height: String,
+    name: String,
     validationRules: Object,
   },
   data() {
@@ -47,7 +44,7 @@ export default {
   },
   methods: {
     handleInput(e) {
-      this.$emit("input", e);
+      this.$emit("input", { name: this.name, value: e });
       this.content = e;
       if (!this.isValid) {
         this.validate();

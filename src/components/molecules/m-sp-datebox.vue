@@ -159,25 +159,38 @@ export default {
         day >= this.initialDate ||
         this.currentMonthNumber != this.selectedMonthNumber
       ) {
-        debugger;
-        this.selectedDayTmp = day;
         this.dateContext = this.moment(this.dateContext.set("date", day));
         this.selectedMonthNumber = this.dateContext.format("M");
         this.selectedYear = this.dateContext.format("Y");
         this.$emit("isValid", this.isValid);
+
+        const selectedDate = this.moment(this.dateContext);
+
         this.$emit("input", {
-          value: this.moment(this.dateContext).toISOString(),
-          timestamp: this.moment(this.dateContext).toDate(),
+          name: this.name,
+          value: selectedDate.toISOString(),
+          timestamp: selectedDate.toDate(),
         });
+
         setValue();
       }
+    },
+    setCurrent() {
+      const currentDate = this.moment(this.today);
+      this.$emit("input", {
+        name: this.name,
+        value: currentDate.toISOString(),
+        timestamp: currentDate.toDate(),
+      });
     },
     isDisabled(day) {
       return (
         (day <= this.initialDate - 1 &&
           this.initialMonthNumber == this.monthNumber &&
           this.initialYear == this.year) ||
-        this.initialMonthNumber > this.monthNumber && this.initialYear == this.year ||  this.initialYear > this.year
+        (this.initialMonthNumber > this.monthNumber &&
+          this.initialYear == this.year) ||
+        this.initialYear > this.year
       );
     },
     isCurrent(day) {
@@ -201,6 +214,9 @@ export default {
       this.dateContext = this.moment(this.dateContext).subtract(1, "month");
     },
   },
+  created(){
+    this.setCurrent();
+  }
 };
 </script>
 <style lang="scss" scoped>

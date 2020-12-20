@@ -11,6 +11,7 @@
       :maxHeight="maxHeight"
       ref="selectbox"
       :joinAs="joinAs"
+      :depends="depends"
     >
       <template #default="{ setValue, value }">
         <m-sp-list>
@@ -45,7 +46,8 @@ export default {
     "source",
     "action",
     "joinAs",
-    "maxHeight"
+    "maxHeight",
+    "depends"
   ],
   data() {
     return {
@@ -65,7 +67,13 @@ export default {
       return this.$store.state[name][this.source];
     },
     inputValue() {
-      return this.$store.state[name].form[this.name][this.displayValue];
+      if (this.joinAs) {
+        return this.$store.state[name].form[this.joinAs][this.name][
+          this.displayValue
+        ];
+      } else {
+        return this.$store.state[name].form[this.name][this.displayValue];
+      }
     },
   },
   methods: {
@@ -79,7 +87,7 @@ export default {
     handleItemClick(item, index) {
       debugger;
       this.$emit("isValid", this.isValid);
-      this.$emit("input", {item, name: this.name, joinAs: this.joinAs});
+      this.$emit("input", { value: item, name: this.name, joinAs: this.joinAs });
       this.selectedIndex = index;
       this.listVisible = false;
     },

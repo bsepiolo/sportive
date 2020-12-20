@@ -20,6 +20,7 @@
               :displayValue="field.displayValue || ''"
               @input="(e) => updateValue(index, e)"
               :placeholder="field.placeholder"
+              :depends="field.depends"
               :ref="`field${index}`"
             />
           </div>
@@ -41,6 +42,7 @@
             :displayValue="field.displayValue || ''"
             @input="(e) => updateValue(index, e)"
             :placeholder="field.placeholder"
+            :depends="field.depends"
             :ref="`field${index}`"
           />
         </div>
@@ -69,17 +71,15 @@ export default {
     };
   },
   created() {
-    this.fields.forEach(({ name, type, validationRules, ...data }) => {
+    this.fields.forEach(({ name, type, validationRules, joinAs, mutation, fields }) => {
       if (validationRules) {
         this.validFieldsNumber++;
       }
       if (type == "group") {
-        if (data.mutation) {
-          this.$store.commit(`${this.namespace}/${data.mutation}`);
+        if (mutation) {
+          this.$store.commit(`${this.namespace}/${mutation}`);
         }
-        data.fields.forEach(({ name, type, joinAs }) => {
-          debugger;
-
+        fields.forEach(({ name, type, joinAs }) => {
           this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
             name,
             type,
@@ -89,7 +89,7 @@ export default {
       } else {
         this.$store.commit(`${this.namespace}/${mutations.ADD_FORM_FIELD}`, {
           name,
-          joinAs: data.joinAs,
+          joinAs,
           type,
         });
       }
@@ -102,20 +102,11 @@ export default {
         this.submitAction();
       }
     },
-    updateValue(index, value) {
-      // const name = this.fields[index].name;
-      debugger;
-      if (value.joinAs) {
-        this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
-          name: value.joinAs,
-          value: value.item,
-        });
-      } else {
-        this.$store.commit(`${this.namespace}/${mutations.SET_FORM_FIELD}`, {
-          name: value.name,
-          value: value.item,
-        });
-      }
+    updateValue(index, payload) {
+      this.$store.commit(
+        `${this.namespace}/${mutations.SET_FORM_FIELD}`,
+        payload
+      );
     },
     componentName(type) {
       switch (type) {
