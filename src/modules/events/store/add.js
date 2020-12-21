@@ -3,7 +3,6 @@ import router from "@/routes";
 import * as mutation from "@/store/mutation_types";
 import * as action from "@/store/action_types";
 import mapService from "../services";
-import moment from "moment";
 export const EventsAddStore = {
   namespaced: true,
   state: {
@@ -301,10 +300,13 @@ export const EventsAddStore = {
       form.location = payload;
     },
     [mutation.ADD_FORM_FIELD](state, {joinAs, name, type}) {
+      
       if (joinAs && !state[joinAs]) {
-        Vue.set(state, joinAs, { [name]: { name: "" } });
+        debugger
+        Vue.set(state, joinAs, { [name]: { name: 0 } });
       } else if (joinAs && state[joinAs]) {
-        Vue.set(state[joinAs], name, { name: "" });
+        debugger
+        Vue.set(state[joinAs], name, { name: 0 });
       } else {
         Vue.set(state.form, name, type !== "text" ? "" : null);
       }
@@ -317,19 +319,19 @@ export const EventsAddStore = {
         state[joinAs][name] = {
           name: value.name.toString(),
         };
-        state.form.date.timestamp = moment(
+       debugger
           state.form.date.timestamp.setHours(
-            state[joinAs]["hours"].name,
-            state[joinAs]["minutes"].name
+           state[joinAs]['hours'].name,
+           state[joinAs]['minutes'].name 
           )
-        ).toDate();
+      
       } else if (timestamp) {
         state.form[name] = {
           value,
           timestamp,
         };
-        state.time.hours = '' 
-        state.time.minutes = '' 
+        state.time.hours.name = ''
+        state.time.minutes.name = ''
       } else {
         state.form[name] = value;
       }
