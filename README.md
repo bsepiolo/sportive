@@ -28,7 +28,7 @@
 **Development plan**
 
  * Move components to Storybook,
- * Dynamic check ifemail is already in use,
+ * Dynamic check if email is already in use,
  * Limit on the number of people at the event,
  * User's preffered disciplines,
  * Chat
