@@ -11,8 +11,8 @@
 
 **Available functionalisties:**
  * Sign In, Sign Up,
- * User has dashboard which includes:
-   *  incoming event, 
+ * User dashboard which includes:
+   * incoming event, 
    * events created by you, 
    * events with your participation,
    * recommended events wich are filtered by your geolocation,
