@@ -17,8 +17,8 @@
    * events with your participation,
    * recommended events wich are filtered by your geolocation,
  * Every user can create event by picking location, date, time etc,  
- * Users can join events,  
- * Users can check the route to the event from their location 
+ * User can join events,  
+ * User can check the route to the event from their location 
 
 **Worth mentioning:**
  * Form component which generates fields based on the given configuration,
