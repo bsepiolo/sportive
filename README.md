@@ -12,10 +12,10 @@
 **Available functionalisties:**
  * Sign In, Sign Up,
  * User has dashboard which includes:
- *  incoming event, 
- * events created by you, 
- * events with your participation,
- * recommended events wich are filtered by your geolocation,
+   *  incoming event, 
+   * events created by you, 
+   * events with your participation,
+   * recommended events wich are filtered by your geolocation,
  * Every user can create event by picking location, date, time etc,  
  * Users can join events,  
  * Users can check the route to the event from their location 
