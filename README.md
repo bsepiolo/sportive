@@ -35,6 +35,10 @@
  * Carousel at start screen
  * Search
  * Friends
+ * Notifications
+ * Improve current functionalities
+ * Fix errors
+ 
 
 **:warning:Appliaction needs geolocation permission to run.:warning:**
 
