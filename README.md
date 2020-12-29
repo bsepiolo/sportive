@@ -1,7 +1,7 @@
 # Sportive :soccer: :basketball:	
 
 
-## Social App for creating Sport events.
+## Social App for creating sport events.
  * Components: self made reusable atomic design components,
  * State management:  Vuex,  
  * Backend: Firebase,
