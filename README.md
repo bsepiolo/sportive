@@ -36,7 +36,7 @@
  * Search
  * Friends
 
-**Appliaction needs geolocation permission to run.**
+**:warning:Appliaction needs geolocation permission to run.:warning:**
 
 ## Project setup
 ```
