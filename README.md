@@ -36,6 +36,8 @@
  * Search
  * Friends
  * Notifications
+ * User profile
+ * Burger menu
  * Improve current functionalities
  * Fix errors
  
