@@ -50,11 +50,11 @@ export default new Vuex.Store({
         try {
           const { coords } = await getCurrentPosition();
           const { latitude: lat, longitude: lng } = coords;
-debugger
           commit(mutations.SET_USERS_COORDS, { latitude: lat, longitude: lng });
 
         } catch (error) {
-          console.error(error);
+          error
+          //console.error(error);
         }
       })();
     },

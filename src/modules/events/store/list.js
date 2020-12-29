@@ -14,7 +14,6 @@ export const EventsListStore = {
   },
   actions: {
     async [action.FETCH_UPCOMING_EVENT]({ commit, rootState }) {
-      debugger;
       try {
         const user = rootState.db.collection("users").doc(rootState.user.uid);
         // const userRef = rootState.firebase.auth().currentUser;
@@ -52,7 +51,8 @@ export const EventsListStore = {
           commit(mutation.SET_UPCOMING_EVENT, eventObj);
         }
       } catch (err) {
-        console.log(err);
+        err
+        //console.log(err);
       }
     },
 
@@ -72,14 +72,13 @@ export const EventsListStore = {
           try {
             const { coords } = await getCurrentPosition();
             const { latitude: lat, longitude: lng } = coords;
-            debugger;
             location = { lat, lon: lng };
           } catch (error) {
-            console.error(error);
+            error
+            //console.error(error);
           }
         })();
 
-        debugger;
         const distance = 10;
         const lat = 0.0233238261;
         const lon = 0.0292608;
@@ -107,7 +106,7 @@ export const EventsListStore = {
             .limit(10)
             .get()
         ).docs;
-        debugger;
+        
         filteredByLocation = filteredByLocation.filter((e) => {
           return e.data().author.id != user.id;
         });
@@ -136,7 +135,7 @@ export const EventsListStore = {
         commit(mutation.SET_RECOMMENDED_EVENTS, arr);
         //}
       } catch (err) {
-        console.log(err);
+//        console.log(err);
       }
     },
     async [action.FETCH_MY_EVENTS]({ commit, rootState }) {
@@ -160,7 +159,8 @@ export const EventsListStore = {
 
         commit(mutation.SET_MY_EVENTS, eventsArray);
       } catch (err) {
-        console.log(err);
+        err
+        //console.log(err);
       }
     },
     async [action.FETCH_PARTICIPATE_EVENTS]({ commit, rootState }) {
@@ -174,7 +174,6 @@ export const EventsListStore = {
         const eventsArray = [];
 
         docs.forEach(async (e) => {
-          debugger;
           const event = e.data();
           if (event.author.id != user.id) {
             event.author = (await event.author.get()).data();
@@ -188,7 +187,8 @@ export const EventsListStore = {
         });
         commit(mutation.SET_PARTICIPATE_EVENTS, eventsArray);
       } catch (err) {
-        console.log(err);
+        err
+        //console.log(err);
       }
     },
   },
