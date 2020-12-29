@@ -27,10 +27,7 @@
         </a-sp-title>
         <template v-if="!messagesVisible">
           <div class="event__author mt-1">
-            <a-sp-avatar
-              class="mr-1"
-              :image-src="event.author.photoURL"
-            />
+            <a-sp-avatar class="mr-1" :image-src="event.author.photoURL" />
             <a-sp-text class="pt-0">
               {{ event.author.displayName }}
             </a-sp-text>
@@ -70,7 +67,7 @@
             </m-sp-list-el>
             <m-sp-list-el icon="eva eva-map-outline" class="mt-2 mb-1">
               <a-sp-text>
-                 {{ event.location.name }}
+                {{ event.location.name }}
               </a-sp-text>
               <!-- <a-sp-text size="small" color="light" class="mt-1">
                 {{ event.location.name }}
@@ -206,34 +203,35 @@ export default {
       fetchEvent: actions.FETCH_EVENT,
       addEventMember: actions.ADD_EVENT_MEMBER,
     }),
-    ...mapMutations(namespace, { removeEvent: mutations.REMOVE_EVENT, removeMap: mutations.REMOVE_MAP,removeMarker: mutations.REMOVE_MARKER}),
+    ...mapMutations(namespace, {
+      removeEvent: mutations.REMOVE_EVENT,
+      removeMap: mutations.REMOVE_MAP,
+      removeMarker: mutations.REMOVE_MARKER,
+    }),
     changeIndex: function() {
       // alert("asf")
       this.mapFirstPlan = !this.mapFirstPlan;
     },
     handleJoinClick() {
-      debugger;
-      this.addEventMember({
-        id: this.event.id,
-        authorRef: this.event.authorRef,
-      });
+      const {event:{id,authorRef}} = this;
+      this.addEventMember({id, authorRef});
     },
     findRouteDistanceHandler() {
-      debugger;
-      this.findRouteDistance({ lngLat: {lng: this.event.location.position.longitude, lat: this.event.location.position.latitude} });
+      this.findRouteDistance({
+        lngLat: {
+          lng: this.event.location.position.longitude,
+          lat: this.event.location.position.latitude,
+        },
+      });
     },
-    // receives a place object via the autocomplete component
   },
   mounted() {
-    // this.findRouteDistanceHandler()
     this.fetchEvent(this.$route.params.id);
-   
   },
   destroyed() {
-    debugger
     this.removeEvent();
-this.removeMarker()
-this.removeMap()
+    this.removeMarker();
+    this.removeMap();
   },
 };
 </script>

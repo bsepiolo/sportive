@@ -36,6 +36,9 @@ export default {
           model: "username",
           name: "username",
           icon: "eva eva-person-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
         {
           type: "email",
@@ -43,6 +46,10 @@ export default {
           model: "email",
           name: "email",
           icon: "eva eva-email-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+            email: { text: "Email is invalid" },
+          },
         },
         {
           type: "password",
@@ -50,6 +57,9 @@ export default {
           model: "password",
           name: "password",
           icon: "eva eva-lock-outline",
+          validationRules: {
+            required: { text: "Field is required" },
+          },
         },
       ],
     };

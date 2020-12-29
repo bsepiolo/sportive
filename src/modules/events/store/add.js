@@ -122,9 +122,8 @@ export const EventsAddStore = {
       const {
         location: { current },
       } = state;
-      
-      try {
 
+      try {
         const { data } = await mapService.getLocationsByName(current, payload);
         const locationSearchResults = data.results.map(
           ({ address, position }) => {
@@ -191,7 +190,6 @@ export const EventsAddStore = {
       { commit, dispatch, state, rootState },
       { lngLat: { lng, lat } }
     ) {
-
       const { location, tt } = state;
       const { current } = location;
 
@@ -263,7 +261,7 @@ export const EventsAddStore = {
         let minute = i * 15;
         if (minute.toString().length < 2) {
           minute = `0${i}`;
-        } 
+        }
         minutes[i] = { name: minute };
       }
       Vue.set(state, "hours", hours.reverse());
@@ -299,13 +297,10 @@ export const EventsAddStore = {
     [mutation.SET_LOCATION_COORDS_SEARCH_RESULTS]({ form }, payload) {
       form.location = payload;
     },
-    [mutation.ADD_FORM_FIELD](state, {joinAs, name, type}) {
-      
+    [mutation.ADD_FORM_FIELD](state, { joinAs, name, type }) {
       if (joinAs && !state[joinAs]) {
-        debugger
         Vue.set(state, joinAs, { [name]: { name: 0 } });
       } else if (joinAs && state[joinAs]) {
-        debugger
         Vue.set(state[joinAs], name, { name: 0 });
       } else {
         Vue.set(state.form, name, type !== "text" ? "" : null);
@@ -314,24 +309,22 @@ export const EventsAddStore = {
     [mutation.REMOVE_LOCATION_COORDS_SEARCH_RESULTS]({ form }) {
       form.location = { name: "", coords: { lat: 0, lon: 0 } };
     },
-    [mutation.SET_FORM_FIELD](state, {joinAs, name, timestamp, value}) {
+    [mutation.SET_FORM_FIELD](state, { joinAs, name, timestamp, value }) {
       if (joinAs == "time") {
         state[joinAs][name] = {
           name: value.name.toString(),
         };
-       debugger
-          state.form.date.timestamp.setHours(
-           state[joinAs]['hours'].name,
-           state[joinAs]['minutes'].name 
-          )
-      
+        state.form.date.timestamp.setHours(
+          state[joinAs]["hours"].name,
+          state[joinAs]["minutes"].name
+        );
       } else if (timestamp) {
         state.form[name] = {
           value,
           timestamp,
         };
-        state.time.hours.name = ''
-        state.time.minutes.name = ''
+        state.time.hours.name = "";
+        state.time.minutes.name = "";
       } else {
         state.form[name] = value;
       }

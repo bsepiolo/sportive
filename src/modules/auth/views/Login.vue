@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4">
     <a-sp-title :text-center="true">Sign in</a-sp-title>
     <a-sp-subtitle
       :text-center="true"

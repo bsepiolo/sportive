@@ -17,19 +17,19 @@
       title="Created by You"
       :events="events.my"
       size="small"
-      v-if="events.my.length > 0"
+      v-if="!!events.my"
     />
     <sp-event-card-list
       class="mt-2"
       title="Your participation"
       :events="events.participate"
-      v-if="events.participate.length > 0"
+      v-if="!!events.participate"
     />
     <sp-event-card-list
       class="mt-2 mb-10"
       title="Recommended"
       :events="events.recommended"
-      v-if="events.recommended.length > 0"
+      v-if="!!events.recommended"
     />
   </div>
 </template>

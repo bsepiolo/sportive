@@ -1,5 +1,5 @@
 <template>
-  <div class="l-container l-container--standard">
+  <div class="l-container pt-4 l-container--standard">
     <o-sp-top-bar :user="user" v-if="isNavbarVisible" />
     <transition name="slide" mode="out-in">
       <router-view />

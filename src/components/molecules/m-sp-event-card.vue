@@ -20,9 +20,6 @@ export default {
     handleClick() {
       this.$emit("click");
     }
-  },
-  mounted(){
-    debugger
   }
 };
 </script>
@@ -41,7 +38,6 @@ export default {
   height: 160px;
   &--small {
     display: flex;
-    align-items: center;
     width: 100px;
     height: 100px;
   }

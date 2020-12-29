@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-sp-title size="large" :text-center="true" class="mt-6"
+    <a-sp-title size="large" :text-center="true" class="mt-2"
       >Event creator</a-sp-title
     >
     <a-sp-subtitle size="medium" :text-center="true" class="mb-5"

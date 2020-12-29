@@ -1,5 +1,5 @@
 <template>
-   <div class="l-container l-container--auth l-container--vertical-center">
+   <div class="l-container l-container--auth l-container--vertical-center" style="height: 100%;">
     <m-sp-carousel />
     <div class="p-actions">
       <a-sp-button type="primary" text="Sign in" @click="handleRedirectClick('auth.signin')"/>

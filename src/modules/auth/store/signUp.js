@@ -11,40 +11,48 @@ export const SignUpStore = {
     map: null,
   },
   actions: {
+    async signUp({ rootState, state, dispatch, commit }) {
+      try {
+        const data = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            state.form.email,
+            state.form.password
+          );
+        await rootState.db
+          .collection("users")
+          .doc(data.user.uid)
+          .set({ displayName: state.form.username, email: data.user.email });
 
-    signUp({ rootState, state, dispatch, commit }) {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(state.form.email, state.form.password)
-        .then((data) => {
-          return rootState.db
-            .collection("users")
-            .doc(data.user.uid)
-            .set({ displayName: state.form.username, email: data.user.email })
-            .then(() => {
-              rootState.db
-                .collection("users")
-                .doc(data.user.uid)
-                .get()
-                .then((doc) => {
-                  debugger
-                  data.user.updateProfile({
-                    displayName: state.form.username,
-                  });
-                  console.log("data", doc.data());
-                  commit(`SignInStore/${mutation.SET_FORM_FIELD}`, {name: "email", value: state.form.email}, {root: true})
-                  commit(`SignInStore/${mutation.SET_FORM_FIELD}`, {name: "password", value: state.form.password}, {root: true})
-                  dispatch("SignInStore/signIn", {email: state.form.email, password: state.form.password}, {root: true});
-                });
-            });
-        })
-        .catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-          console.log(`${errorCode}, ${errorMessage}`);
+        await rootState.db
+          .collection("users")
+          .doc(data.user.uid)
+          .get();
+
+        data.user.updateProfile({
+          displayName: state.form.username,
         });
+        commit(
+          `SignInStore/${mutation.SET_FORM_FIELD}`,
+          { name: "email", value: state.form.email },
+          { root: true }
+        );
+        commit(
+          `SignInStore/${mutation.SET_FORM_FIELD}`,
+          { name: "password", value: state.form.password },
+          { root: true }
+        );
+        dispatch(
+          "SignInStore/signIn",
+          { email: state.form.email, password: state.form.password },
+          { root: true }
+        );
+      } catch (error) {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        console.log(`${errorCode}, ${errorMessage}`);
+      }
     },
   },
   mutations: {
