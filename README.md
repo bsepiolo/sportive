@@ -1,5 +1,5 @@
 # Sportive :soccer: :basketball:	
-
+Development is in progress.  
 Early stage online version: [Sportive](https://sportive-fbbd4.web.app/)  
 Test account with content:   
 u: ross.geller@frnds.com  
