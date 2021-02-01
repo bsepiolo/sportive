@@ -1,6 +1,6 @@
 <template>
   <div
-    class="a-card"
+    class="a-card p-1"
     @mousedown="mousedown($event)"
     :class="{
       'a-card--minimized': minimized,
@@ -48,7 +48,6 @@ export default {
   box-shadow: $box-shadow-large;
   display: flex;
   flex-direction: column;
-  padding: $space-size-2;
 
   &--ratio-wide {
     width: 100%;

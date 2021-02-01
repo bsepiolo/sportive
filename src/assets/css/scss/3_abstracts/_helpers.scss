@@ -24,6 +24,12 @@ $marginCounter: 10;
   .mb-#{$i} {
     margin-bottom: #{$space-size * $i} !important;
   }
+  .p-#{$i}{
+    padding: #{$space-size * $i} !important;
+  }
+  .m-#{$i}{
+    margin: #{$space-size * $i} !important;
+  }
   .px-#{$i} {
     padding-left: #{$space-size * $i} !important;
     padding-right: #{$space-size * $i} !important;

@@ -2,6 +2,7 @@
   <div class="event">
     <div class="event__container">
       <a-sp-card
+      class="p-2"
         ratio="wide"
         :minimized="messagesVisible"
         @click="messagesVisible = false"
